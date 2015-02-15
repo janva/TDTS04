@@ -7,6 +7,7 @@ int main(int argc, char *argv[])
 
    RequestMessage rq;
    RequestMessage rq2 (request);
+   
    //rq.get_request_line () ;
    return 0;
 }

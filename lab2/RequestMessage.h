@@ -4,23 +4,28 @@
 #include<string>
 #include<map>
 
+// TODO: construction and copy-controll error handling
+// TODO: duplicate code with response message may interface +adaptor? template
 class RequestMessage
 {
 public:
    RequestMessage();
-   RequestMessage(std::string request);
+   RequestMessage(const std::string& request);
 
    std::string get_request_line () const;
    std::string get_headers () const;
-   std::string get_headers (std::string field_name) const;
+   std::string get_header (const std::string& field_name) const;
    std::string get_entity_body () const;
-      
+
+   void set_request_line (const std::string& req_line);
+   void set_header (const std::string& field, const std::string& value);
    virtual ~RequestMessage();
    // TODO: fixme move to private parts
-   void init_(std::string request);
 private:
+   void init_(std::string request);
    std::string request_line_;
-   std::map<std::string, std::string> header_fields_;
+   // TODO: make this pointer typ maybe unique pointer to make pointer handling simple
+   std::map<const std::string, std::string> header_fields_;
    std::string entity_body_;
    
 };

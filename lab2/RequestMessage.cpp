@@ -3,6 +3,7 @@
 #include<iostream>
 #include<sstream>
 #include<vector>
+#include<map>
 
 
 using std::string;
@@ -10,13 +11,14 @@ using std::vector;
 using std::cout;
 using std::endl;
 using std::istringstream;
+using std::map;
 
 
 RequestMessage::RequestMessage()
    :  request_line_ (""), entity_body_ (""),header_fields_()
 {}
 
-RequestMessage::RequestMessage(string request)
+RequestMessage::RequestMessage(const string& request)
    :  request_line_ (""),entity_body_ (""),header_fields_()
 {
    init_ (request);
@@ -26,18 +28,30 @@ string RequestMessage::get_request_line () const
    return request_line_;
 }
 
-std::string  RequestMessage::get_headers () const
+string  RequestMessage::get_headers () const
 {
-   
+   return "under construction-will eventually return string of all headers";
 }
-std::string RequestMessage::get_headers (string field_name) const
+string RequestMessage::get_header (const string& field_name) const
 {
-
+   return  header_fields_.at(field_name);
 }
 
 string RequestMessage::get_entity_body () const
 {
    cout << "under construct" << endl;
+   return entity_body_;
+}
+
+
+void RequestMessage::set_request_line (const string& req_line)
+{
+   request_line_ = req_line;
+}
+
+void RequestMessage::set_header (const string& field, const string& value)
+{
+  header_fields_[field] = value;
 }
 
 RequestMessage::~RequestMessage()

@@ -105,8 +105,8 @@ int main(void)
    printf("server: waiting for connections...\n");
    //testning to print out incomming messages
    char buf[1024]; 
-//char *outBuf="HTTP/1.1 200 OK\r\nDate: Tue, 23 Sep 2003 05:29:50 GMT\r\nServer: Apache/2.0.40 (Red Hat Linux)\r\nLast-Modified: Tue, 23 Sep 2003 05:29:00 GMT\r\nETag: \"1bfed-49-79d5bf00\"\r\nAccept-Ranges: bytes\r\nContent-Length: 73\r\nKeep-Alive: timeout=10, max=100\r\nConnection: Keep-Alive\r\nContent-Type: text/html; charset=ISO-8859-1\r\nLine-based text data: text/html\r\n<html>Congratulations.  You've downloaded the file lab2-1.html!</html>\0";
-char *outBuf ="hello worlddsafdasfsaf";
+
+   char *outBuf ="hello worlddsafdasfsaf";
    while(1) {  // main accept() loop
       sin_size = sizeof their_addr;
       new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &sin_size);
@@ -118,11 +118,8 @@ char *outBuf ="hello worlddsafdasfsaf";
       inet_ntop(their_addr.ss_family,
 		get_in_addr((struct sockaddr *)&their_addr),
 		s, sizeof s);
-      
-    
-       
-      printf("server: got connection from %s\n", s);
 
+      printf("server: got connection from %s\n", s);
 
 //      if (!fork()) { // this is the child process
 //	 close(sockfd); // child doesn't need the listener
