@@ -41,17 +41,16 @@ OBJ =
 
 #pattern rules instead
 %.o: %.cpp
-	$(CCC) $(CCFLAGS) -g -c $<
+	$(CCC) $(CCFLAGS)  -c $<
 %: %.o
-	$(CCC) $(CCFLAGS) -g -o $@ $^
+	$(CCC) $(CCFLAGS)  -o $@ $^
 
 
 server: server.o RequestMessage.o 
 server.o: server.cpp
 
-RequestMessage: RequestMessage.o RequestMessage.h
-RequestMessage.o: RequestMessage.cpp
-
+RequestMessage.o: RequestMessage.cpp RequestMessage.h
+ResponseMessage.o: ResponseMessage.cpp ResponseMessage.h
 
 server2: server2.o
 server2.o: server2.cpp
@@ -59,5 +58,5 @@ server2.o: server2.cpp
 getaddr_info: getaddr_info.o
 getaddr_info.o: getaddr_info.cpp
 
-RequestMessage.o: RequestMessage.cpp RequestMessage.h
+
 
