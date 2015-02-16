@@ -32,6 +32,7 @@ string  RequestMessage::get_headers () const
 {
    return "under construction-will eventually return string of all headers";
 }
+
 string RequestMessage::get_header (const string& field_name) const
 {
    return  header_fields_.at(field_name);
@@ -83,7 +84,7 @@ void RequestMessage::init_(string request)
       }
 
       string field{(*it).begin(),   (*it).begin()+idx};
-      string value {it->begin()+idx+2, it->end ()};
+      string value {it->begin()+idx+2, it->end ()-1};
       header_fields_[field] =value;
    }
    

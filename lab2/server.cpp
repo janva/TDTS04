@@ -47,14 +47,13 @@ void init (struct addrinfo hints, struct addrinfo** servinfo ){
    hints.ai_socktype = SOCK_STREAM;
    hints.ai_flags = AI_PASSIVE; // use my IP
 
+   
     if ((rv = getaddrinfo(NULL, PORT, &hints, servinfo)) != 0) {
-      fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
-      //return 1;   
-      exit (1);
+       fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+       //return 1;   
+       exit (1);
    }
-    //servinfo = &(*servinfo);
 }
-
 
 void bind_socket (addrinfo* p, addrinfo* servinfo, int& sockfd, int* yes)
 {
@@ -115,7 +114,7 @@ int main(void)
    int yes=1;
    //int rv;
    char s[INET6_ADDRSTRLEN];
-
+   
    //client sdide
    int  numbytes;   
    char buf[MAXDATASIZE ];
@@ -127,11 +126,10 @@ int main(void)
    freeaddrinfo(servinfo); 
    //listen to socket
    listen_socket (sockfd, BACKLOG);
-
+  
    kill_all_zombies (sa);
    
    printf("server: waiting for connections...\n");
-
    while(1) {  // main accept() loop
       sin_size = sizeof their_addr;
       new_fd = accept(sockfd, (struct sockaddr *)&their_addr, &sin_size);
@@ -157,7 +155,8 @@ int main(void)
 	//std::cout << buf << std::endl;
 	const string reqStr{buf};
 	RequestMessage req{buf};
-
+	
+	
 	   std::cout << req.get_request_line() << std::endl;
 	 if (send(new_fd, "Hello, world!", 13, 0) == -1)
 	    perror("send");
