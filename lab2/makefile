@@ -45,18 +45,14 @@ OBJ =
 %: %.o
 	$(CCC) $(CCFLAGS)  -o $@ $^
 
+proxyserver: proxyserver.o server.o client.o 
 
-server: server.o RequestMessage.o 
-server.o: server.cpp
+server.o: server.cpp #server.h RequestMessage.o:
+client.o: client.cpp #client.h ResponseMessage.o
 
-RequestMessage.o: RequestMessage.cpp RequestMessage.h
+RequestMessage.o: RequestMessage.cpp  RequestMessage.h
 ResponseMessage.o: ResponseMessage.cpp ResponseMessage.h
 
-server2: server2.o
-server2.o: server2.cpp
-
-getaddr_info: getaddr_info.o
-getaddr_info.o: getaddr_info.cpp
 
 
 

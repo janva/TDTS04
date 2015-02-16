@@ -21,11 +21,11 @@
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
 {
-	if (sa->sa_family == AF_INET) {
-		return &(((struct sockaddr_in*)sa)->sin_addr);
-	}
+   if (sa->sa_family == AF_INET) {
+      return &(((struct sockaddr_in*)sa)->sin_addr);
+   }
 
-	return &(((struct sockaddr_in6*)sa)->sin6_addr);
+   return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 //TODO needs host as argument
 void init_client (struct addrinfo hints, struct addrinfo** servinfo, const char* node)
@@ -44,29 +44,28 @@ void init_client (struct addrinfo hints, struct addrinfo** servinfo, const char*
 void bind_socket (addrinfo* p, addrinfo* servinfo, int& sockfd)
 {
    // loop through all the results and connect to the first we can
-	for(p = servinfo; p != NULL; p = p->ai_next) {
-		if ((sockfd = socket(p->ai_family, p->ai_socktype,
-				p->ai_protocol)) == -1) {
-			perror("client: socket");
-			continue;
-		}
-
-		if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-			close(sockfd);
-			perror("client: connect");
-			continue;
-		}
-
-		break;
-	}
-	if (p == NULL) {
-	   fprintf(stderr, "client: failed to connect\n");
-	   exit (2);
-	   //return 2;
-	}
-	//TODO consider where place this
-	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
-		  s, sizeof s);	
+   for(p = servinfo; p != NULL; p = p->ai_next) {
+      if ((sockfd = socket(p->ai_family, p->ai_socktype,
+			   p->ai_protocol)) == -1) {
+	 perror("client: socket");
+	 continue;
+      }
+		
+      if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+	 close(sockfd);
+	 perror("client: connect");
+	 continue;
+      }
+      break;
+   }
+   if (p == NULL) {
+      fprintf(stderr, "client: failed to connect\n");
+      exit (2);
+      //return 2;
+   }
+   //TODO consider where place this
+   inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
+	     s, sizeof s);	
 }
 
 ResponseMessage receive_message (int sockfd)
@@ -89,32 +88,25 @@ void send_message (char buf* ,int sockfd )
 
 int main(int argc, char *argv[])
 {
-	int sockfd, numbytes;  
+   int sockfd, numbytes;  
 	
-	struct addrinfo hints, *servinfo, *p;
-	int rv;
-	char s[INET6_ADDRSTRLEN];
+   struct addrinfo hints, *servinfo, *p;
+   int rv;
+   char s[INET6_ADDRSTRLEN];
 
-	//if (argc != 2) {
-	//    fprintf(stderr,"usage: client hostname\n");
-	//    exit(1);
-	//}
-	//argument node will be inserteda when connecting to server
-	init_client ( &hints, &servinfo, node);
-	bind_socket ( p,  servinfo, sockfd);
+   init_client ( &hints, &servinfo, node);
+   bind_socket ( p,  servinfo, sockfd);
 
-	printf("client: connecting to %s\n", s);
-	//TODO maybe move inside bindsocket
-	freeaddrinfo(servinfo); // all done with this structure
-	//send
-	send_message (char buf* ,int sockfd );
-       //recv
-	ResponseMessage message=receive_message (sockfd);
+   printf("client: connecting to %s\n", s);
+   //TODO maybe move inside bindsocket
+   freeaddrinfo(servinfo); // all done with this structure
+   //send
+   send_message (char buf* ,int sockfd );
+   //recv
+   ResponseMessage message=receive_message (sockfd);
 	
-	//printf("client: received '%s'\n",buf);
-
-	close(sockfd);
-
-	return 0;
+   //printf("client: received '%s'\n",buf);
+   close(sockfd);
+   return 0;
 }
 
