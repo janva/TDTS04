@@ -64,7 +64,6 @@ void bind_socket (addrinfo* p, addrinfo* servinfo, int& sockfd, int* yes)
 	 perror("server: socket");
 	 continue;
       }
-
       if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes,
 		     sizeof(int)) == -1) {
 	 perror("setsockopt");
