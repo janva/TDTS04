@@ -37,22 +37,15 @@ CCFLAGS += -std=c++11 -Wall -Wextra -pedantic
 DEBUG = -g
 LIBS =
 ASSEMBLER= -S
-OBJ = 
 
 #pattern rules instead
 %.o: %.cpp
-	$(CCC) $(CCFLAGS)  -c $<
+	$(CCC) $(CCFLAGS) -c $<
 %: %.o
-	$(CCC) $(CCFLAGS)  -o $@ $^
+	$(CCC) $(CCFLAGS) -o $@ $^
 
-proxyserver: proxyserver.o server.o client.o 
+server: server.o RequestMessage.o
+server.o: server.cpp server.h
 
-server.o: server.cpp #server.h RequestMessage.o:
-client.o: client.cpp #client.h ResponseMessage.o
-
-RequestMessage.o: RequestMessage.cpp  RequestMessage.h
-ResponseMessage.o: ResponseMessage.cpp ResponseMessage.h
-
-
-
+RequestMessage.o: RequestMessage.cpp RequestMessage.h
 
