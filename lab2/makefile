@@ -47,5 +47,9 @@ ASSEMBLER= -S
 server: server.o RequestMessage.o
 server.o: server.cpp server.h
 
+client: client.o ResponseMessage.o
+client.o: client.cpp client.h 
+
 RequestMessage.o: RequestMessage.cpp RequestMessage.h
+ResponseMessage.o: ResponseMessage.cpp ResponseMessage.h
 

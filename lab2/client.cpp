@@ -1,3 +1,5 @@
+#include "client.h"
+#include "ResponseMessage.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -23,22 +25,27 @@ void *get_in_addr(struct sockaddr *sa)
 
    return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
+
 //TODO needs host as argument
-void init_client (struct addrinfo hints, struct addrinfo** servinfo, const char* node)
+void Client::init_client ( const char* node)
 {
+   struct addrinfo hints;
+   int rv;
    memset(&hints, 0, sizeof hints);
    hints.ai_family = AF_UNSPEC;
    hints.ai_socktype = SOCK_STREAM;
-   
-   if ((rv = getaddrinfo(node , PORT, &hints, servinfo)) != 0) {
+   //TODO not so good place tohave node 
+   if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
       exit (1);
       //return 1;
    }
 }
 
-void bind_socket (addrinfo* p, addrinfo* servinfo, int& sockfd)
+void Client::bind_socket ()
 {
+   addrinfo* p;
+    char s[INET6_ADDRSTRLEN];
    // loop through all the results and connect to the first we can
    for(p = servinfo; p != NULL; p = p->ai_next) {
       if ((sockfd = socket(p->ai_family, p->ai_socktype,
@@ -61,11 +68,16 @@ void bind_socket (addrinfo* p, addrinfo* servinfo, int& sockfd)
    }
    //TODO consider where place this
    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
-	     s, sizeof s);	
+	     s, sizeof s);
+   printf("client: connecting to %s\n", s);
+   //TODO maybe move inside bindsocket
+   freeaddrinfo(servinfo); // all done with this structure
+   
 }
 
-ResponseMessage receive_message (int sockfd)
+ResponseMessage Client::receive_message ()
 {
+   int  numbytes;  
    char buf[MAXDATASIZE];
    if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
       perror("recv");
@@ -75,34 +87,36 @@ ResponseMessage receive_message (int sockfd)
    return ResponseMessage(buf);
 }
 
-void send_message (char buf* ,int sockfd )
+void Client::send_message ( )
 {
    int bytessent;
-   if ((bytessent=send(sock_fd, buf, strlen(buf), 0)) == -1)
+   char* buf ;
+   
+   if ((bytessent=send(sockfd, buf, strlen(buf), 0)) == -1)
       perror("send");
+}
+void Client::close_socket ()
+{
+   close(sockfd);
 }
 
 int main(int argc, char *argv[])
 {
-   int sockfd, numbytes;  
-	
+   
+
+   Client client{};
    struct addrinfo hints, *servinfo, *p;
-   int rv;
-   char s[INET6_ADDRSTRLEN];
+   const char* node="http://google.com";
+   client.init_client (node);
+   client.bind_socket ();
 
-   init_client ( &hints, &servinfo, node);
-   bind_socket ( p,  servinfo, sockfd);
-
-   printf("client: connecting to %s\n", s);
-   //TODO maybe move inside bindsocket
-   freeaddrinfo(servinfo); // all done with this structure
    //send
-   send_message (char buf* ,int sockfd );
+   client.send_message ( );
    //recv
-   ResponseMessage message=receive_message (sockfd);
+   ResponseMessage message= client.receive_message ();
 	
    //printf("client: received '%s'\n",buf);
-   close(sockfd);
+
    return 0;
 }
 
