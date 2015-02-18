@@ -1,15 +1,19 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 #include "ResponseMessage.h"
+#include "RequestMessage.h"
+
 class Client
 {
 public:
    Client() {};
+   ResponseMessage& forward (RequestMessage& reqMess) const;
    void init_client ( const char* node);
    void bind_socket ();
    void send_message ( );
    ResponseMessage receive_message ();
    void close_socket ();
+
    virtual ~Client(){};
 private:
    int sockfd;

@@ -4,6 +4,18 @@
 //use arguements
 int main ()
 {
-   Server s{};
-   Client c{};
+   
+   Server serv{new Client};
+   
+//   serv.init ( );
+//   serv.bind_socket ();
+//   serv.listen_socket ();
+   //change these 
+  // serv.kill_all_zombies ();
+  // serv.dummy_dumbo_change_me ();
+  
+ // s.setup ();
+ // s.start ();
+ // s.setclient ();   
+ // Client c{};
 }

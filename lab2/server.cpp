@@ -138,9 +138,14 @@ void Server::dummy_dumbo_change_me ()
 	    perror("recv");
 	    exit(1);
 	 }
+	 // TODO: will call forward on client.
+	 // client might instansiatetd here or will be reachable from
+	 //this class in some other manner 
 	 const string reqStr{buf};
 	 RequestMessage req{buf};
-	
+	 // TODO: simplest way in this case might change but makes the
+	 // job for know
+	 ResponseMessage respMessage = client->forward (req);
 	
 	 std::cout << req.get_request_line() << std::endl;
 	 if (send(new_fd, "Hello, world!", 13, 0) == -1)

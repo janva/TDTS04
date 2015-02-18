@@ -47,10 +47,10 @@ ASSEMBLER= -S
 proxyserver: proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
 proxyserver.o: proxyserver.cpp
 
-server: server.o RequestMessage.o
+server: server.o RequestMessage.o RequestMessage.o
 server.o: server.cpp server.h
 
-client: client.o ResponseMessage.o
+client: client.o ResponseMessage.o RequestMessage.o
 client.o: client.cpp client.h 
 
 RequestMessage.o: RequestMessage.cpp RequestMessage.h

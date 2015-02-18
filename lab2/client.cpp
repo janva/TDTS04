@@ -14,8 +14,6 @@
 
 
 // TODO: make static constexpr  data 
-
-
 // get sockaddr, IPv4 or IPv6:
 void* Client::get_in_addr(struct sockaddr *sa)
 {
@@ -28,10 +26,12 @@ void* Client::get_in_addr(struct sockaddr *sa)
 
 
 //TODO needs host as argument
+//TODO close fit with server.cpp version pattaren?
 void Client::init_client ( const char* node)
 {
    struct addrinfo hints;
    int rv;
+   
    memset(&hints, 0, sizeof hints);
    hints.ai_family = AF_UNSPEC;
    hints.ai_socktype = SOCK_STREAM;
@@ -43,6 +43,13 @@ void Client::init_client ( const char* node)
    }
 }
 
+ResponseMessage& Client::forward (RequestMessage&  reqMess)  const
+{
+   printf ("Client::forward - under construction -");
+   
+}
+//TODO close fit with server version simplest solution parameters
+// or adapter or template pattern strategy
 void Client::bind_socket ()
 {
    addrinfo* p;
@@ -73,7 +80,6 @@ void Client::bind_socket ()
    printf("client: connecting to %s\n", s);
    //TODO maybe move inside bindsocket
    freeaddrinfo(servinfo); // all done with this structure
-   
 }
 
 ResponseMessage Client::receive_message ()
