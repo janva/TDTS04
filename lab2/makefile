@@ -44,6 +44,9 @@ ASSEMBLER= -S
 %: %.o
 	$(CCC) $(CCFLAGS) -o $@ $^
 
+proxyserver: proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
+proxyserver.o: proxyserver.cpp
+
 server: server.o RequestMessage.o
 server.o: server.cpp server.h
 

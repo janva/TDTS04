@@ -9,11 +9,15 @@ public:
    void bind_socket ();
    void send_message ( );
    ResponseMessage receive_message ();
-      void close_socket ();
+   void close_socket ();
    virtual ~Client(){};
 private:
    int sockfd;
    struct addrinfo *servinfo;
+   const char* PORT {"3490"};
+   static constexpr unsigned int MAXDATASIZE {100};
+   // TODO: tempfix
+   void* get_in_addr(struct sockaddr *sa);
 };
 
 

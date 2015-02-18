@@ -24,7 +24,7 @@ void sigchld_handler(int s)
 
 // get sockaddr, IPv4 or IPv6:
 // auxilary funciton make private inside class 
-void *get_in_addr(struct sockaddr *sa)
+void* Server::get_in_addr(struct sockaddr *sa)
 {
    if (sa->sa_family == AF_INET) {
       return &(((struct sockaddr_in*)sa)->sin_addr);
@@ -151,15 +151,15 @@ void Server::dummy_dumbo_change_me ()
       close(new_fd);  // parent doesn't need this
    }
 }
-int main(void)
-{
-   Server serv{};
-   serv.init ( );
-   serv.bind_socket ();
-   serv.listen_socket ();
-   //change these 
-   serv.kill_all_zombies ();
-   serv.dummy_dumbo_change_me ();
-   return 0;
-}
+//int main(void)
+//{
+//   Server serv{};
+//   serv.init ( );
+//   serv.bind_socket ();
+//   serv.listen_socket ();
+//   //change these 
+//   serv.kill_all_zombies ();
+//   serv.dummy_dumbo_change_me ();
+//   return 0;
+//}
 

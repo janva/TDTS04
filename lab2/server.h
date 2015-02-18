@@ -22,6 +22,8 @@ private:
    // TODO:  
    int new_fd;
    struct addrinfo *servinfo;
+   
+   void* get_in_addr(struct sockaddr *sa);
 };
 
 #endif /* SERVER_H */

@@ -12,12 +12,12 @@
 
 #include <arpa/inet.h>
 
-#define PORT "3490" // the port client will be connecting to 
 
-#define MAXDATASIZE 100 // max number of bytes we can get at once 
+// TODO: make static constexpr  data 
+
 
 // get sockaddr, IPv4 or IPv6:
-void *get_in_addr(struct sockaddr *sa)
+void* Client::get_in_addr(struct sockaddr *sa)
 {
    if (sa->sa_family == AF_INET) {
       return &(((struct sockaddr_in*)sa)->sin_addr);
@@ -25,6 +25,7 @@ void *get_in_addr(struct sockaddr *sa)
 
    return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
+
 
 //TODO needs host as argument
 void Client::init_client ( const char* node)
@@ -100,23 +101,23 @@ void Client::close_socket ()
    close(sockfd);
 }
 
-int main(int argc, char *argv[])
-{
-   
-
-   Client client{};
-   struct addrinfo hints, *servinfo, *p;
-   const char* node="http://google.com";
-   client.init_client (node);
-   client.bind_socket ();
-
-   //send
-   client.send_message ( );
-   //recv
-   ResponseMessage message= client.receive_message ();
-	
-   //printf("client: received '%s'\n",buf);
-
-   return 0;
-}
+//int main(int argc, char *argv[])
+//{
+//   
+//
+//   Client client{};
+//   struct addrinfo hints, *servinfo, *p;
+//   const char* node="http://google.com";
+//   client.init_client (node);
+//   client.bind_socket ();
+//
+//   //send
+//   client.send_message ( );
+//   //recv
+//   ResponseMessage message= client.receive_message ();
+//	
+//   //printf("client: received '%s'\n",buf);
+//
+//   return 0;
+//}
 
