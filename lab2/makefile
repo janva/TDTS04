@@ -40,15 +40,15 @@ ASSEMBLER= -S
 
 #pattern rules instead
 %.o: %.cpp
-	$(CCC) $(CCFLAGS) -c $<
+	$(CCC) $(CCFLAGS) -g -c $<
 %: %.o
-	$(CCC) $(CCFLAGS) -o $@ $^
+	$(CCC) $(CCFLAGS) -g -o $@ $^
 
 proxyserver: proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
 proxyserver.o: proxyserver.cpp
 
-server: server.o RequestMessage.o RequestMessage.o
-server.o: server.cpp server.h
+server: server.o RequestMessage.o ResponseMessage.o 
+server.o: server.cpp server.h client.h
 
 client: client.o ResponseMessage.o RequestMessage.o
 client.o: client.cpp client.h 

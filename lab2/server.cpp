@@ -69,7 +69,6 @@ void Server::bind_socket ()
 	 perror("setsockopt");
 	 exit(1);
       }
-
       if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
 	 close(sockfd);
 	 perror("server: bind");
@@ -132,7 +131,9 @@ void Server::dummy_dumbo_change_me ()
       printf("server: got connection from %s\n", s);
       
       if (!fork()) { // this is the child process
+	 	
 	 close(sockfd); // child doesn't need the listener
+	 
 	 
 	 if ((numbytes = recv(new_fd, buf, MAXDATASIZE-1, 0)) == -1) {
 	    perror("recv");
@@ -140,10 +141,16 @@ void Server::dummy_dumbo_change_me ()
 	 }
 	 // TODO: will call forward on client.
 	 // client might instansiatetd here or will be reachable from
-	 //this class in some other manner 
-	 const string reqStr{buf};
+	 //this class in some other manner
+
+	 string reqStr{buf};
 	 RequestMessage req{buf};
-	 // TODO: simplest way in this case might change but makes the
+	 
+	 client = new Client{};
+	 client->setup(req.get_header("Host"));
+
+	 cout<< req.get_header("Host")<< endl;
+        // TODO: simplest way in this case might change but makes the
 	 // job for know
 	 ResponseMessage respMessage = client->forward (req);
 	
@@ -156,6 +163,17 @@ void Server::dummy_dumbo_change_me ()
       close(new_fd);  // parent doesn't need this
    }
 }
+
+void Server::run ()
+{
+   init ( );                
+   bind_socket ();          
+   listen_socket ();        
+   //change these                
+   kill_all_zombies ();     
+   dummy_dumbo_change_me ();
+}
+
 //int main(void)
 //{
 //   Server serv{};

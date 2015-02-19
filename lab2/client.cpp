@@ -1,5 +1,7 @@
 #include "client.h"
 #include "ResponseMessage.h"
+#include <string>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -9,7 +11,6 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-
 #include <arpa/inet.h>
 
 
@@ -35,40 +36,59 @@ void Client::init_client ( const char* node)
    memset(&hints, 0, sizeof hints);
    hints.ai_family = AF_UNSPEC;
    hints.ai_socktype = SOCK_STREAM;
-   //TODO not so good place tohave node 
-   if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
+   //TODO not so good place tohave node
+
+//   if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
+   if ((rv = getaddrinfo("www.ida.liu.se" , PORT,   &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
       exit (1);
       //return 1;
    }
+
+  
+   
 }
 
-ResponseMessage& Client::forward (RequestMessage&  reqMess)  const
+ResponseMessage Client::forward (RequestMessage&  reqMess) 
 {
-   printf ("Client::forward - under construction -");
-   
+   using std::cout;
+   using std::endl;
+   using std::string;
+   //send
+   char* ch=reqMess.to_cstr();
+   cout << ch <<std::endl;
+   send_message (reqMess.to_cstr());                          
+   //recv                                            
+   ResponseMessage message= receive_message ();
+   cout << message.get_status_line () <<std::endl;
+   return message;
+   //printf ("Client::forward - under construction -");
 }
 //TODO close fit with server version simplest solution parameters
 // or adapter or template pattern strategy
 void Client::bind_socket ()
 {
    addrinfo* p;
-    char s[INET6_ADDRSTRLEN];
+   char s[INET6_ADDRSTRLEN];
+   
    // loop through all the results and connect to the first we can
    for(p = servinfo; p != NULL; p = p->ai_next) {
+      
       if ((sockfd = socket(p->ai_family, p->ai_socktype,
 			   p->ai_protocol)) == -1) {
 	 perror("client: socket");
 	 continue;
       }
-		
+      
       if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
 	 close(sockfd);
 	 perror("client: connect");
 	 continue;
       }
+
       break;
    }
+   std::cout<< "-----------------------------2"<<std::endl;
    if (p == NULL) {
       fprintf(stderr, "client: failed to connect\n");
       exit (2);
@@ -94,11 +114,10 @@ ResponseMessage Client::receive_message ()
    return ResponseMessage(buf);
 }
 
-void Client::send_message ( )
+void Client::send_message (char* buf)
 {
    int bytessent;
-   char* buf ;
-   
+   std::cout <<"send_message"<<std::endl;
    if ((bytessent=send(sockfd, buf, strlen(buf), 0)) == -1)
       perror("send");
 }
@@ -107,6 +126,14 @@ void Client::close_socket ()
    close(sockfd);
 }
 
+
+
+void Client::setup (std::string host)
+{
+
+   init_client (host.c_str ());
+   bind_socket ();
+}
 //int main(int argc, char *argv[])
 //{
 //   
@@ -126,4 +153,5 @@ void Client::close_socket ()
 //
 //   return 0;
 //}
+
 

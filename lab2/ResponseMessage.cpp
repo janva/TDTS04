@@ -30,7 +30,7 @@ string ResponseMessage::get_status_line () const
 
 string  ResponseMessage::get_headers () const
 {
-   return "under construction-will eventually return string of all headers";
+    return "under construction-will eventually return string of all headers";  
 }
 string ResponseMessage::get_header (const string& field_name) const
 {
@@ -39,7 +39,7 @@ string ResponseMessage::get_header (const string& field_name) const
 
 string ResponseMessage::get_entity_body () const
 {
-   cout << "under construct" << endl;
+
    return entity_body_;
 }
 

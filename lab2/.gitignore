@@ -20,3 +20,4 @@
 # compiled code for this project to ignore
 client
 server
+proxyserver

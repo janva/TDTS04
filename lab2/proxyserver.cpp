@@ -5,17 +5,18 @@
 int main ()
 {
    
-   Server serv{new Client};
+   Server serv{};
+   serv.run();
    
-//   serv.init ( );
-//   serv.bind_socket ();
-//   serv.listen_socket ();
+// serv.init ( );
+// serv.bind_socket ();
+// serv.listen_socket ();
    //change these 
-  // serv.kill_all_zombies ();
-  // serv.dummy_dumbo_change_me ();
-  
- // s.setup ();
- // s.start ();
- // s.setclient ();   
- // Client c{};
+   // serv.kill_all_zombies ();
+   // serv.dummy_dumbo_change_me ();
+   
+   // s.setup ();
+   // s.start ();
+   // s.setclient ();   
+   // Client c{};
 }
