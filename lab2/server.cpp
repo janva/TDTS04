@@ -156,13 +156,17 @@ void Server::dummy_dumbo_change_me ()
 	 ResponseMessage respMessage = lucky_client.forward (req);
 	 std::cout << "forwarded..####################" << std::endl;
 	 //std::cout << req.get_request_line() << std::endl;
-	 const char* cmessage;
-	 cmessage = respMessage.to_cstr();
+	 char cmessage[1000];
+	 //cmessage = respMessage.to_cstr();
+	 respMessage.to_cstr(cmessage);
 	 
 	 //if (send(new_fd, "Hello, world!", 13, 0) == -1)
 	 std::cout << "server: sending back to browser" << std::endl;
 	 std::cout << "entity: " << respMessage.get_entity_body() << endl;
-	 if (send(new_fd, respMessage.to_cstr(),  strlen(cmessage), 0) == -1)
+	 std::cout << "cmessat: " << cmessage  << endl;
+	 std::cout << "entity_length: " << strlen(cmessage) << endl;
+	 //if (send(new_fd, (respMessage.to_cstr(),  strlen(cmessage), 0) == -1)
+	 if (send(new_fd, cmessage,  strlen(cmessage), 0) == -1)
 	    perror("send");
 	 std::cout << "server: Done" << std::endl;
 	 close(new_fd);

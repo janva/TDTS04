@@ -5,6 +5,8 @@
 #include<vector>
 #include<map>
 #include<sstream>
+#include "debug.h"
+#include <string.h>
 
 
 using std::string;
@@ -116,7 +118,7 @@ void ResponseMessage::init_(string response_message)
 //   cout <<header_fields_["Date"]<<endl;
 //   
 }
-const char* ResponseMessage::to_cstr()
+void  ResponseMessage::to_cstr(char* mess)
 {
    ostringstream message;
    // TODO: this line is the only that differs factor out
@@ -130,6 +132,8 @@ const char* ResponseMessage::to_cstr()
    //if(!(entity_body_.empty()) )
    message<<entity_body_<<"\0";
    cout << "const char* ResponseMessage::to_cstr ()" <<endl;
-   cout <<message.str();
-   return (message.str()).c_str();
+   //cout <<message.str();
+   //return (message.str()).c_str();
+   strcpy (mess ,((message.str()).c_str()));
+   cout << *mess <<endl;
 }
