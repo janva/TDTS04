@@ -27,7 +27,7 @@ public:
    void set_status_line (const std::string& status_line);
    void set_header (const std::string& field, const std::string& value);
    //const char* to_cstr();
-   void   to_cstr( char* mess);
+   std::string  to_str();
    virtual ~ResponseMessage();
 
 private:

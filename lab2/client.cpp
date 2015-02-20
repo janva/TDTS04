@@ -48,17 +48,19 @@ void Client::init_client ( const char* node)
 ResponseMessage Client::forward (RequestMessage&  reqMess) 
 {
    //send
-   const char* ch =reqMess.to_cstr();
-
-  // reqMess.to_cstr(ch);
-  
+   // const char* ch =reqMess.to_cstr();
+   //to 
+   std::string strmsg = reqMess.to_str();
+    char*  cmsg = new char[strmsg.length ()+1];    
+   strcpy (cmsg, strmsg.c_str());
    
    std::cout << "in client::forward:   send_message..." << std::endl;
    //send_message (reqMess.to_cstr());                          
-   send_message (ch);                          
+   send_message (cmsg);                          
    //recv                                            
    std::cout << "in client::forward:   receive_message()..." << std::endl;
    ResponseMessage message{receive_message ()};
+   delete[]cmsg;
    return message;
    //printf ("Client::forward - under construction -");
 }

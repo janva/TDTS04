@@ -118,7 +118,7 @@ void ResponseMessage::init_(string response_message)
 //   cout <<header_fields_["Date"]<<endl;
 //   
 }
-void  ResponseMessage::to_cstr(char* mess)
+std::string ResponseMessage::to_str()
 {
    ostringstream message;
    // TODO: this line is the only that differs factor out
@@ -133,7 +133,7 @@ void  ResponseMessage::to_cstr(char* mess)
    message<<entity_body_<<"\0";
    cout << "const char* ResponseMessage::to_cstr ()" <<endl;
    //cout <<message.str();
-   //return (message.str()).c_str();
-   strcpy (mess ,((message.str()).c_str()));
-   cout << *mess <<endl;
+   //strcpy (mess ,((message.str()).c_str()));
+   //cout << *mess <<endl;
+   return message.str();
 }
