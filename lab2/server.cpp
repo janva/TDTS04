@@ -156,7 +156,7 @@ void Server::dummy_dumbo_change_me ()
 	 ResponseMessage respMessage = lucky_client.forward (req);
 	 std::cout << "forwarded..####################" << std::endl;
 	 //std::cout << req.get_request_line() << std::endl;
-	 char cmessage[1000];
+	 char cmessage[50000];
 	 //cmessage = respMessage.to_cstr();
 	 respMessage.to_cstr(cmessage);
 	 

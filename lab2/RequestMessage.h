@@ -19,7 +19,8 @@ public:
 
    void set_request_line (const std::string& req_line);
    void set_header (const std::string& field, const std::string& value);
-   void  to_cstr(char*);
+   //void  to_cstr(char*);
+    const char*  to_cstr ();
    virtual ~RequestMessage();
    // TODO: fixme move to private parts
 private:
