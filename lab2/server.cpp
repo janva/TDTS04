@@ -146,19 +146,25 @@ void Server::dummy_dumbo_change_me ()
 	 string reqStr{buf};
 	 RequestMessage req{buf};
 	 
-	 client = new Client{};
-	 client->setup(req.get_header("Host"));
+	 Client lucky_client{};
+	 std::cout << "client::setup(request::get_header(string))" << std::endl;
+	 lucky_client.setup(req.get_header("Host"));
 	 
 	 // TODO: simplest way in this case might change but makes the
 	 // job for now
-	 ResponseMessage respMessage = client->forward (req);
+	 std::cout << "client::forward" << std::endl;
+	 ResponseMessage respMessage = lucky_client.forward (req);
+	 std::cout << "forwarded..####################" << std::endl;
 	 //std::cout << req.get_request_line() << std::endl;
 	 const char* cmessage;
 	 cmessage = respMessage.to_cstr();
 	 
 	 //if (send(new_fd, "Hello, world!", 13, 0) == -1)
+	 std::cout << "server: sending back to browser" << std::endl;
+	 std::cout << "entity: " << respMessage.get_entity_body() << endl;
 	 if (send(new_fd, respMessage.to_cstr(),  strlen(cmessage), 0) == -1)
 	    perror("send");
+	 std::cout << "server: Done" << std::endl;
 	 close(new_fd);
 	 exit(0);
       }

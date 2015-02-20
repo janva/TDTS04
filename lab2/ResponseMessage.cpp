@@ -81,16 +81,36 @@ void ResponseMessage::init_(string response_message)
       auto  idx =  (*it).find (':');
       if(idx == string::npos)
       {
-	 break;
+	  entity_body_.clear();
+	  for(auto it2=it+1; it2!=lines.end(); ++it2)
+	      entity_body_+= *it2+"\n";
+	  break;
       }
 
       string field{(*it).begin(),   (*it).begin()+idx};
       string value {it->begin()+idx+2, it->end ()-1};
       header_fields_[field] =value;
+      
    }
 
    //last part is entity line
-    entity_body_=lines[lines.size ()-1];
+   std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
+   std::cout << "lines.size(): " << lines.size() << std::endl;
+   int index = 0;
+
+   for (auto i : lines){
+       int value;
+       std::cout << "lines@" << index <<"(" << i.size() << ")" << ": " << i << std::endl;
+       for (auto b : i){
+	   value = b;
+	   cout << value << " | ";
+       }
+       std::cout << std::endl << std::endl;
+	   
+       ++index;
+   }
+
+   //entity_body_=lines[lines.size ()-1];
    //  cout <<entity_body_ <<endl;
 //   cout <<header_fields_.size ()<<endl;
 //   cout <<header_fields_["Date"]<<endl;

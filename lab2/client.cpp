@@ -38,7 +38,7 @@ void Client::init_client ( const char* node)
    //TODO not so good place tohave node
 
 //   if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
-   if ((rv = getaddrinfo("www.ida.liu.se" , PORT,   &hints, &servinfo)) != 0) {
+   if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
       exit (1);
       //return 1;
@@ -49,8 +49,10 @@ ResponseMessage Client::forward (RequestMessage&  reqMess)
 {
    //send
    const char* ch=reqMess.to_cstr();
+   std::cout << "in client::forward:   send_message..." << std::endl;
    send_message (reqMess.to_cstr());                          
    //recv                                            
+   std::cout << "in client::forward:   receive_message()..." << std::endl;
    ResponseMessage message{receive_message ()};
    return message;
    //printf ("Client::forward - under construction -");
@@ -96,12 +98,14 @@ ResponseMessage Client::receive_message ()
 {
    int  numbytes;  
    char buf[MAXDATASIZE];
+   std::cout << "            in client::recieve_message:   recv()..." << std::endl;
    if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
       perror("recv");
       exit(1);
    }
+   std::cout << "            in client::recieve_message:   recv() completed..." << std::endl;
    buf[numbytes] = '\0';
-      std::cout << "-----------------------"<<std::endl;
+   std::cout << "-----------------------"<<std::endl;
    std::cout << buf<<std::endl;
    std::cout << "-----------------------"<<std::endl;
    return ResponseMessage(buf);
@@ -110,6 +114,7 @@ ResponseMessage Client::receive_message ()
 void Client::send_message (const char* buf)
 {
    int bytessent;
+  
    if ((bytessent=send(sockfd, buf, strlen(buf), 0)) == -1)
       perror("send");
 }
