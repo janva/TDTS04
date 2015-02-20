@@ -148,14 +148,16 @@ void Server::dummy_dumbo_change_me ()
 	 
 	 client = new Client{};
 	 client->setup(req.get_header("Host"));
-
-	 cout<< req.get_header("Host")<< endl;
-        // TODO: simplest way in this case might change but makes the
-	 // job for know
+	 
+	 // TODO: simplest way in this case might change but makes the
+	 // job for now
 	 ResponseMessage respMessage = client->forward (req);
-	
-	 std::cout << req.get_request_line() << std::endl;
-	 if (send(new_fd, "Hello, world!", 13, 0) == -1)
+	 //std::cout << req.get_request_line() << std::endl;
+	 const char* cmessage;
+	 cmessage = respMessage.to_cstr();
+	 
+	 //if (send(new_fd, "Hello, world!", 13, 0) == -1)
+	 if (send(new_fd, respMessage.to_cstr(),  strlen(cmessage), 0) == -1)
 	    perror("send");
 	 close(new_fd);
 	 exit(0);

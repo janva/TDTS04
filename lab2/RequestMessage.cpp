@@ -4,7 +4,7 @@
 #include<sstream>
 #include<vector>
 #include<map>
-
+#include <sstream>
 
 using std::string;
 using std::vector;
@@ -12,6 +12,7 @@ using std::cout;
 using std::endl;
 using std::istringstream;
 using std::map;
+using std::ostringstream;
 
 
 RequestMessage::RequestMessage()
@@ -27,7 +28,7 @@ string RequestMessage::get_request_line () const
 {
    return request_line_;
 }
-
+//@deprecated
 string  RequestMessage::get_headers () const
 {
    return "under construction-will eventually return string of all headers";
@@ -40,7 +41,6 @@ string RequestMessage::get_header (const string& field_name) const
 
 string RequestMessage::get_entity_body () const
 {
-   cout << "under construct" << endl;
    return entity_body_;
 }
 
@@ -95,7 +95,21 @@ void RequestMessage::init_(string request)
 //   
 }
 
-char* RequestMessage::to_cstr ()
+const char* RequestMessage::to_cstr ()
 {
-   return "GET /tutorials/other/top-20-mysql-best-practices/ HTTP/1.1\r\nHost: net.tutsplus.com\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5 (.NET CLR 3.5.30729)\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-us,en;q=0.5\r\nAccept-Encoding: gzip,deflate\r\nAccept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\nKeep-Alive: 300\r\nConnection: keep-alive\r\nCookie: PHPSESSID=r2t5uvjq435r4q7ib3vtdjq120\r\nPragma: no-cache\r\nCache-Control: no-cache\r\n\r\n";
+   ostringstream message;
+   message << (get_request_line())<<"\r\n";
+   for (auto header : header_fields_)
+   {
+      message <<header.first<<": " <<header.second<<"\r\n";
+   }
+   message<<"\r\n";
+   if(!(entity_body_.empty()) )
+      message<<entity_body_;
+   cout << "const char* RequestMessage::to_cstr ()" <<endl;
+   cout <<message.str();
+   return (message.str()).c_str(); 
+      
+      
+      //  return "GET /tutorials/other/top-20-mysql-best-practices/ HTTP/1.1\r\nHost: net.tutsplus.com\r\nUser-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5 (.NET CLR 3.5.30729)\r\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-us,en;q=0.5\r\nAccept-Encoding: gzip,deflate\r\nAccept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\nKeep-Alive: 300\r\nConnection: keep-alive\r\nCookie: PHPSESSID=r2t5uvjq435r4q7ib3vtdjq120\r\nPragma: no-cache\r\nCache-Control: no-cache\r\n\r\n";
 }

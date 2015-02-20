@@ -1,5 +1,9 @@
 #include "server.h"
 #include "client.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 //use arguements
 int main ()
@@ -7,6 +11,7 @@ int main ()
    
    Server serv{};
    serv.run();
+   cout << "server started" << endl;
    
 // serv.init ( );
 // serv.bind_socket ();

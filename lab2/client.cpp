@@ -14,7 +14,6 @@
 #include <arpa/inet.h>
 
 
-// TODO: make static constexpr  data 
 // get sockaddr, IPv4 or IPv6:
 void* Client::get_in_addr(struct sockaddr *sa)
 {
@@ -26,7 +25,7 @@ void* Client::get_in_addr(struct sockaddr *sa)
 }
 
 
-//TODO needs host as argument
+
 //TODO close fit with server.cpp version pattaren?
 void Client::init_client ( const char* node)
 {
@@ -44,23 +43,15 @@ void Client::init_client ( const char* node)
       exit (1);
       //return 1;
    }
-
-  
-   
 }
 
 ResponseMessage Client::forward (RequestMessage&  reqMess) 
 {
-   using std::cout;
-   using std::endl;
-   using std::string;
    //send
-   char* ch=reqMess.to_cstr();
-   cout << ch <<std::endl;
+   const char* ch=reqMess.to_cstr();
    send_message (reqMess.to_cstr());                          
    //recv                                            
-   ResponseMessage message= receive_message ();
-   cout << message.get_status_line () <<std::endl;
+   ResponseMessage message{receive_message ()};
    return message;
    //printf ("Client::forward - under construction -");
 }
@@ -88,7 +79,6 @@ void Client::bind_socket ()
 
       break;
    }
-   std::cout<< "-----------------------------2"<<std::endl;
    if (p == NULL) {
       fprintf(stderr, "client: failed to connect\n");
       exit (2);
@@ -111,13 +101,15 @@ ResponseMessage Client::receive_message ()
       exit(1);
    }
    buf[numbytes] = '\0';
+      std::cout << "-----------------------"<<std::endl;
+   std::cout << buf<<std::endl;
+   std::cout << "-----------------------"<<std::endl;
    return ResponseMessage(buf);
 }
 
-void Client::send_message (char* buf)
+void Client::send_message (const char* buf)
 {
    int bytessent;
-   std::cout <<"send_message"<<std::endl;
    if ((bytessent=send(sockfd, buf, strlen(buf), 0)) == -1)
       perror("send");
 }

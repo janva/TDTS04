@@ -26,6 +26,7 @@ public:
 
    void set_status_line (const std::string& status_line);
    void set_header (const std::string& field, const std::string& value);
+   const char* to_cstr();
    virtual ~ResponseMessage();
 
 private:
@@ -34,6 +35,5 @@ private:
    // TODO: make this pointer typ maybe unique pointer to make pointer handling simple
    std::map<const std::string, std::string> header_fields_;
    std::string entity_body_;
-   
 };
 #endif /* RESPONSEMESSAGE_H */
