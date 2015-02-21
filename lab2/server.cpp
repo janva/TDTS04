@@ -128,9 +128,8 @@ void Server::dummy_dumbo_change_me ()
       inet_ntop(their_addr.ss_family,
 		get_in_addr((struct sockaddr *)&their_addr),
 		s, sizeof s);
-//      PRINT_DEBUG(s);
        printf("server: got connection from %s\n", s);
-      
+       PRINT_DEBUG(PORT);
       if (!fork()) { // this is the child process
 	 	
 	 close(sockfd); // child doesn't need the listener
@@ -145,11 +144,13 @@ void Server::dummy_dumbo_change_me ()
 	 //this class in some other manner
 
 	 //string reqStr{buf};
+	 PRINT_DEBUG(buf);
 	 RequestMessage reqMsg{buf};
-	 //PRINT_DEBUG(reqMsg.to_str().c_str());
+	 PRINT_DEBUG(reqMsg.to_str().c_str());
 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
+	 
 
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
 	 std::string respMsgCppStr = respMessage.to_str();

@@ -34,9 +34,23 @@ string ResponseMessage::get_status_line () const
    return status_line_;
 }
 
-string ResponseMessage::get_header (const string& field_name) const
+//string ResponseMessage::get_header (const string& field_name) const
+//use typedefs
+string ResponseMessage::get_header ( const string& field_name) const
 {
-   return  header_fields_.at(field_name);
+   // TODO: create own iterator type for ResponseMessage
+   std::map<const string,string>::const_iterator it;
+    it= header_fields_.find (field_name);
+    return   (it != header_fields_.end()  ? it->second: "0");
+   //try {
+   //  return  header_fields_.at(field_name);
+   //}
+   //catch (const std::out_of_range& e)
+   //{
+   //   std::cerr << "inside ResponseMessage::get_header (const string& field_name): "
+   //		<< e.what() << '\n';
+   //   throw;
+   //}
 }
 
 string ResponseMessage::get_entity_body () const

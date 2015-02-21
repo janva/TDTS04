@@ -32,13 +32,12 @@ void Client::init_client ( const char* node)
 {
    struct addrinfo hints;
    int rv;
-   PRINT_DEBUG(node);
+   // PRINT_DEBUG(node);
    memset(&hints, 0, sizeof hints);
    hints.ai_family = AF_UNSPEC;
    hints.ai_socktype = SOCK_STREAM;
    //TODO not so good place tohave node
-
-//   if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
+   // if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
    if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
       exit (1);
@@ -48,7 +47,7 @@ void Client::init_client ( const char* node)
 
 ResponseMessage Client::forward (RequestMessage&  reqMsg) 
 {
-   reqMsg.set_header("Connection","Close");
+   //reqMsg.set_header("Connection","Close");
    std::string reqMsgCppStr = reqMsg.to_str();
     char*  reqMsgCStr = new char[reqMsgCppStr.length ()+1];    
    strcpy (reqMsgCStr, reqMsgCppStr.c_str());
@@ -113,7 +112,11 @@ ResponseMessage Client::receive_message ()
 
    unsigned int totalReceivedBytes=numbytes;
    ResponseMessage tempMess{buf};
+   PRINT_DEBUG(numbytes);
+   //TODO might fail if we don't get this content
    unsigned int expectedSize =std::stoi(tempMess.get_header ("Content-Length"));
+   //for testing stackoverflow
+  //unsigned int expectedSize =148;
 
    std::string message{buf};
    

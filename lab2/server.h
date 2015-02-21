@@ -1,11 +1,12 @@
 #ifndef SERVER_H
 #define SERVER_H
 #include "client.h"
+
 class Server
 {
 public:
    //inlined by default when defined here
-   Server(){}
+   Server(const char*  port="3490"): PORT{port}{}
    //TODO think thtrough what to pass in and waht should be members
    void init ();
    void bind_socket ();
