@@ -13,7 +13,6 @@ public:
    RequestMessage(const std::string& request);
 
    std::string get_request_line () const;
-   std::string get_headers () const;
    std::string get_header (const std::string& field_name) const;
    std::string get_entity_body () const;
 

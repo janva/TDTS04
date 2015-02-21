@@ -20,7 +20,6 @@ public:
    ResponseMessage(const std::string& response_message);
 
    std::string get_status_line () const;
-   std::string get_headers () const;
    std::string get_header (const std::string& field_name) const;
    std::string get_entity_body () const;
 

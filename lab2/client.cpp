@@ -12,6 +12,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include "debug.h"
 
 
 // get sockaddr, IPv4 or IPv6:
@@ -31,7 +32,7 @@ void Client::init_client ( const char* node)
 {
    struct addrinfo hints;
    int rv;
-   
+   PRINT_DEBUG(node);
    memset(&hints, 0, sizeof hints);
    hints.ai_family = AF_UNSPEC;
    hints.ai_socktype = SOCK_STREAM;
@@ -45,24 +46,20 @@ void Client::init_client ( const char* node)
    }
 }
 
-ResponseMessage Client::forward (RequestMessage&  reqMess) 
+ResponseMessage Client::forward (RequestMessage&  reqMsg) 
 {
-   //send
-   // const char* ch =reqMess.to_cstr();
-   //to 
-   std::string strmsg = reqMess.to_str();
-    char*  cmsg = new char[strmsg.length ()+1];    
-   strcpy (cmsg, strmsg.c_str());
+   reqMsg.set_header("Connection","Close");
+   std::string reqMsgCppStr = reqMsg.to_str();
+    char*  reqMsgCStr = new char[reqMsgCppStr.length ()+1];    
+   strcpy (reqMsgCStr, reqMsgCppStr.c_str());
+   //PRINT_DEBUG(reqMsgCStr);
+   send_message (reqMsgCStr);
    
-   std::cout << "in client::forward:   send_message..." << std::endl;
-   //send_message (reqMess.to_cstr());                          
-   send_message (cmsg);                          
    //recv                                            
-   std::cout << "in client::forward:   receive_message()..." << std::endl;
-   ResponseMessage message{receive_message ()};
-   delete[]cmsg;
-   return message;
-   //printf ("Client::forward - under construction -");
+   ResponseMessage respMsg=receive_message ();
+   delete[]reqMsgCStr;
+   //PRINT_DEBUG(respMsg.to_str());
+   return respMsg;
 }
 //TODO close fit with server version simplest solution parameters
 // or adapter or template pattern strategy
@@ -93,29 +90,49 @@ void Client::bind_socket ()
       exit (2);
       //return 2;
    }
-   //TODO consider where place this
    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
 	     s, sizeof s);
    printf("client: connecting to %s\n", s);
-   //TODO maybe move inside bindsocket
    freeaddrinfo(servinfo); // all done with this structure
 }
 
+//unsigned int getsize ()
+//{
+//
+//}
+   
 ResponseMessage Client::receive_message ()
 {
-   int  numbytes;  
+   int  numbytes=0;     
    char buf[MAXDATASIZE];
-   std::cout << "            in client::recieve_message:   recv()..." << std::endl;
+   
    if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-      perror("recv");
-      exit(1);
+	 perror("recv");
+	 exit(1);
    }
-   std::cout << "            in client::recieve_message:   recv() completed..." << std::endl;
-   buf[numbytes] = '\0';
-   std::cout << "-----------------------"<<std::endl;
-   std::cout << buf<<std::endl;
-   std::cout << "-----------------------"<<std::endl;
-   return ResponseMessage(buf);
+
+   unsigned int totalReceivedBytes=numbytes;
+   ResponseMessage tempMess{buf};
+   unsigned int expectedSize =std::stoi(tempMess.get_header ("Content-Length"));
+
+   std::string message{buf};
+   
+   while(totalReceivedBytes < expectedSize)
+   {
+      if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
+	 perror("recv");
+	 exit(1);
+      }
+      totalReceivedBytes +=  numbytes;
+      buf[numbytes] = '\0';
+      message += buf;
+   }
+
+   PRINT_DEBUG(message);
+   PRINT_DEBUG(numbytes);
+
+   // TODO: hmm by copy so should not be problem?
+   return ResponseMessage{message};
 }
 
 void Client::send_message (const char* buf)
@@ -125,6 +142,7 @@ void Client::send_message (const char* buf)
    if ((bytessent=send(sockfd, buf, strlen(buf), 0)) == -1)
       perror("send");
 }
+
 void Client::close_socket ()
 {
    close(sockfd);

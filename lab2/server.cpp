@@ -13,6 +13,7 @@
 #include <signal.h>
 #include <iostream>
 #include "RequestMessage.h"
+#include "debug.h"
 
 
 using namespace std;
@@ -127,8 +128,8 @@ void Server::dummy_dumbo_change_me ()
       inet_ntop(their_addr.ss_family,
 		get_in_addr((struct sockaddr *)&their_addr),
 		s, sizeof s);
-      
-      printf("server: got connection from %s\n", s);
+//      PRINT_DEBUG(s);
+       printf("server: got connection from %s\n", s);
       
       if (!fork()) { // this is the child process
 	 	
@@ -140,37 +141,28 @@ void Server::dummy_dumbo_change_me ()
 	    exit(1);
 	 }
 	 // TODO: will call forward on client.
-	 // client might instansiatetd here or will be reachable from
+	 // client might instansiatetd here orwill be reachable from
 	 //this class in some other manner
 
-	 string reqStr{buf};
-	 RequestMessage req{buf};
-	 
+	 //string reqStr{buf};
+	 RequestMessage reqMsg{buf};
+	 //PRINT_DEBUG(reqMsg.to_str().c_str());
+
 	 Client lucky_client{};
-	 std::cout << "client::setup(request::get_header(string))" << std::endl;
-	 lucky_client.setup(req.get_header("Host"));
+	 lucky_client.setup(reqMsg.get_header("Host"));
+
+	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
+	 std::string respMsgCppStr = respMessage.to_str();
+	 //PRINT_DEBUG(respMessage.to_str().c_str());
 	 
-	 // TODO: simplest way in this case might change but makes the
-	 // job for now
-	 std::cout << "client::forward" << std::endl;
-	 ResponseMessage respMessage = lucky_client.forward (req);
-	 std::cout << "forwarded..####################" << std::endl;
-	 //std::cout << req.get_request_line() << std::endl;
+	 char* reqMsgCStr= new char[respMsgCppStr.length()+1];
+	 strcpy (reqMsgCStr,respMsgCppStr.c_str());
 	 
-	 //cmessage = respMessage.to_cstr();
-	 std::string rspMsg = respMessage.to_str();
-	 char* cmessage= new char[rspMsg.length()+1];
-	 strcpy (cmessage,rspMsg.c_str());
 	 //if (send(new_fd, "Hello, world!", 13, 0) == -1)
-	 std::cout << "server: sending back to browser" << std::endl;
-	 std::cout << "entity: " << respMessage.get_entity_body() << endl;
-	 std::cout << "cmessat: " << cmessage  << endl;
-	 std::cout << "entity_length: " << strlen(cmessage) << endl;
-	 //if (send(new_fd, (respMessage.to_cstr(),  strlen(cmessage), 0) == -1)
-	 if (send(new_fd, cmessage,  strlen(cmessage), 0) == -1)
+	 //if (send(new_fd, (respMessage.to_cstr(),  strlen(reqMsgCStr), 0) == -1)
+	 if (send(new_fd, reqMsgCStr,  strlen(reqMsgCStr), 0) == -1)
 	    perror("send");
-	 std::cout << "server: Done" << std::endl;
-	 delete[]cmessage;
+	 delete[]reqMsgCStr;
 	 close(new_fd);
 	 exit(0);
       }

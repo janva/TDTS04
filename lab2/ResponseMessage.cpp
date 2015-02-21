@@ -7,6 +7,7 @@
 #include<sstream>
 #include "debug.h"
 #include <string.h>
+#include "debug.h"
 
 
 using std::string;
@@ -26,15 +27,11 @@ ResponseMessage::ResponseMessage(const string& response)
    :  status_line_ (""),header_fields_(),entity_body_ ("Some content will go here")
 {
    init_ (response);
+ 
 }
 string ResponseMessage::get_status_line () const
 {
    return status_line_;
-}
-//@deprecated
-string  ResponseMessage::get_headers () const
-{
-    return "under construction-will eventually return string of all headers";  
 }
 
 string ResponseMessage::get_header (const string& field_name) const
@@ -85,10 +82,10 @@ void ResponseMessage::init_(string response_message)
       {
 	  entity_body_.clear();
 	  for(auto it2=it+1; it2!=lines.end(); ++it2)
-	      entity_body_+= *it2+"\n";
+	     entity_body_+= *it2; //+"\n";
 	  break;
       }
-
+      
       string field{(*it).begin(),   (*it).begin()+idx};
       string value {it->begin()+idx+2, it->end ()-1};
       header_fields_[field] =value;
@@ -96,21 +93,21 @@ void ResponseMessage::init_(string response_message)
    }
 
    //last part is entity line
-   std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
-   std::cout << "lines.size(): " << lines.size() << std::endl;
-   int index = 0;
-
-   for (auto i : lines){
-       int value;
-       std::cout << "lines@" << index <<"(" << i.size() << ")" << ": " << i << std::endl;
-       for (auto b : i){
-	   value = b;
-	   cout << value << " | ";
-       }
-       std::cout << std::endl << std::endl;
-	   
-       ++index;
-   }
+//   std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
+//   std::cout << "lines.size(): " << lines.size() << std::endl;
+//   int index = 0;
+//
+//   for (auto i : lines){
+//       int value;
+//       std::cout << "lines@" << index <<"(" << i.size() << ")" << ": " << i << std::endl;
+//       for (auto b : i){
+//	   value = b;
+//	   cout << value << " | ";
+//       }
+//       std::cout << std::endl << std::endl;
+//	   
+//       ++index;
+//   }
 
    //entity_body_=lines[lines.size ()-1];
    //  cout <<entity_body_ <<endl;
@@ -129,11 +126,8 @@ std::string ResponseMessage::to_str()
       message <<header.first<<": " <<header.second<<"\r\n";
    }
    message<<"\r\n";
-   //if(!(entity_body_.empty()) )
-   message<<entity_body_<<"\0";
-   cout << "const char* ResponseMessage::to_cstr ()" <<endl;
-   //cout <<message.str();
+   if(!(entity_body_.empty()) )
+      message<<entity_body_;
    //strcpy (mess ,((message.str()).c_str()));
-   //cout << *mess <<endl;
    return message.str();
 }

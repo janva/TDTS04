@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#define P(EXPR) std::cout << "[@Line: "<<__LINE__<<"] "<< #EXPR <<" : " << EXPR << std::endl;
+#define PRINT_DEBUG(EXPR)  std::cout <<"------------------------------"<<std::endl<< __FILE__<<"[@Line:" <<__LINE__<<"]" << #EXPR <<" : "<<std::endl << EXPR << std::endl <<"-----------------------------------"<<std::endl;
 
 
 #endif

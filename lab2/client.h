@@ -20,7 +20,7 @@ private:
    int sockfd;
    struct addrinfo *servinfo;
    const char* PORT {"80"};
-   static constexpr unsigned int MAXDATASIZE {1024};
+   static constexpr unsigned int MAXDATASIZE {4096};
    // TODO: tempfix
    void* get_in_addr(struct sockaddr *sa);
 };

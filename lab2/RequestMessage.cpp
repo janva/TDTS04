@@ -28,11 +28,6 @@ string RequestMessage::get_request_line () const
 {
    return request_line_;
 }
-//@deprecated
-string  RequestMessage::get_headers () const
-{
-   return "under construction-will eventually return string of all headers";
-}
 
 string RequestMessage::get_header (const string& field_name) const
 {
@@ -106,8 +101,8 @@ std::string RequestMessage::to_str ()
    message<<"\r\n";
    if(!(entity_body_.empty()) )
       message<<entity_body_;
-   cout << "const char* RequestMessage::to_cstr ()" <<endl;
-   cout <<message.str();
+  // cout << "const char* RequestMessage::to_cstr ()" <<endl;
+  // cout <<message.str();
    return message.str();
    //char* from=(message.str()).c_str();
    // strcpy (mess,from);
