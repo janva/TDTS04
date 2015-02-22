@@ -56,3 +56,9 @@ client.o: client.cpp client.h
 RequestMessage.o: RequestMessage.cpp RequestMessage.h
 ResponseMessage.o: ResponseMessage.cpp ResponseMessage.h
 
+ContentValidator: ContentValidator.o
+ContentValidator.o: ContentValidator.cpp
+
+.PHONY: clean
+clean:
+	\rm *.o 
