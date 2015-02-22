@@ -37,28 +37,32 @@ CCFLAGS += -std=c++11 -Wall -Wextra -pedantic
 DEBUG = -g
 LIBS =
 ASSEMBLER= -S
-
+OBJS= proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
+BINS=  proxyserver
 #pattern rules instead
 %.o: %.cpp
-	$(CCC) $(CCFLAGS) -g -c $<
+	$(CCC) $(CCFLAGS)  -c $<
 %: %.o
-	$(CCC) $(CCFLAGS) -g -o $@ $^
+	$(CCC) $(CCFLAGS)  -o $@ $^
 
 proxyserver: proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
 proxyserver.o: proxyserver.cpp
 
-server: server.o RequestMessage.o ResponseMessage.o 
+#server: server.o RequestMessage.o ResponseMessage.o 
 server.o: server.cpp server.h client.h
 
-client: client.o ResponseMessage.o RequestMessage.o
+#client: client.o ResponseMessage.o RequestMessage.o
 client.o: client.cpp client.h 
 
 RequestMessage.o: RequestMessage.cpp RequestMessage.h
+
 ResponseMessage.o: ResponseMessage.cpp ResponseMessage.h
 
-ContentValidator: ContentValidator.o
-ContentValidator.o: ContentValidator.cpp
+ContentValidator.o: ContentValidator.cpp ContentValidator.h
 
 .PHONY: clean
 clean:
-	\rm *.o 
+	@ \rm $(OBJ) $(BINS)
+.PHONY:zap
+zap: clean
+	@  \rm *~
