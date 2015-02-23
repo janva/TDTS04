@@ -18,7 +18,8 @@
 // get sockaddr, IPv4 or IPv6:
 void* Client::get_in_addr(struct sockaddr *sa)
 {
-   if (sa->sa_family == AF_INET) {
+   if (sa->sa_family == AF_INET)
+   {
       return &(((struct sockaddr_in*)sa)->sin_addr);
    }
 
@@ -54,7 +55,7 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
    //PRINT_DEBUG(reqMsgCStr);
    send_message (reqMsgCStr);
    
-   //recv                                            
+   //recv
    ResponseMessage respMsg=receive_message ();
    delete[]reqMsgCStr;
    //PRINT_DEBUG(respMsg.to_str());
@@ -134,6 +135,7 @@ ResponseMessage Client::receive_message ()
    PRINT_DEBUG(message);
    PRINT_DEBUG(numbytes);
 
+   
    // TODO: hmm by copy so should not be problem?
    return ResponseMessage{message};
 }

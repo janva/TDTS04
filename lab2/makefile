@@ -24,7 +24,7 @@
 #	$(CC) $(CFLAGS) $? $(LDFLAGS) -o $@
 #
 # use pattern rules instead of suffix rules
-# %.o: %.cpp
+#c# %.o: %.cpp
 #	$(CCC) $(CCFLAGS) -c $<
 # %: %.o
 #	$(CCC) $(CCFLAGS) -o $@ $^

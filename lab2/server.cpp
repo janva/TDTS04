@@ -150,12 +150,15 @@ void Server::dummy_dumbo_change_me ()
 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
-	 
-
+	 //TODO remove me 
+	 char* reqMsgCStr;
+	 while(true)
+	 {
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
 	 std::string respMsgCppStr = respMessage.to_str();
 	 //PRINT_DEBUG(respMessage.to_str().c_str());
-	 
+
+	 //TODO ändra till response
 	 char* reqMsgCStr= new char[respMsgCppStr.length()+1];
 	 strcpy (reqMsgCStr,respMsgCppStr.c_str());
 	 
@@ -163,6 +166,7 @@ void Server::dummy_dumbo_change_me ()
 	 //if (send(new_fd, (respMessage.to_cstr(),  strlen(reqMsgCStr), 0) == -1)
 	 if (send(new_fd, reqMsgCStr,  strlen(reqMsgCStr), 0) == -1)
 	    perror("send");
+	 }
 	 delete[]reqMsgCStr;
 	 close(new_fd);
 	 exit(0);
