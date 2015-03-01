@@ -129,7 +129,7 @@ void Server::dummy_dumbo_change_me ()
 		get_in_addr((struct sockaddr *)&their_addr),
 		s, sizeof s);
        printf("server: got connection from %s\n", s);
-       PRINT_DEBUG(PORT);
+       // PRINT_DEBUG(PORT);
       if (!fork()) { // this is the child process
 	 	
 	 close(sockfd); // child doesn't need the listener
@@ -144,14 +144,14 @@ void Server::dummy_dumbo_change_me ()
 	 //this class in some other manner
 
 	 //string reqStr{buf};
-	 PRINT_DEBUG(buf);
+	 //PRINT_DEBUG(buf);
 	 RequestMessage reqMsg{buf};
-	 PRINT_DEBUG(reqMsg.to_str().c_str());
+	 //PRINT_DEBUG(reqMsg.to_str().c_str());
 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
 	 //TODO remove me 
-	 char* reqMsgCStr;
+	 char* respMsgCStr;
 	 while(true)
 	 {
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
@@ -159,15 +159,22 @@ void Server::dummy_dumbo_change_me ()
 	 //PRINT_DEBUG(respMessage.to_str().c_str());
 
 	 //TODO ändra till response
-	 char* reqMsgCStr= new char[respMsgCppStr.length()+1];
-	 strcpy (reqMsgCStr,respMsgCppStr.c_str());
+	 //char* respMsgCStr= new char[respMsgCppStr.length()+1];
+
+
+	 //respMsgCStr= new char[respMsgCppStr.length()+1];
+	 //strcpy (respMsgCStr,respMsgCppStr.c_str());
+	 
+	 respMsgCStr= new char[respMessage.get_raw_size()];
+	 memcpy (respMsgCStr, respMessage.get_raw(), respMessage.get_raw_size());
 	 
 	 //if (send(new_fd, "Hello, world!", 13, 0) == -1)
-	 //if (send(new_fd, (respMessage.to_cstr(),  strlen(reqMsgCStr), 0) == -1)
-	 if (send(new_fd, reqMsgCStr,  strlen(reqMsgCStr), 0) == -1)
+	 //if (send(new_fd, (respMessage.to_cstr(),  strlen(respMsgCStr), 0) == -1)
+	 //if (send(new_fd, respMsgCStr,  strlen(respMsgCStr), 0) == -1)
+	 if (send(new_fd, respMsgCStr,  respMessage.get_raw_size(), 0) == -1)
 	    perror("send");
 	 }
-	 delete[]reqMsgCStr;
+	 delete[]respMsgCStr;
 	 close(new_fd);
 	 exit(0);
       }

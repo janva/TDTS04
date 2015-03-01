@@ -1,13 +1,13 @@
 #include"ResponseMessage.h"
 #include<string>
+#include<string.h>
 #include<iostream>
 #include<sstream>
 #include<vector>
 #include<map>
 #include<sstream>
 #include "debug.h"
-#include <string.h>
-#include "debug.h"
+#include <algorithm>
 
 
 using std::string;
@@ -17,12 +17,17 @@ using std::endl;
 using std::istringstream;
 using std::map;
 using std::ostringstream;
+using std::find;
 
 
 ResponseMessage::ResponseMessage()
    :  status_line_ (""),header_fields_(),entity_body_ ("Some content will go here")
 {}
 
+ResponseMessage::ResponseMessage(const std::vector<char>& response)
+{
+   
+}
 ResponseMessage::ResponseMessage(const string& response)
    :  status_line_ (""),header_fields_(),entity_body_ ("Some content will go here")
 {
@@ -65,8 +70,57 @@ ResponseMessage::~ResponseMessage()
    
 }
 
+//void ResponseMessage::set_entity_2_(char* message, int start_of_entity,
+// 				    int size_of_entity)
+void ResponseMessage::set_entity_2_(const char* message)
+{
+   const char* start_of_entity;
+   int size_of_entity= get_content_length(message);
+   PRINT_DEBUG(size_of_entity);
+   if( ( start_of_entity = strstr(message,"\r\n\r\n")) != NULL)
+   {
+      //compensate for \r\n\r\n
+      start_of_entity = start_of_entity +4;  
+      PRINT_DEBUG("END Delimiter found ");
+      PRINT_DEBUG (start_of_entity);
+      //PRINT_DEBUG( (end_of_headers - buf) );   
+      
+      // memcpy(message +start_of_entity, entity_body_2_, size_of_entity);
+      //kääk remember to delete
+      // char* hello = (char*)malloc (size_of_entity);
+      //memset (entity_body_2_,0,size_of_entity);
+      entity_body_2_ = new char[size_of_entity];
+      //strcpy(&(this->entity_body_2_[0]),start_of_entity);
+      memcpy(entity_body_2_,start_of_entity,size_of_entity);
+      
+     PRINT_DEBUG (entity_body_2_);
+   }
+}
+char* ResponseMessage::get_raw()
+{
+   return raw;
+}
+void ResponseMessage::set_raw(const char* message, int size)
+{
+
+   raw= new char[size];
+   memcpy(raw ,message,size);
+   totalSize=size ;
+   
+}
+int ResponseMessage::get_raw_size()
+{
+   return totalSize;
+}
+
+
+
 void ResponseMessage::init_(string response_message)
 {
+   //char* begining_of_entity= strstr("/r/n/rn");
+  
+  
+   
    istringstream resp_stream {response_message};
    vector <string>lines{};
    string line{};
@@ -79,29 +133,50 @@ void ResponseMessage::init_(string response_message)
    }
    
    status_line_ = lines.at (0);
+   entity_body_.clear();
+//will be char from in future
+try{
+    string searchString{"\r\n\r\n"};
+   auto begining_of_entity = search(begin (response_message),
+				    end(response_message),
+				    begin(searchString),
+				    end(searchString));
+
+   
+   // PRINT_DEBUG (response_message);
+   begining_of_entity++;
+   begining_of_entity++;
+   begining_of_entity++;
+   begining_of_entity++;
+   
+   entity_body_ =string {begining_of_entity,end(response_message)};
+}
+   catch (std::length_error e)
+   {
+      cout << "iterator fell over edge"<< e.what();
+      
+   }
 
    //fill headers
    for (auto it=lines.begin () +1; it != lines.end (); ++it)
    {
        auto  idx =  (*it).find (':');
+       //no more headers
       if(idx == string::npos)
       {
-	  entity_body_.clear();
-	  for(auto it2=it+1; it2!=lines.end(); ++it2)
-	     entity_body_+= *it2 +"\n";
+	 // entity_body_.clear();
+	 // for(auto it2=it+1; it2!=lines.end(); ++it2)
+	 //    entity_body_+= *it2 +"\n";
 	  break;
       }
-      
-	
       string field{(*it).begin(),   (*it).begin()+idx};
       string value {it->begin()+idx+2, it->end ()-1};
-      
-	 
+      	 
       header_fields_[field] =value;
       
    }
-
-   //last part is entity line
+   
+   #ifdef DEBUG_ME
    std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
    std::cout << "lines.size(): " << lines.size() << std::endl;
    int index = 0;
@@ -117,12 +192,14 @@ void ResponseMessage::init_(string response_message)
 	   
        ++index;
    }
-
+   #endif
    //entity_body_=lines[lines.size ()-1];
    //  cout <<entity_body_ <<endl;
 //   cout <<header_fields_.size ()<<endl;
 //   cout <<header_fields_["Date"]<<endl;
-//   
+//
+   
+   //PRINT_DEBUG(entity_body_2_);
 }
 std::string ResponseMessage::to_str()
 {
@@ -139,4 +216,15 @@ std::string ResponseMessage::to_str()
       message<<entity_body_;
    //strcpy (mess ,((message.str()).c_str()));
    return message.str();
+}
+int ResponseMessage::get_content_length (const char* message)
+{
+   const char* start= strstr(message,"Content-Length");
+   start= strstr(start,":");
+   start++;
+   const char* end = strstr(start, "\r");
+   int size =end- start;
+   char res[size];
+   memcpy(  res ,start, size );
+   return atoi(res);
 }

@@ -12,8 +12,11 @@ public:
    void bind_socket ();
    void send_message (const char* message );
    ResponseMessage receive_message ();
+   ResponseMessage receive_message_2 ();
    void close_socket ();
    void setup (std::string host);
+
+   int recvtimeout(int s, char *buf, int len, int timeout);
    
    virtual ~Client(){};
 private:
