@@ -128,46 +128,57 @@ void Server::dummy_dumbo_change_me ()
       inet_ntop(their_addr.ss_family,
 		get_in_addr((struct sockaddr *)&their_addr),
 		s, sizeof s);
-       printf("server: got connection from %s\n", s);
-       PRINT_DEBUG(PORT);
-      if (!fork()) { // this is the child process
+      printf("server: got connection from %s\n", s);
+      // PRINT_DEBUG(PORT);
+      if (!fork())
+      { // this is the child process
 	 	
 	 close(sockfd); // child doesn't need the listener
-	 
 	 
 	 if ((numbytes = recv(new_fd, buf, MAXDATASIZE-1, 0)) == -1) {
 	    perror("recv");
 	    exit(1);
 	 }
-	 // TODO: will call forward on client.
-	 // client might instansiatetd here orwill be reachable from
-	 //this class in some other manner
-
 	 //string reqStr{buf};
-	 PRINT_DEBUG(buf);
+	 //PRINT_DEBUG(buf);
 	 RequestMessage reqMsg{buf};
-	 PRINT_DEBUG(reqMsg.to_str().c_str());
+	 //PRINT_DEBUG(reqMsg.to_str().c_str());
 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
 	 //TODO remove me 
-	 char* reqMsgCStr;
-	 while(true)
-	 {
+	 char* respMsgCStr;
+	 //while(true)
+	 //{
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
 	 std::string respMsgCppStr = respMessage.to_str();
 	 //PRINT_DEBUG(respMessage.to_str().c_str());
 
-	 //TODO ändra till response
-	 char* reqMsgCStr= new char[respMsgCppStr.length()+1];
-	 strcpy (reqMsgCStr,respMsgCppStr.c_str());
+	 //respMsgCStr= new char[respMsgCppStr.length()+1];
+	 int response_size = respMessage.get_raw_size();
+	 respMsgCStr = new char[respMessage.get_raw_size()];
+	 memcpy (respMsgCStr, respMessage.get_raw(), respMessage.get_raw_size());
 	 
-	 //if (send(new_fd, "Hello, world!", 13, 0) == -1)
-	 //if (send(new_fd, (respMessage.to_cstr(),  strlen(reqMsgCStr), 0) == -1)
-	 if (send(new_fd, reqMsgCStr,  strlen(reqMsgCStr), 0) == -1)
-	    perror("send");
+	 int bytes_sent=0;
+	 int total_sent=0;
+	 //make all sure all content get sent
+	 while (total_sent < response_size )
+	 {
+	    if ((bytes_sent = send(new_fd, respMsgCStr,  respMessage.get_raw_size(), 0)) == -1)
+	    {
+	       perror("send");
+	       break;
+	    }
+	    total_sent += bytes_sent;
 	 }
-	 delete[]reqMsgCStr;
+	 if (bytes_sent == -1)
+	    PRINT_DEBUG ("something went wrong");
+	 // if (send(new_fd, respMsgCStr,  respMessage.get_raw_size(), 0) == -1)
+	 // {
+	 //    perror("send");
+	 // }
+      
+	 delete[]respMsgCStr;
 	 close(new_fd);
 	 exit(0);
       }
@@ -185,15 +196,5 @@ void Server::run ()
    dummy_dumbo_change_me ();
 }
 
-//int main(void)
-//{
-//   Server serv{};
-//   serv.init ( );
-//   serv.bind_socket ();
-//   serv.listen_socket ();
-//   //change these 
-//   serv.kill_all_zombies ();
-//   serv.dummy_dumbo_change_me ();
-//   return 0;
-//}
+
 
