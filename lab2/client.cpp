@@ -148,6 +148,7 @@ ResponseMessage  Client::receive_message_2 ()
    unsigned int totalReceivedBytes=numbytes;
    //TODO might still fail
    ResponseMessage response_message(buf);
+   ResponseMessage response_message_3(buf);
   
    //  int entity_body_size =  response_message.get_content_length(buf);
    int expected_total_size =  response_message_3.get_message_size(buf);
@@ -186,8 +187,8 @@ ResponseMessage  Client::receive_message_2 ()
    }
 
    //all done set upp ResponseMessage
-   response_message.set_entity_2_(complete_message);
-   response_message.set_raw(complete_message, expected_total_size);
+   response_message.set_entity_3_(total_message_buf);
+   //response_message.set_raw(complete_message, expected_total_size);
    return response_message;
 }
 
