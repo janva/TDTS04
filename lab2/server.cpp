@@ -142,7 +142,7 @@ void Server::dummy_dumbo_change_me ()
 	 //string reqStr{buf};
 	 //PRINT_DEBUG(buf);
 	 RequestMessage reqMsg{buf};
-	 //PRINT_DEBUG(reqMsg.to_str().c_str());
+	 PRINT_DEBUG(reqMsg.to_str().c_str());
 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
@@ -152,7 +152,8 @@ void Server::dummy_dumbo_change_me ()
 	 //{
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
 	 std::string respMsgCppStr = respMessage.to_str();
-	 //PRINT_DEBUG(respMessage.to_str().c_str());
+	 
+	 PRINT_DEBUG(respMessage.to_str().c_str());
 
 	 //respMsgCStr= new char[respMsgCppStr.length()+1];
 	 int response_size = respMessage.get_raw_size();

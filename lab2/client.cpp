@@ -34,6 +34,7 @@ void* Client::get_in_addr(struct sockaddr *sa)
 
 void Client::init_client ( const char* node)
 {
+   PRINT_DEBUG(node);
    struct addrinfo hints;
    int rv;
    // PRINT_DEBUG(node);
@@ -88,10 +89,11 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
 {
    reqMsg.set_header("Connection","Close");
    std::string reqMsgCppStr = reqMsg.to_str();
-    char*  reqMsgCStr = new char[reqMsgCppStr.length ()+1];    
+   char*  reqMsgCStr = new char[reqMsgCppStr.length ()+1];    
    strcpy (reqMsgCStr, reqMsgCppStr.c_str());
-   //PRINT_DEBUG(reqMsgCStr);
+   PRINT_DEBUG(reqMsgCStr);
    send_message (reqMsgCStr);
+   
    
    //recv
    // ResponseMessage respMsg=receive_message_ ();
@@ -141,7 +143,6 @@ ResponseMessage  Client::receive_message_2 ()
    cout << "timed out";
    exit(-1);
    } else {
-      // PRINT_DEBUG(buf);
       PRINT_DEBUG(" got some data in buf");
    }
   
@@ -149,134 +150,21 @@ ResponseMessage  Client::receive_message_2 ()
    //TODO might still fail
    ResponseMessage response_message(buf);
    ResponseMessage response_message_3(buf);
-  
-   //  int entity_body_size =  response_message.get_content_length(buf);
+
    int expected_total_size =  response_message_3.get_message_size(buf);
-
-//   int expected_total_size;
-   // char* end_of_headers;
-
-//   if( ( end_of_headers= strstr(buf,"\r\n\r\n")) != NULL)
-//   {
-//      PRINT_DEBUG("END Delimiter found ");
-//      //PRINT_DEBUG (end_of_headers);
-//      //PRINT_DEBUG( (end_of_headers - buf) );   
-//      //PRINT_DEBUG(totalReceivedBytes); 
-//   }
-//   //+ 4 to compensate for \r\n\r\n
-
-   // expected_total_size = end_of_headers - buf + entity_body_size +4;
-   //buf[numbytes]='\0';
-
-  //  char complete_message[expected_total_size];
-  // memcpy (complete_message,buf, numbytes);
-   
    //case all wasn't received at once
    while(totalReceivedBytes < expected_total_size)
    {
       //get more data when ready todo error ctrl
       numbytes = recvtimeout(sockfd, buf, MAXDATASIZE, 10); // 10 second timeout
       total_message_buf.insert (total_message_buf.end(), buf.begin(), buf.end() );
-      //memcpy (complete_message+totalReceivedBytes,buf, numbytes);
       totalReceivedBytes +=  numbytes;
-      // ska jag verkligen lägga på dessa här troligen bara för utskrifterna ska funka
-      //buf[numbytes] = '\0';
-      //copy stuff to endo buff
-      //message += buf;
-      //PRINT_DEBUG(totalReceivedBytes);
    }
 
    //all done set upp ResponseMessage
-   response_message.set_entity_3_(total_message_buf);
-   //response_message.set_raw(complete_message, expected_total_size);
-   return response_message;
+   response_message_3.init_3 (total_message_buf);
+   return response_message_3;
 }
-
-//ResponseMessage Client::receive_message ()
-//{
-//   int  numbytes=0;     
-//   char buf[MAXDATASIZE];
-//   //non blocking socket
-//   //unsigned long nonblock = 1;
-//   fcntl(sockfd, F_SETFL, O_NONBLOCK);
-//   numbytes = recvtimeout(sockfd, buf, sizeof buf, 10); // 10 second timeout
-//   if (numbytes == -1) {
-//   // error occurred
-//      perror("recvtimeout");
-//   }
-//   else if (numbytes == -2) {
-//   // timeout occurred
-//   cout << "timed out";
-//   exit(-1);
-//   } else {
-//      // PRINT_DEBUG(buf);
-//      PRINT_DEBUG(" got some data in buf");
-//   }
-//   
-//   // the way to wait for all data when size is known
-//   //numbytes = recv(sockfd, buf, MAXDATASIZE-1, MSG_WAITALL);
-//
-//   // bytes received +=
-//
-//  //   if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-//  //	 perror("recv");
-//  //	 exit(1);
-//  //   }
-//  //   
-//   unsigned int totalReceivedBytes=numbytes;
-//   ResponseMessage  response_message{buf};
-//   //PRINT_DEBUG(numbytes);
-//   //TODO might fail if we don't get this content,
-//   // int entity_body_size =std::stoi( response_message.get_header ("Content-Length"));
-//   int entity_body_size =  response_message.get_content_length(buf);
-//   int expected_total_size;
-//   //for testing stackoverflow
-//   //unsigned int expectedSize =148;
-//   char* end_of_headers;
-//   if( ( end_of_headers= strstr(buf,"\r\n\r\n")) != NULL)
-//   {
-//      cout <<"Cathiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiing"<<endl;
-//      //PRINT_DEBUG (end_of_headers);
-//      //PRINT_DEBUG( (end_of_headers - buf) );   
-//      //PRINT_DEBUG(totalReceivedBytes); 
-//   }
-//   //+ 4 to compensate for \r\n\r\n
-//   expected_total_size = end_of_headers -buf +entity_body_size +4;
-//   //PRINT_DEBUG(expected_total_size);
-//
-//   buf[numbytes]='\0';
-//   std::string message{buf};
-//
-//  char message2[expected_total_size];
-//  memcpy (message2,buf, numbytes);
-//   
-//   while(totalReceivedBytes < expected_total_size)
-//   {
-//    // if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-//    //	 perror("recv");
-//    //	 exit(1);
-//    // }
-//      numbytes = recvtimeout(sockfd, buf, sizeof buf, 10); // 10 second timeout
-//
-//      memcpy (message2+totalReceivedBytes,buf, numbytes); 
-//      totalReceivedBytes +=  numbytes;
-//      buf[numbytes] = '\0';
-//      message += buf;
-//   }
-//   PRINT_DEBUG( expected_total_size); 
-//   //PRINT_DEBUG (end_of_headers);
-//   //PRINT_DEBUG( (end_of_headers - buf) );   
-//   PRINT_DEBUG(totalReceivedBytes); 
-//   //  PRINT_DEBUG(message);
-//   //  PRINT_DEBUG(numbytes);
-//
-//   ResponseMessage resp {message};
-//   message2[totalReceivedBytes-1] ='\0';
-//   //PRINT_DEBUG(message2);
-//   //resp.set_entity_2_(message2, (end_of_headers -buf + 4) , entity_body_size  );
-//   // TODO: hmm by copy so should not be problem?
-//   return resp;
-//}
 
 void Client::send_message (const char* buf)
 {

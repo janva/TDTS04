@@ -26,17 +26,24 @@ int main(int argc, char *argv[])
        vresponse.push_back(ch);
     }
 
-    print_vector(vresponse);
+    //  print_vector(vresponse);
     //RequestMessage rq;
-    ResponseMessage rp;
-    //  RequestMessage rq2 (request);
-    rp.get_content_length(response);
-    //rp.set_entity_2_(response);
+    ResponseMessage rp;    //  RequestMessage rq2 (request);
+    // rp.get_content_length(response);
+
+    print_vector(vresponse);
+    rp.set_status_line_3_(vresponse);
+    rp.set_headars_3_(vresponse);
     rp.set_entity_3_(vresponse);
 
-    cout << "message size is:" <<   rp.get_message_size(vresponse) <<endl;
-    cout << "size of vector is:" <<  vresponse.size() <<endl;
-    cout << "string size is: " << cpp_str_resp.size() << endl;
+    
+    string res =rp.to_str();
+    cout << "res: "<< res <<endl;
+    
+
+//    cout << "message size is:" <<   rp.get_message_size(vresponse) <<endl;
+//    cout << "size of vector is:" <<  vresponse.size() <<endl;
+//    cout << "string size is: " << cpp_str_resp.size() << endl;
     //rq.get_request_line () ;
     return 0;
 }

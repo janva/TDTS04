@@ -129,7 +129,8 @@ int ResponseMessage::get_message_size (vector<char>& message_chunk)
 void ResponseMessage::set_status_line_3_(const vector<char>& message)
 {
    auto end_of_status_line= find(message.begin(),message.end(), '\r');
-   status_line_={message.begin(), end_of_status_line-1};
+   status_line_={message.begin(), end_of_status_line};
+   PRINT_DEBUG(status_line_)
 }
 
 void ResponseMessage::set_entity_3_(const vector<char>& message)
@@ -151,7 +152,7 @@ void ResponseMessage::set_entity_3_(const vector<char>& message)
 	    e.what();
       }
       copy (begin_delimiter, message.end(), back_inserter(entity_body_3_));
-      copy (entity_body_3_.begin(),entity_body_3_.end(), ostream_iterator<char>(cout, ""));
+      // copy (entity_body_3_.begin(),entity_body_3_.end(), ostream_iterator<char>(cout, ""));
    }
 }
 
@@ -171,7 +172,7 @@ void ResponseMessage::set_headars_3_(const vector<char>& response_message)
    auto begin_of_headers = find (response_message.begin(),response_message.end(),'\n');
    ++begin_of_headers;
    
-   string searchString{"\r\n\r\n"};
+   string searchString{"\n\r\n"};
    auto end_of_headers = search(begin (response_message), end(response_message),
 				begin(searchString), end(searchString));
 
@@ -188,7 +189,7 @@ void ResponseMessage::set_headars_3_(const vector<char>& response_message)
       lines.push_back (line) ;
    }
     //fill headers
-   for (auto it=lines.begin () +1; it != lines.end (); ++it)
+   for (auto it=lines.begin () ; it != lines.end (); ++it)
    {
       auto  idx =  (*it).find (':');
       //no more headers
