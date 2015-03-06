@@ -147,25 +147,36 @@ void Server::dummy_dumbo_change_me ()
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
 	 //TODO remove me 
-	 char* respMsgCStr;
+	 //char* respMsgCStr;
 	 //while(true)
 	 //{
+	 PRINT_DEBUG("still running");
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
+	 PRINT_DEBUG("still running");	 
 	 std::string respMsgCppStr = respMessage.to_str();
 	 
 	 PRINT_DEBUG(respMessage.to_str().c_str());
 
-	 //respMsgCStr= new char[respMsgCppStr.length()+1];
+//	 respMsgCStr= new const char[respMsgCppStr.length()+1];
 	 int response_size = respMessage.get_raw_size();
-	 respMsgCStr = new char[respMessage.get_raw_size()];
-	 memcpy (respMsgCStr, respMessage.get_raw(), respMessage.get_raw_size());
 	 
+	 PRINT_DEBUG(response_size);
+	 const char *respMsgCStr = respMsgCppStr.c_str();
+// new char[respMessage.get_raw_size()];
+//	 respMsgCStr = respMsgCppStr.c_str();
+//	 vector<char> respMsgVChar = respMessage.get_raw();
+	 PRINT_DEBUG("HEJ");
+	 //memcpy (respMsgCStr, respMessage.get_raw(), respMessage.get_raw_size());
+//	  PRINT_DEBUG("HEJ");
 	 int bytes_sent=0;
 	 int total_sent=0;
-	 //make all sure all content get sent
+	 //make all sure all content get senyt
+	 PRINT_DEBUG("HEJ");
+	 std::cout << "¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ here it comes" << endl;
+	
 	 while (total_sent < response_size )
 	 {
-	    if ((bytes_sent = send(new_fd, respMsgCStr,  respMessage.get_raw_size(), 0)) == -1)
+	     if ((bytes_sent = send(new_fd, respMsgCStr, respMessage.get_raw_size()  , 0)) == -1)
 	    {
 	       perror("send");
 	       break;
@@ -179,7 +190,7 @@ void Server::dummy_dumbo_change_me ()
 	 //    perror("send");
 	 // }
       
-	 delete[]respMsgCStr;
+	 //lete[]respMsgCStr;
 	 close(new_fd);
 	 exit(0);
       }

@@ -40,10 +40,10 @@ public:
    void init_3(const std::vector<char>& response_message);
    // int get_message_size (std::vector<char>& message_chunk);
    int get_message_size (std::vector<char>& message_chunk);
-   void set_raw(const char* message, int size);
-   char* get_raw();
+   void set_raw(const std::vector<char> message);
+   std::vector<char> get_raw();
    int get_raw_size();
-   int get_content_length (const char* message);
+   // int get_content_length (const char* message);
 private:
    void init_(std::string response);
    std::string status_line_;
@@ -54,8 +54,8 @@ private:
    // char* entity_body_2_;
    //unique_pointer<char> entity_body_2_;
    int totalSize;
-   std::vector <char> entity_body_3_;
-   char* raw;
+   std::string entity_body_3_;
+   std::vector<char> raw;
 
    
    
