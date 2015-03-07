@@ -38,7 +38,7 @@ DEBUG = -g
 LIBS =
 ASSEMBLER= -S
 OBJS= proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
-BINS=  proxyserver
+BINS=  proxyserver test
 #pattern rules instead
 %.o: %.cpp
 	$(CCC) $(CCFLAGS)  -c $<
@@ -54,15 +54,19 @@ server.o: server.cpp server.h client.h
 #client: client.o ResponseMessage.o RequestMessage.o
 client.o: client.cpp client.h 
 
+test: test.o ResponseMessage.o  ResponseMessage.h 
+test.o: test.cpp
+
 RequestMessage.o: RequestMessage.cpp RequestMessage.h
 
 ResponseMessage.o: ResponseMessage.cpp ResponseMessage.h
 
 ContentValidator.o: ContentValidator.cpp ContentValidator.h
 
+#funkar inte kolla up
 .PHONY: clean
 clean:
-	@ \rm $(OBJ) $(BINS)
+	@ rm -f *.o $(BINS)
 .PHONY:zap
 zap: clean
 	@  \rm *~
