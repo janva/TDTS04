@@ -32,6 +32,7 @@ string RequestMessage::get_request_line () const
 
 string RequestMessage::get_header (const string& field_name) const
 {
+   PRINT_DEBUG("----------client request-----------------");
   // TODO: handle errors element might not exist
    return  header_fields_.at(field_name);
 }

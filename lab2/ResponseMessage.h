@@ -29,8 +29,10 @@ public:
    virtual ~ResponseMessage();
    
    void set_entity_3_(const std::vector<char>& message);
+   void set_status_line_3_(const std::string message );
    void set_status_line_3_(const std::vector<char>& message);
    void set_headars_3_(const std::vector<char>& response_message);
+   void set_message_size_3_(const int response_message);
    void set_message_size_3_(const std::vector<char>& response_message);
    int  get_message_size_3_();
    void init_3(const std::vector<char>& response_message);

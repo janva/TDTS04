@@ -61,7 +61,7 @@ bool Validator::operator()(const string& text)
        
    while (words)
    {
-PRINT_DEBUG("trying to validate");
+      //PRINT_DEBUG("trying to validate");
       words>> word ;
       auto  result = illegal_words_->find(word);
       if(result != illegal_words_->end())
