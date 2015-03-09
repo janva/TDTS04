@@ -6,6 +6,7 @@
 #include <iostream>
 #include <sstream>
 #include  <stdexcept>
+#include  "debug.h"
 	
 #include "ContentValidator.h"
 
@@ -60,6 +61,7 @@ bool Validator::operator()(const string& text)
        
    while (words)
    {
+PRINT_DEBUG("trying to validate");
       words>> word ;
       auto  result = illegal_words_->find(word);
       if(result != illegal_words_->end())

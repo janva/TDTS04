@@ -7,7 +7,6 @@
  */
 #ifndef RESPONSEMESSAGE_H
 #define RESPONSEMESSAGE_H
-
 #include<string>
 #include<map>
 #include<vector>
@@ -36,6 +35,7 @@ public:
    int  get_message_size_3_();
    void init_3(const std::vector<char>& response_message);
 private:
+
    std::string status_line_;
    // TODO: make this pointer typ maybe unique pointer to make pointer handling simple
    std::map<const std::string,  std::string> header_fields_;

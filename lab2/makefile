@@ -45,14 +45,14 @@ BINS=  proxyserver test
 %: %.o
 	$(CCC) $(CCFLAGS)  -o $@ $^
 
-proxyserver: proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
+proxyserver: proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o ContentValidator.o
 proxyserver.o: proxyserver.cpp
 
 #server: server.o RequestMessage.o ResponseMessage.o 
 server.o: server.cpp server.h client.h
 
 #client: client.o ResponseMessage.o RequestMessage.o
-client.o: client.cpp client.h 
+client.o: client.cpp client.h ContentValidator.o
 
 test: test.o ResponseMessage.o  ResponseMessage.h 
 test.o: test.cpp

@@ -6,6 +6,7 @@
 #include<map>
 #include <sstream>
 #include <string.h>
+#include "debug.h"
 using std::string;
 using std::vector;
 using std::cout;
@@ -74,34 +75,39 @@ void RequestMessage::init_(string request)
    {
       
       //  auto  idx =  (*it).find (':');
-      //  if(idx == string::npos)
-      //  {
-      //	 break;
-      //  }
+ 
       //
       //  string field{(*it).begin(),   (*it).begin()+idx};
       //  string value {it->begin()+idx+2, it->end ()-1};
       //  header_fields_[field] =value;
       auto  idx =  (*it).find (':');
-      
-      if(idx == string::npos)
-      {
-	 entity_body_.clear();
-	 for(auto it2=it+1; it2!=lines.end(); ++it2)
-	    entity_body_+= *it2 +"\n";
-	 break;
-      }
+       if(idx == string::npos)
+       {
+	  break;
+       }
+      //TODO  we allways seem to get some trash in entitybody which is
+      // not suppose to be there
+     if(idx == string::npos)
+     {
+     	 entity_body_.clear();
+     	 for(auto it2=it+1; it2!=lines.end(); ++it2)
+     	    entity_body_+= *it2 ;//+"\n";
+     	 break;
+     }
       
       string field{(*it).begin(),   (*it).begin()+idx};
       string value {it->begin()+idx+2, it->end ()-1};
       header_fields_[field] =value;
    }
+  //entity_body_.clear();
+  //auto end_of_headers = request.find("\r\n\r\n");
+  //auto start_entity =request.begin() +end_of_headers+4;
+  //if (start_entity != request.end())
+  //{
+  //string temp{start_entity, request.end()}; 
+  //entity_body_=temp;
+  //}
    
-   //entity_body_=lines[lines.size ()-1];
-   //  cout <<entity_body_ <<endl;
-//   cout <<header_fields_.size ()<<endl;
-//   cout <<header_fields_["Date"]<<endl;
-//   
 }
 
 std::string RequestMessage::to_str ()
@@ -112,9 +118,10 @@ std::string RequestMessage::to_str ()
    {
       message <<header.first<<": " <<header.second<<"\n";
    }
+   message<<"\r\n";
    if(!(entity_body_.empty()) )
    {
-      message<<"\r\n";
+      PRINT_DEBUG(entity_body_);
       message<<entity_body_;
    }
    // cout << "const char* RequestMessage::to_cstr ()" <<endl;

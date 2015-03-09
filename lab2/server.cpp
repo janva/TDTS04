@@ -34,8 +34,6 @@ void* Server::get_in_addr(struct sockaddr *sa)
    return &(((struct sockaddr_in6*)sa)->sin6_addr);
 }
 
-
-//void Server::init ( struct addrinfo** servinfo ){
 void Server::init (  ){
    struct addrinfo hints;
    int rv;
@@ -139,62 +137,42 @@ void Server::dummy_dumbo_change_me ()
 	    perror("recv");
 	    exit(1);
 	 }
-	 //string reqStr{buf};
-	 //PRINT_DEBUG(buf);
+
 	 RequestMessage reqMsg{buf};
-	 PRINT_DEBUG(reqMsg.to_str().c_str());
+	 //PRINT_DEBUG(reqMsg.to_str().c_str());
 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
-	 //TODO remove me 
-	 //char* respMsgCStr;
-	 //while(true)
-	 //{
-	 PRINT_DEBUG("still running");
+	 
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
-	 PRINT_DEBUG("still running");	 
 	 std::string respMsgCppStr = respMessage.to_str();
 	 
-	 PRINT_DEBUG(respMessage.to_str().c_str());
+	 //PRINT_DEBUG(respMessage.to_str().c_str());
 
-//	 respMsgCStr= new const char[respMsgCppStr.length()+1];
-	 //TODO migrate away from raw
-	 //int response_size = respMessage.get_raw_size();
 	 int response_size = respMessage.get_message_size_3_();
 	 
-	 PRINT_DEBUG(response_size);
+	 //PRINT_DEBUG(response_size);
 	 const char *respMsgCStr = respMsgCppStr.c_str();
-// new char[respMessage.get_raw_size()];
-//	 respMsgCStr = respMsgCppStr.c_str();
-//	 vector<char> respMsgVChar = respMessage.get_raw();
-	 PRINT_DEBUG("HEJ");
-	 //memcpy (respMsgCStr, respMessage.get_raw(), respMessage.get_raw_size());
-//	  PRINT_DEBUG("HEJ");
+	 
+	 PRINT_DEBUG("-###############################################-");
+
 	 int bytes_sent=0;
 	 int total_sent=0;
-	 //make all sure all content get senyt
-	 PRINT_DEBUG("HEJ");
-	 std::cout << "¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ here it comes" << endl;
-	
-	 while (total_sent < response_size )
-	 {
-	    // if ((bytes_sent = send(new_fd, respMsgCStr, respMessage.get_raw_size()  , 0)) == -1)
-	     if ((bytes_sent = send(new_fd, respMsgCStr, respMessage.get_message_size_3_()  , 0)) == -1)
-	    {
-	       perror("send");
-	       break;
-	    }
-	    total_sent += bytes_sent;
-	 }
+	 // std::cout << "¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ here it comes" << endl;
+	//make all sure all content get senyt
+	while (total_sent < response_size )
+	{
+	  
+	    if ((bytes_sent = send(new_fd, respMsgCStr, respMessage.get_message_size_3_()  , 0)) == -1)
+	   {
+	      perror("send");
+	      break;
+	   }
+	   total_sent += bytes_sent;
+	}
 	 if (bytes_sent == -1)
 	    PRINT_DEBUG ("something went wrong");
-	 // if (send(new_fd, respMsgCStr,  respMessage.get_raw_size(), 0) == -1)
-	 // {
-	 //    perror("send");
-	 // }
-      
-	 //lete[]respMsgCStr;
-	 close(new_fd);
+		 close(new_fd);
 	 exit(0);
       }
       close(new_fd);  // parent doesn't need this

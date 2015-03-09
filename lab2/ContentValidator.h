@@ -1,6 +1,6 @@
 #ifndef CONTENTVALIDATOR_H
 #define CONTENTVALIDATOR_H
-
+#include<set>
 class Validator
 {
 
