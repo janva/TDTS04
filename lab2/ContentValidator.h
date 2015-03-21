@@ -11,7 +11,7 @@ public:
    virtual ~Validator();
    
 private:
-   std::set<std::string>* illegal_words_;
+   std::set<std::string> illegal_words_;
 };
 
 #endif /* CONTENTVALIDATOR_H */

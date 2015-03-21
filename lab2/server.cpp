@@ -158,10 +158,10 @@ void Server::dummy_dumbo_change_me ()
 	 //PRINT_DEBUG(respMessage.to_str().c_str());
 	 
 	 int response_size = respMessage.get_message_size_3_();
-	 PRINT_DEBUG("aLIVE");
+	
 	 //PRINT_DEBUG(response_size);
 	 const char *respMsgCStr = respMsgCppStr.c_str();
-	 PRINT_DEBUG("aLIVE");
+	
 	 PRINT_DEBUG("-###############################################-");
 
 	 int bytes_sent=0;

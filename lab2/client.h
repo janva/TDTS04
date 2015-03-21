@@ -16,6 +16,7 @@ public:
     void close_socket ();
     void setup (std::string host);
    bool is_valid(ResponseMessage respMsg);
+   bool is_valid(RequestMessage reqyMsg);
     int recvtimeout(int s, std::vector<char>& buf , int len, int timeout);
    
     virtual ~Client(){};

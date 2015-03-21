@@ -114,13 +114,13 @@ void ResponseMessage::set_headars_3_(const vector<char>& response_message)
    string searchString{"\n\r\n"};
    auto end_of_headers = search(begin (response_message), end(response_message),
 				begin(searchString), end(searchString));
-   PRINT_DEBUG("before ??????????????????????????");   
+  
     
    string headers_string{begin_of_headers,end_of_headers};
     
    cout << "    string headers_string{begin_of_headers,end_of_headers};"<<endl;
     
-   PRINT_DEBUG("after !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");       
+  
    istringstream resp_stream {headers_string};
    vector <string>lines{};
    string line{};

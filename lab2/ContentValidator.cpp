@@ -38,16 +38,24 @@ Validator::Validator (const string& filename)
       //exit(1);
       throw validator_error("Unable to open file: "+filename +"\n");
    }
+//   std::stringstream ss;
+//   ss << in;
+//   std::string foo;
+//   std::string bar;
+// ss >> foo;
+// ss >> bar;
+//   PRINT_DEBUG(foo);
+//   std::cout << foo << std::endl;
+//   PRINT_DEBUG(bar);
    //puts restricion on file only one word per line
-   illegal_words_=
-      new set<string>{istream_iterator<string>(in), istream_iterator<string>{}};
+   //illegal_words_= new set<string>{ in.get_line()};
 
    // hmmm is this more effective ???
-   //string word;  
-   //while (getline(in, word, '\n'))
-   //{
-   //	  illegal_words_.emplace(std::move(word));
-   //}
+   std::string word;  
+   while (getline(in, word, '\n'))
+   {
+   	  illegal_words_.emplace(std::move(word));
+   }
    in.close();
 }
     
@@ -56,25 +64,48 @@ Validator::Validator (const string& filename)
 // cheaper way of doing things 
 bool Validator::operator()(const string& text)
 {
+    PRINT_DEBUG(text);
+    string word;
+    bool illegal_found{false};
+    for(auto it = illegal_words_.begin(); it != illegal_words_.end(); ++it){
+//	PRINT_DEBUG(*it);
+//	PRINT_DEBUG(text.find(*it));
+	//auto  result = text.find(*it);
+	if(text.find(*it) != string::npos){
+	    PRINT_DEBUG("AAAAAH ILLEGAL WORD FOUND!!!");
+  	    return false;
+	}
+//	    illegal_found = true;
+    }
+    PRINT_DEBUG("CLEAAAAR");
+	  
+    return true;
+		
+	   
+/*
    string word;
    istringstream words{text};
-       
+//   bool invalid_found{false};
+   // bool current_valid{false};
    while (words)
    {
       //PRINT_DEBUG("trying to validate");
       words>> word ;
-      auto  result = illegal_words_->find(word);
-      if(result != illegal_words_->end())
+      //if (word == 
+      auto  result = illegal_words_.find(word);
+      if(result != illegal_words_.end())
       {
 	 return false;
       }
    }
    return true;
+*/
+
 }
     
 Validator::~Validator()
 {
-   delete illegal_words_;
+    //delete illegal_words_;
 }
 
 
