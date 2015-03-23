@@ -5,6 +5,7 @@ class Validator
 {
 
 public:
+   //No typeconversion please
    explicit Validator (const std::string& filename);
    bool operator()(const std::string& text);
    

@@ -128,7 +128,6 @@ void Server::dummy_dumbo_change_me ()
 		get_in_addr((struct sockaddr *)&their_addr),
 		s, sizeof s);
       printf("server: got connection from %s\n", s);
-      // PRINT_DEBUG(PORT);
       if (!fork())
       { // this is the child process
 	 	
@@ -140,48 +139,35 @@ void Server::dummy_dumbo_change_me ()
 	 }
 
 	 RequestMessage reqMsg{buf};
-	 //PRINT_DEBUG(reqMsg.to_str().c_str());
 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
-	 PRINT_DEBUG("aLIVE");
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
-	 PRINT_DEBUG("aLIVE");
 	 std::string respMsgCppStr = respMessage.to_str();
 
-	 for(auto i : respMsgCppStr){
-	    int n = i;
-	    std::cout << i << " ";
-	 }
-	 std::cout << endl << respMsgCppStr << endl;
-	 
-	 //PRINT_DEBUG(respMessage.to_str().c_str());
-	 
+	// for(auto i : respMsgCppStr){
+	//    int n = i;
+	//    std::cout << i << " ";
+	// }
+	 //std::cout << endl << respMsgCppStr << endl;
 	 int response_size = respMessage.get_message_size_3_();
 	
-	 //PRINT_DEBUG(response_size);
 	 const char *respMsgCStr = respMsgCppStr.c_str();
 	
-	 PRINT_DEBUG("-###############################################-");
-
 	 int bytes_sent=0;
 	 int total_sent=0;
-	 // std::cout << "¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ here it comes" << endl;
-	 //make all sure all content get senyt
+
+	 //make all sure all content get sent
 	 while (total_sent < response_size )
 	 {
-	    PRINT_DEBUG("aLIVE");
 	    if ((bytes_sent = send(new_fd, respMsgCStr, respMessage.get_message_size_3_()  , 0)) == -1)
 	    {
 	       perror("send");
 	       break;
 	    }
-	    PRINT_DEBUG("aLIVE");
 	    total_sent += bytes_sent;
-	    PRINT_DEBUG(total_sent);
 	 }
 	 if (bytes_sent == -1)
-	    PRINT_DEBUG ("something went wrong");
 	 close(new_fd);
 	 exit(0);
       }

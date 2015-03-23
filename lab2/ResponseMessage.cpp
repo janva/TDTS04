@@ -42,6 +42,7 @@ string ResponseMessage::get_header ( const string& field_name) const
    // TODO: create own iterator type for ResponseMessage
    std::map<const string,string>::const_iterator it;
    PRINT_DEBUG("-----------faiiiiillll server-----------------");
+   //catch the error here
    it= header_fields_.find (field_name);
    PRINT_DEBUG("-----------faiiiiillll server-----------------");
    
@@ -71,8 +72,6 @@ void ResponseMessage::set_status_line_3_(const vector<char>& message)
 {
    auto end_of_status_line= find(message.begin(),message.end(), '\r');
    status_line_={message.begin(), end_of_status_line};
-    
-   PRINT_DEBUG(status_line_);
 }
 
 
@@ -180,10 +179,11 @@ std::string ResponseMessage::to_str()
    }
    message<<"\r\n";
    if(!(entity_body_3_.empty()) ){
-      PRINT_DEBUG("entity not empty");
       message<<entity_body_3_;
-   } else {
-      PRINT_DEBUG("entity empty");
    }
+
+   //else {
+   //   PRINT_DEBUG("entity empty");
+   //}
    return message.str();
 }

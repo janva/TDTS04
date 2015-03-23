@@ -1,3 +1,12 @@
+/**
+ *  
+ * Filename:     proxyserver.cpp
+ * Date:	 2015-03-23	
+ * Description:  desription goes here
+ *  
+ * Entry point of proxyserver application.
+ * 
+ */
 #include "server.h"
 #include "client.h"
 #include <iostream>
@@ -19,20 +28,6 @@ int main(int argc, char *argv[])
       cout <<"Starting server using PORT=3490 as default" << endl ;
       server =std::unique_ptr<Server>{new Server{}};
    }
-      
    server->run();
    cout << "server started" << endl;
-
-   
-// serv.init ( );
-// serv.bind_socket ();
-// serv.listen_socket ();
-   //change these 
-   // serv.kill_all_zombies ();
-   // serv.dummy_dumbo_change_me ();
-   
-   // s.setup ();
-   // s.start ();
-   // s.setclient ();   
-   // Client c{};
 }

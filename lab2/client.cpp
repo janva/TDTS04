@@ -37,7 +37,6 @@ void Client::init_client ( const char* node)
 {
     struct addrinfo hints;
     int rv;
-    // PRINT_DEBUG(node);
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -46,7 +45,6 @@ void Client::init_client ( const char* node)
        
 	fprintf(stderr, "getaddrinfo@node:%s\n %s\n", node, gai_strerror(rv));
 	exit (1);
-	//return 1;
     }
 }
 
@@ -77,7 +75,6 @@ void Client::bind_socket ()
     if (p == NULL) {
 	fprintf(stderr, "client: failed to connect\n");
 	exit (2);
-	//return 2;
     }
     inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
 	      s, sizeof s);
@@ -91,38 +88,17 @@ bool Client::is_valid(ResponseMessage respMsg)
     std::string type {respMsg.get_header("Content-Type")};
     if (type == "text/plain" ||type == "text/html")
     {
-	PRINT_DEBUG(type);
 	Validator validate("forbidden.txt");
-	PRINT_DEBUG("ALIVE");
-      
 	return validate(respMsg.get_entity_body());
-	//return true;
     }
     return true; 
 }
 
 bool Client::is_valid(RequestMessage reqMsg)
 {
-    //text/plain or text/html
-    //std::string type {respMsg.get_header("Content-Type")};
-//   if (type == "text/plain" ||type == "text/html")
-    //{
-    // PRINT_DEBUG(type);
     Validator validate("forbidden.txt");
-    PRINT_DEBUG(reqMsg.get_header("Host"));
-    PRINT_DEBUG(reqMsg.get_request_line());
-		
-    // GET and HTTP/1.1 in forbidden.txt would forbid any website (same is true for an empty line)
     return validate(reqMsg.get_request_line());
-    //return true;
-   
-		   
 }
-//ResponseMessage  Client::redirect()
-//{
-//
-//}
-
 
 ResponseMessage Client::forward (RequestMessage&  reqMsg) 
 {
@@ -137,42 +113,30 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
     
     if (is_valid(respMsg) && is_valid(reqMsg))
     {
-       
-	PRINT_DEBUG("valid content");
 	return respMsg;
     }
    
     ResponseMessage redirected_resp{};
    
     std::string ReDirStatusLine{"HTTP/1.1 302 Found\r"};
-   
     std::string LocHeader{"http://www.ida.liu.se/~TDTS04/labs/2011/ass2/error2.html\r"};
     redirected_resp.set_status_line_3_(ReDirStatusLine);
     redirected_resp.set_header("Location",LocHeader);
-   
-//   redirected_resp.set_message_size_3_(ReDirStatusLine.size() + LocHeader.size() + 4);
     redirected_resp.set_message_size_3_(120);
-
-    PRINT_DEBUG("aLIVE");
     return redirected_resp;
-    //PRINT_DEBUG(respMsg.to_str());
-
 }
 
 ResponseMessage  Client::receive_message_2 ()
 {
     int  numbytes=1;    
-    //int total = 0; 
-//    int n = 0;
-    //char buf[MAXDATASIZE];
-    vector<char> buf(MAXDATASIZE);;
+    vector<char> buf(MAX2015-03-23ASIZE);;
     vector<char> bigbuf(0);
    
     while((numbytes=recv(sockfd, &buf[0], buf.size(), 0)) >0 ){
 	buf.resize(numbytes);
 	bigbuf.insert(bigbuf.end(), buf.begin(), buf.end());
 	buf.clear();
-	buf.resize(MAXDATASIZE);
+	buf.resize(MAX2015-03-23ASIZE);
     }
     //all done set upp ResponseMessage
     ResponseMessage response_message_3(bigbuf);
@@ -194,7 +158,6 @@ void Client::close_socket ()
 
 void Client::setup (std::string host)
 {
-
     init_client (host.c_str ());
     bind_socket ();
 }

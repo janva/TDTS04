@@ -1,3 +1,10 @@
+/**
+ *  
+ * Filename:     client.h
+ * Date:	 2015-03-23	
+ * Description:  desription goes here
+ * 
+ */
 #ifndef CLIENT_H
 #define CLIENT_H
 #include "ResponseMessage.h"
@@ -24,7 +31,7 @@ private:
     int sockfd;
     struct addrinfo *servinfo;
     const char* PORT {"80"};
-    static constexpr unsigned int MAXDATASIZE {4096};
+    static constexpr unsigned int MAX2015-03-23ASIZE {4096};
     // TODO: tempfix
     void* get_in_addr(struct sockaddr *sa);
 };
