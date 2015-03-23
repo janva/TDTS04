@@ -105,10 +105,10 @@ void Server::kill_all_zombies (){
    }
 }
 
-void Server::dummy_dumbo_change_me ()
+void Server::send_receive ()
 {
    struct sockaddr_storage their_addr;
-   // TODO:  here for know during testing 
+  
    int  numbytes;   
    char buf[MAX_SIZE ];
    char s[INET6_ADDRSTRLEN];
@@ -145,11 +145,6 @@ void Server::dummy_dumbo_change_me ()
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);
 	 std::string respMsgCppStr = respMessage.to_str();
 
-	// for(auto i : respMsgCppStr){
-	//    int n = i;
-	//    std::cout << i << " ";
-	// }
-	 //std::cout << endl << respMsgCppStr << endl;
 	 int response_size = respMessage.get_message_size();
 	
 	 const char *respMsgCStr = respMsgCppStr.c_str();
@@ -182,7 +177,7 @@ void Server::run ()
    listen_socket ();        
    //change these                
    kill_all_zombies ();     
-   dummy_dumbo_change_me ();
+   send_receive ();
 }
 
 

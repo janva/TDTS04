@@ -48,6 +48,7 @@ void Client::init_client ( const char* node)
     }
 }
 
+
 void Client::bind_socket ()
 {
     addrinfo* p;
@@ -106,7 +107,7 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
     strcpy (reqMsgCStr, reqMsgCppStr.c_str());
     send_message (reqMsgCStr);
     //rec
-    ResponseMessage respMsg=receive_message_2();
+    ResponseMessage respMsg=receive_message();
     delete[]reqMsgCStr;
     
     if (is_valid(respMsg) && is_valid(reqMsg))
@@ -124,7 +125,7 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
     return redirected_resp;
 }
 
-ResponseMessage  Client::receive_message_2 ()
+ResponseMessage  Client::receive_message ()
 {
     int  numbytes=1;    
     vector<char> buf(MAX_SIZE);;
