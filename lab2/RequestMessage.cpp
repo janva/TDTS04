@@ -4,7 +4,6 @@
 #include<sstream>
 #include<vector>
 #include<map>
-#include <sstream>
 #include <string.h>
 #include "debug.h"
 
@@ -72,41 +71,23 @@ void RequestMessage::init_(string request)
   
    for (auto it=lines.begin () +1; it != lines.end (); ++it)
    {
-      
-      //  auto  idx =  (*it).find (':');
- 
-      //
-      //  string field{(*it).begin(),   (*it).begin()+idx};
-      //  string value {it->begin()+idx+2, it->end ()-1};
-      //  header_fields_[field] =value;
       auto  idx =  (*it).find (':');
        if(idx == string::npos)
        {
 	  break;
        }
-      //TODO  we allways seem to get some trash in entitybody which is
-      // not suppose to be there
-     if(idx == string::npos)
-     {
-     	 entity_body_.clear();
-     	 for(auto it2=it+1; it2!=lines.end(); ++it2)
-     	    entity_body_+= *it2 ;//+"\n";
-     	 break;
-     }
+       if(idx == string::npos)
+       {
+	  entity_body_.clear();
+	  for(auto it2=it+1; it2!=lines.end(); ++it2)
+	     entity_body_+= *it2 ;//+"\n";
+	  break;
+       }
       
-      string field{(*it).begin(),   (*it).begin()+idx};
-      string value {it->begin()+idx+2, it->end ()-1};
-      header_fields_[field] =value;
+       string field{(*it).begin(),   (*it).begin()+idx};
+       string value {it->begin()+idx+2, it->end ()-1};
+       header_fields_[field] =value;
    }
-  //entity_body_.clear();
-  //auto end_of_headers = request.find("\r\n\r\n");
-  //auto start_entity =request.begin() +end_of_headers+4;
-  //if (start_entity != request.end())
-  //{
-  //string temp{start_entity, request.end()}; 
-  //entity_body_=temp;
-  //}
-   
 }
 
 std::string RequestMessage::to_str ()

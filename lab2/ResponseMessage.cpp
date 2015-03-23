@@ -39,7 +39,6 @@ string ResponseMessage::get_status_line () const{
 
 string ResponseMessage::get_header ( const string& field_name) const
 {
-   // TODO: create own iterator type for ResponseMessage
    std::map<const string,string>::const_iterator it;
    PRINT_DEBUG("-----------faiiiiillll server-----------------");
    //catch the error here
@@ -105,18 +104,13 @@ void ResponseMessage::set_headars(const vector<char>& response_message)
     
    auto begin_of_headers = find (response_message.begin(),response_message.end(),'\n');
    ++begin_of_headers;
-   
-
+ 
    string searchString{"\n\r\n"};
    auto end_of_headers = search(begin (response_message), end(response_message),
 				begin(searchString), end(searchString));
-  
-    
+     
    string headers_string{begin_of_headers,end_of_headers};
     
-   cout << "    string headers_string{begin_of_headers,end_of_headers};"<<endl;
-    
-  
    istringstream resp_stream {headers_string};
    vector <string>lines{};
    string line{};
@@ -178,9 +172,5 @@ std::string ResponseMessage::to_str()
    if(!(entity_body_.empty()) ){
       message<<entity_body_;
    }
-
-   //else {
-   //   PRINT_DEBUG("entity empty");
-   //}
    return message.str();
 }

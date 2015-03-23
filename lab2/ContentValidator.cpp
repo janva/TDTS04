@@ -2,19 +2,14 @@
 #include <string>
 #include <set>
 #include <iterator>
-#include <algorithm>
-#include <iostream>
 #include <sstream>
 #include  <stdexcept>
 #include  "debug.h"
-	
 #include "ContentValidator.h"
 
 using std::string;
 using std::set;
 using std::ifstream;
-using std::cout;
-using std::copy;
 using std::istream_iterator;
 using std::istringstream;
 using std::invalid_argument;
@@ -44,9 +39,6 @@ Validator::Validator (const string& filename)
    in.close();
 }
     
-// TODO: investigate if creating a set from text
-// and using for instance set intersection instead is
-// cheaper way of doing things 
 bool Validator::operator()(const string& text)
 {
    string word;
@@ -59,7 +51,6 @@ bool Validator::operator()(const string& text)
     return true;
 }
 
-//@deprecated
 Validator::~Validator()
 {
     //delete illegal_words_;

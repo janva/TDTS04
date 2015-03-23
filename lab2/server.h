@@ -35,5 +35,4 @@ private:
    void* get_in_addr(struct sockaddr *sa);
    Client* client;
 };
-
 #endif /* SERVER_H */

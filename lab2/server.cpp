@@ -11,13 +11,11 @@
 #include <arpa/inet.h>
 #include <sys/wait.h>
 #include <signal.h>
-#include <iostream>
 #include "RequestMessage.h"
 #include "debug.h"
 
 
 using namespace std;
-// TODO: consider making seperate  class 
 void sigchld_handler(int s)
 {
    while(waitpid(-1, NULL, WNOHANG) > 0);
@@ -45,14 +43,12 @@ void Server::init (  ){
    
    if ((rv = getaddrinfo(NULL, PORT, &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
-      //return 1;   
       exit (1);
    }
 }
 
 void Server::bind_socket ()
 {
-   // TODO: fixme silly 
    int y=1;
    int* yes =&y;
    struct addrinfo *p;
@@ -79,7 +75,6 @@ void Server::bind_socket ()
    if (p == NULL)  {
       fprintf(stderr, "server: failed to bind\n");
       exit (2);
-      //return 2;
    }
    // all done with this structure
    freeaddrinfo(servinfo); 
@@ -94,9 +89,8 @@ void Server::listen_socket ( )
 }
 
 void Server::kill_all_zombies (){
-   // TODO: keep an eye on this might be a problem
    struct sigaction sa;
-   sa.sa_handler = sigchld_handler; // reap all dead processes
+   sa.sa_handler = sigchld_handler; 
    sigemptyset(&sa.sa_mask);
    sa.sa_flags = SA_RESTART;
    if (sigaction(SIGCHLD, &sa, NULL) == -1) {
@@ -175,7 +169,6 @@ void Server::run ()
    init ( );                
    bind_socket ();          
    listen_socket ();        
-   //change these                
    kill_all_zombies ();     
    send_receive ();
 }

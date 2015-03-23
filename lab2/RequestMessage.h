@@ -12,8 +12,6 @@
 #include<string>
 #include<map>
 
-// TODO: construction and copy-controll error handling
-// TODO: duplicate code with response message may interface +adaptor? template
 class RequestMessage
 {
 public:
