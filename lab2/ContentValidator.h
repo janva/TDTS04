@@ -1,5 +1,14 @@
+/**
+ *  
+ * Filename:     ContentValidator.h
+ * Date:	 2015-03-23
+ *
+ * Description:  Validator checks if given string contains illegal word.
+ *               The list of illegal words are read from text-file.
+ *
+ */
 #ifndef CONTENTVALIDATOR_H
-#define CONTENTVALIDATOR_H
+#define CONTENTVALIDATOR_H 
 #include<set>
 class Validator
 {

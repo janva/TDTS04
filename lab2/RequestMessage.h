@@ -1,3 +1,11 @@
+/**
+ *  
+ * Filename:     RequestMessage.h
+ * Date:	 2015-03-23	
+ * Description:  RequestMessage is container for a http request.
+ * 
+ *  
+ */
 #ifndef REQUESTMESSAGE_H
 #define REQUESTMESSAGE_H
 
@@ -18,14 +26,12 @@ public:
 
    void set_request_line (const std::string& req_line);
    void set_header (const std::string& field, const std::string& value);
-   //void  to_cstr(char*);
    std::string  to_str ();
    virtual ~RequestMessage();
-   // TODO: fixme move to private parts
+   
 private:
    void init_(std::string request);
    std::string request_line_;
-   // TODO: make this pointer typ maybe unique pointer to make pointer handling simple
    std::map<const std::string, std::string> header_fields_;
    std::string entity_body_;
    

@@ -110,7 +110,7 @@ void Server::dummy_dumbo_change_me ()
    struct sockaddr_storage their_addr;
    // TODO:  here for know during testing 
    int  numbytes;   
-   char buf[MAXDATASIZE ];
+   char buf[MAX_SIZE ];
    char s[INET6_ADDRSTRLEN];
    socklen_t sin_size;
    
@@ -133,7 +133,7 @@ void Server::dummy_dumbo_change_me ()
 	 	
 	 close(sockfd); // child doesn't need the listener
 	 
-	 if ((numbytes = recv(new_fd, buf, MAXDATASIZE-1, 0)) == -1) {
+	 if ((numbytes = recv(new_fd, buf, MAX_SIZE-1, 0)) == -1) {
 	    perror("recv");
 	    exit(1);
 	 }
@@ -150,7 +150,7 @@ void Server::dummy_dumbo_change_me ()
 	//    std::cout << i << " ";
 	// }
 	 //std::cout << endl << respMsgCppStr << endl;
-	 int response_size = respMessage.get_message_size_3_();
+	 int response_size = respMessage.get_message_size();
 	
 	 const char *respMsgCStr = respMsgCppStr.c_str();
 	
@@ -160,7 +160,7 @@ void Server::dummy_dumbo_change_me ()
 	 //make all sure all content get sent
 	 while (total_sent < response_size )
 	 {
-	    if ((bytes_sent = send(new_fd, respMsgCStr, respMessage.get_message_size_3_()  , 0)) == -1)
+	    if ((bytes_sent = send(new_fd, respMsgCStr, respMessage.get_message_size()  , 0)) == -1)
 	    {
 	       perror("send");
 	       break;

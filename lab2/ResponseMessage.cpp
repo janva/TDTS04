@@ -24,12 +24,12 @@ using std::length_error;
 using namespace std;
 
 ResponseMessage::ResponseMessage()
-   :  status_line_ (""),header_fields_(),entity_body_3_ ("")
+   :  status_line_ (""),header_fields_(),entity_body_("")
 {}
 
 ResponseMessage::ResponseMessage(const std::vector<char>& response)
 {
-   init_3 (response);
+   init_ (response);
 }
 
 string ResponseMessage::get_status_line () const{
@@ -51,7 +51,7 @@ string ResponseMessage::get_header ( const string& field_name) const
 
 string ResponseMessage::get_entity_body () const
 {
-   return entity_body_3_;
+   return entity_body_;
 }
 
 void ResponseMessage::set_header (const string& field, const string& value)
@@ -64,18 +64,18 @@ ResponseMessage::~ResponseMessage()
    
 }
 
-void ResponseMessage::set_status_line_3_(const std::string message )
+void ResponseMessage::set_status_line(const std::string message )
 {
    status_line_=message;
 }
-void ResponseMessage::set_status_line_3_(const vector<char>& message)
+void ResponseMessage::set_status_line(const vector<char>& message)
 {
    auto end_of_status_line= find(message.begin(),message.end(), '\r');
    status_line_={message.begin(), end_of_status_line};
 }
 
 
-void ResponseMessage::set_entity_3_(const vector<char>& message)
+void ResponseMessage::set_entity(const vector<char>& message)
 {
    vector<char> delimiter {'\r','\n','\r','\n'};
    auto begin_delimiter =
@@ -90,17 +90,14 @@ void ResponseMessage::set_entity_3_(const vector<char>& message)
 	 begin_delimiter++;
       }catch(length_error& e)
       {
-	 cout<<"ResponseMessage::set_entity_3_(const vector<char>& message) :"<<
+	 cout<<"ResponseMessage::set_entity(const vector<char>& message) :"<<
 	    e.what();
       }
-      entity_body_3_ = {begin_delimiter, message.end()};
-      //  copy (begin_delimiter, message.end(), back_inserter(entity_body_3_));
-      // copy (entity_body_3_.begin(),entity_body_3_.end(), ostream_iterator<char>(cout, ""));
+      entity_body_ = {begin_delimiter, message.end()};
    }
 }
 
-// TODO: continue here all messed upp right now
-void ResponseMessage::set_headars_3_(const vector<char>& response_message)
+void ResponseMessage::set_headars(const vector<char>& response_message)
 {
  
    string field;
@@ -147,24 +144,24 @@ void ResponseMessage::set_headars_3_(const vector<char>& response_message)
    }
      
 }
-void ResponseMessage::set_message_size_3_(const int response_message){
-   total_message_size_3_= response_message;
+void ResponseMessage::set_message_size(const int response_message){
+   total_message_size_= response_message;
 }
 
-void ResponseMessage::set_message_size_3_(const vector<char>& response_message)
+void ResponseMessage::set_message_size(const vector<char>& response_message)
 {
-   total_message_size_3_= response_message.size();
+   total_message_size_= response_message.size();
 }
-int ResponseMessage:: get_message_size_3_()
+int ResponseMessage:: get_message_size()
 {
-   return total_message_size_3_;
+   return total_message_size_;
 }
-void ResponseMessage::init_3(const vector<char>& response_message)
+void ResponseMessage::init_(const vector<char>& response_message)
 {
-   set_status_line_3_(response_message);
-   set_entity_3_(response_message);
-   set_headars_3_(response_message);
-   set_message_size_3_(response_message);
+   set_status_line(response_message);
+   set_entity(response_message);
+   set_headars(response_message);
+   set_message_size(response_message);
 }
 
 std::string ResponseMessage::to_str()
@@ -178,8 +175,8 @@ std::string ResponseMessage::to_str()
       message <<header.first<<": " <<header.second<<"\n";
    }
    message<<"\r\n";
-   if(!(entity_body_3_.empty()) ){
-      message<<entity_body_3_;
+   if(!(entity_body_.empty()) ){
+      message<<entity_body_;
    }
 
    //else {

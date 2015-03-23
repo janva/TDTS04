@@ -2,7 +2,7 @@
  *  
  * Filename:     ResponseMessage.h
  * Date:	 2015-02-15	
- * Description:  desription goes here
+ * Description:  Response message is container for a http response.
  * 
  */
 #ifndef RESPONSEMESSAGE_H
@@ -28,20 +28,19 @@ public:
    std::string  to_str();
    virtual ~ResponseMessage();
    
-   void set_entity_3_(const std::vector<char>& message);
-   void set_status_line_3_(const std::string message );
-   void set_status_line_3_(const std::vector<char>& message);
-   void set_headars_3_(const std::vector<char>& response_message);
-   void set_message_size_3_(const int response_message);
-   void set_message_size_3_(const std::vector<char>& response_message);
-   int  get_message_size_3_();
-   void init_3(const std::vector<char>& response_message);
-private:
+   void set_entity(const std::vector<char>& message);
+   void set_status_line(const std::string message );
+   void set_status_line(const std::vector<char>& message);
+   void set_headars(const std::vector<char>& response_message);
+   void set_message_size(const int response_message);
+   void set_message_size(const std::vector<char>& response_message);
+   int  get_message_size();
 
+private:
+   void init_(const std::vector<char>& response_message);
    std::string status_line_;
-   // TODO: make this pointer typ maybe unique pointer to make pointer handling simple
    std::map<const std::string,  std::string> header_fields_;
-   int total_message_size_3_;
-   std::string entity_body_3_;
+   int total_message_size_;
+   std::string entity_body_;
 };
 #endif /* RESPONSEMESSAGE_H */

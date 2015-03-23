@@ -48,8 +48,6 @@ void Client::init_client ( const char* node)
     }
 }
 
-//TODO close fit with server version simplest solution parameters
-// or adapter or template pattern strategy
 void Client::bind_socket ()
 {
     addrinfo* p;
@@ -120,23 +118,23 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
    
     std::string ReDirStatusLine{"HTTP/1.1 302 Found\r"};
     std::string LocHeader{"http://www.ida.liu.se/~TDTS04/labs/2011/ass2/error2.html\r"};
-    redirected_resp.set_status_line_3_(ReDirStatusLine);
+    redirected_resp.set_status_line(ReDirStatusLine);
     redirected_resp.set_header("Location",LocHeader);
-    redirected_resp.set_message_size_3_(120);
+    redirected_resp.set_message_size(120);
     return redirected_resp;
 }
 
 ResponseMessage  Client::receive_message_2 ()
 {
     int  numbytes=1;    
-    vector<char> buf(MAX2015-03-23ASIZE);;
+    vector<char> buf(MAX_SIZE);;
     vector<char> bigbuf(0);
    
     while((numbytes=recv(sockfd, &buf[0], buf.size(), 0)) >0 ){
 	buf.resize(numbytes);
 	bigbuf.insert(bigbuf.end(), buf.begin(), buf.end());
 	buf.clear();
-	buf.resize(MAX2015-03-23ASIZE);
+	buf.resize(MAX_SIZE);
     }
     //all done set upp ResponseMessage
     ResponseMessage response_message_3(bigbuf);
