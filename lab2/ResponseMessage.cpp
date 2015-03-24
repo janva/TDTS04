@@ -43,12 +43,13 @@ string ResponseMessage::get_header ( const string& field_name) const
    
    try {
       it= header_fields_.find (field_name);
+       return   (it != header_fields_.end()  ? it->second: "0");
    } catch(...)
    {
       std::cerr<< " it= header_fields_.find (field_name) in: <<std::endl"<<
 	 "ResponseMessage::get_header <<std::endl"<<" failed but don't you worry 'bout a thing ";
    }
-   return   (it != header_fields_.end()  ? it->second: "0");
+  
 }
 
 string ResponseMessage::get_entity_body () const

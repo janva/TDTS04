@@ -31,7 +31,12 @@ string RequestMessage::get_request_line () const
 string RequestMessage::get_header (const string& field_name) const
 {
     // TODO: handle errors element might not exist
+   try{
    return  header_fields_.at(field_name);
+   }catch (...)
+   {
+      std::cerr << "RequestMessage::get_header : no such header in request"<<std::endl;
+   }
 }
 
 string RequestMessage::get_entity_body () const

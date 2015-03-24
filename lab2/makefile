@@ -41,9 +41,9 @@ OBJS= proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o
 BINS=  proxyserver test
 #pattern rules instead
 %.o: %.cpp
-	$(CCC) $(CCFLAGS)  -c $<
+	$(CCC) $(CCFLAGS)  -g -c $<
 %: %.o
-	$(CCC) $(CCFLAGS)  -o $@ $^
+	$(CCC) $(CCFLAGS)  -g -o $@ $^
 
 proxyserver: proxyserver.o server.o client.o  RequestMessage.o ResponseMessage.o ContentValidator.o
 proxyserver.o: proxyserver.cpp
