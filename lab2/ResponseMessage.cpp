@@ -40,11 +40,14 @@ string ResponseMessage::get_status_line () const{
 string ResponseMessage::get_header ( const string& field_name) const
 {
    std::map<const string,string>::const_iterator it;
-   PRINT_DEBUG("-----------faiiiiillll server-----------------");
-   //catch the error here
-   it= header_fields_.find (field_name);
-   PRINT_DEBUG("-----------faiiiiillll server-----------------");
    
+   try {
+      it= header_fields_.find (field_name);
+   } catch(...)
+   {
+      std::cerr<< " it= header_fields_.find (field_name) in: <<std::endl"<<
+	 "ResponseMessage::get_header <<std::endl"<<" failed but don't you worry 'bout a thing ";
+   }
    return   (it != header_fields_.end()  ? it->second: "0");
 }
 
@@ -56,11 +59,6 @@ string ResponseMessage::get_entity_body () const
 void ResponseMessage::set_header (const string& field, const string& value)
 {
    header_fields_[field] = value;
-}
-
-ResponseMessage::~ResponseMessage()
-{
-   
 }
 
 void ResponseMessage::set_status_line(const std::string message )
@@ -161,9 +159,7 @@ void ResponseMessage::init_(const vector<char>& response_message)
 std::string ResponseMessage::to_str()
 {
    ostringstream message;
-   // TODO: this line is the only that differs factor out
-   // template method pattern or simply use template
-   message << (get_status_line())<<"\n";
+    message << (get_status_line())<<"\n";
    for (auto header : header_fields_)
    {
       message <<header.first<<": " <<header.second<<"\n";
@@ -174,3 +170,4 @@ std::string ResponseMessage::to_str()
    }
    return message.str();
 }
+ 

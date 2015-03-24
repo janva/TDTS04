@@ -55,7 +55,6 @@ server.o: server.cpp server.h client.h
 client.o: client.cpp client.h ContentValidator.o
 
 test: test.o ResponseMessage.o  ResponseMessage.h 
-test.o: test.cpp
 
 RequestMessage.o: RequestMessage.cpp RequestMessage.h
 

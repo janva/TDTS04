@@ -50,10 +50,6 @@ void RequestMessage::set_header (const string& field, const string& value)
    header_fields_[field] = value;
 }
 
-RequestMessage::~RequestMessage()
-{
-   
-}
 //privates
 void RequestMessage::init_(string request)
 {

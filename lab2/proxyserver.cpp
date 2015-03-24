@@ -11,7 +11,9 @@
  *
  *               ./proxyserver NNNN
  *
- *                where NNNN is valid portnumber.
+ *                where NNNN is valid portnumber. Note if wrong number
+ *                of arguments is given we consider user not knowning
+ *                we she/he is doing and use the default port :-)
  */
 #include "server.h"
 #include "client.h"
@@ -21,7 +23,6 @@
 using std::cout;
 using std::endl;
 
-//use arguements
 int main(int argc, char *argv[])
 {
    std::unique_ptr<Server> server;

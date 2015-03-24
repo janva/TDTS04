@@ -4,7 +4,7 @@
  * Date:	 2015-03-23
  *
  * Description:  Validator checks if given string contains illegal word.
- *               The list of illegal words are read from text-file.
+ *               The list of illegal words are read from text-file. C
  *
  */
 #ifndef CONTENTVALIDATOR_H
@@ -14,8 +14,10 @@ class Validator
 {
 
 public:
-   //No typeconversion please
+   //constructor fills set illegal_words_ from file.   
    explicit Validator (const std::string& filename);
+   //overloaded call operator (making this a function object at instanciation)
+   //checks if string contains illegal words mentioned illegal_words_
    bool operator()(const std::string& text);
    
 private:
