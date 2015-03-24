@@ -17,10 +17,13 @@ class Server
 {
 public:
    Server(const char*  port="3490"): PORT{port}{}
+   //start up the server instance
    void run ();
    virtual ~Server(){};
 
 private:
+   //receives message from client and passes them on to internal server-part
+   //as well as wait for response to pass back to client (browser)
    void send_receive ();
    //sets up addrinfo struct to be used to set up connection.
    void init ();
@@ -29,8 +32,8 @@ private:
    //listen on socket for incomming connections
    void listen_socket ();
    //we are spawning new processes for each internal client connections
-   // this will kill zombies which hang around after child processes
-   // finnished in order to not waste resources.
+   // this function will kill zombies which hang around after child processes
+   // finnished (in order to not waste resources).
    void kill_all_zombies ();
    //nr of connection allowed to wait on queue to be accapted   
    const unsigned int BACKLOG{10};

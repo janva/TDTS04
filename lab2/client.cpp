@@ -42,19 +42,18 @@ void Client::init_client ( const char* node)
     hints.ai_socktype = SOCK_STREAM;
 
     if ((rv = getaddrinfo(node , PORT,   &hints, &servinfo)) != 0) {
-       
-	fprintf(stderr, "getaddrinfo@node:%s\n %s\n", node, gai_strerror(rv));
+       	fprintf(stderr, "getaddrinfo@node:%s\n %s\n", node, gai_strerror(rv));
 	exit (1);
     }
 }
 
 
-void Client::bind_socket ()
+void Client::connect_socket ()
 {
     addrinfo* p;
     char s[INET6_ADDRSTRLEN];
    
-    // loop through all the results and connect to the first we can
+    // loop through all the results and connect to the first we can.
     for(p = servinfo; p != NULL; p = p->ai_next) {
 	if ((sockfd = socket(p->ai_family, p->ai_socktype,
 			     p->ai_protocol)) == -1) {
@@ -106,7 +105,6 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
     char*  reqMsgCStr = new char[reqMsgCppStr.length ()+1];    
     strcpy (reqMsgCStr, reqMsgCppStr.c_str());
     send_message (reqMsgCStr);
-    //rec
     ResponseMessage respMsg=receive_message();
     delete[]reqMsgCStr;
     
@@ -158,5 +156,5 @@ void Client::close_socket ()
 void Client::setup (std::string host)
 {
     init_client (host.c_str ());
-    bind_socket ();
+     connect_socket ();
 }
