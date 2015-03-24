@@ -5,8 +5,9 @@
  *
  * Description:  Server is a class representing server-part of
  *               of proxyserver. handles comunication  between  
- *               between interanal proxy-client and actuall
- *               webservers.
+ *               between interanal actual client (browser) and
+ *               internal proxy-client part.
+ *
  */
 #ifndef SERVER_H
 #define SERVER_H

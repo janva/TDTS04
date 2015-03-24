@@ -2,10 +2,16 @@
  *  
  * Filename:     proxyserver.cpp
  * Date:	 2015-03-23	
- * Description:  desription goes here
- *  
- * Entry point of proxyserver application.
- * 
+ * Description:  Entry point of proxyserver application.
+ *               To run proxyserver use
+ *
+ *               ./proxyserver or
+ *
+ *               or if you want to choose port use
+ *
+ *               ./proxyserver NNNN
+ *
+ *                where NNNN is valid portnumber.
  */
 #include "server.h"
 #include "client.h"

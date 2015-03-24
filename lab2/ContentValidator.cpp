@@ -38,7 +38,7 @@ Validator::Validator (const string& filename)
    }
    in.close();
 }
-    
+
 bool Validator::operator()(const string& text)
 {
    string word;
@@ -51,7 +51,4 @@ bool Validator::operator()(const string& text)
     return true;
 }
 
-Validator::~Validator()
-{
-    //delete illegal_words_;
-}
+
