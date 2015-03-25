@@ -1,0 +1,81 @@
+The proxy server application was  developed using g++ compiler on linux and tested using firefox browser. 
+
+INSTALLATION
+
+The application is delivered as C++-source code packaged in a compressed file. In order to compile it 
+you will need at least a c++ compiler. A makefile is delivered with  source code and we suggest you 
+use it to compile the code. See bellow for further instruction on installation and configuration.
+
+COMPILING SOURCES 
+
+1) copy file proxyserver.tar.gz to desired catalog (unzipping the file will create subdirectory proxyserver)
+2) open up a terminal windoww
+3) unzip gz tarball using 
+   tar -xvf proxyserver.tar.gz
+3) move into proxyserver directory
+   cd proxyserver
+4) Compile the source code. 
+ ./make 
+
+CONFIGURE CONTENT-FILTERING
+
+To filter material you can edit the text file forbidden.txt. Each line in forbidden.txt is
+considered as single token to when filtering content. So if we put Britney Spears on single line
+the pages containing only Britney would pass as legal content.
+
+RUNNING APPLICATION
+
+Syntax for starting proxy server is.
+
+./proxyserver [PORT]
+
+PORT is optional parameter. It sets desired port to which proxy-server should listen to 
+for incoming traffic from browser. The proxy-server support ports beween 1025 to  65535.  
+Should parameter fall out of supported range or number of parameter be other than zero 
+or one then proxy-server will be started with default port of 3490.
+
+Examples run proxy-server with default port
+
+./proxyserver 
+
+Start proxy-server listening to port 3030
+
+./proxyserver 3030
+
+
+Instructions for setting up firefox to use proxy can be found for instance at 
+
+http://www.ida.liu.se/~TDTS04/labs/2015/NetNinny/default.html
+
+
+IMPLEMETATION DETAILS
+
+2) Handles simple HTTP GET interactions between client and server
+
+   Interaction between client and server is split over server.cpp and client.cpp. 
+   Code in server.cpp listen to port communication with client(browser). It 
+   instantiates a Client object which handles communication between proxy-server
+   and webservers. To see wher message are received from browser see 
+   code marked  //2.1 in server.cpp. //2.2 marks where messeges is forwarded 
+   to using the client forward method. //2.3 marks place wher responses are passed back
+   to browser. In client.cpp in forward-funtion we call send_message (//2.4)  which 
+   send message to webserver (//2.5). Message are received calling receive_message(//2.6).
+   inside receive_message(//2.7) we wait for and receive responses from webserver. Responses
+   are returned at //2.8 and //2.9
+
+3)Blocks requests for undesirable URLs, using HTTP redirection to display this error page instead
+
+  Filtering is handled in client.cpp using Validator function object which can be found in
+  ContentValidator.cpp  relevant parts in code are marked with //3)
+
+7) Allows the user to select the proxy port (i.e. the port number should not be hard coded)
+
+   Port number can be configured using giving single argument startup commnand (i.e
+   ./proxyserver 3333 would start proxy-server running on port 3333). See code proxyserver.cpp
+   marked //7). 
+
+8) Is smart in selection of what HTTP content should be searched for the forbidden keywords.  
+   For example, you probably agree that it is not wise to search inside compressed or other non-text-based 
+   HTTP content such as graphic files, etc.
+
+   Proxy-server only treats content of type text/plain or text/html see client.cpp code marked //8)
