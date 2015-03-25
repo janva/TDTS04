@@ -32,6 +32,9 @@ want to run proxyserver using port 3030 give the following  in your command shel
 
 ./proxyserver 3030
 
+port from 1025 to  65535 are conisdered valid. If invalid port or to many arguments are given 
+a default port (3490) will be used.
+
 Instructions for setting up firefox to use proxy can be found for instance at 
 
 http://www.ida.liu.se/~TDTS04/labs/2015/NetNinny/default.html
@@ -45,10 +48,6 @@ IMPLEMETATION DETAILS
 
   Filtering is handled in client.cpp using Validator function object which can be found in
   ContentValidator.cpp relevent hints relevant parts in code are marked with //3)
-
-6) Is compatible with all major browsers (e.g. Internet Explorer, Mozilla Firefox, Google Chrome, etc .) without the requirement to tweak any advanced feature
-
-    *******svar
 
 7) Allows the user to select the proxy port (i.e. the port number should not be hard coded)
 
