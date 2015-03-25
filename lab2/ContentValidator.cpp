@@ -14,6 +14,7 @@ using std::istream_iterator;
 using std::istringstream;
 using std::invalid_argument;
 
+
 class validator_error: public invalid_argument 
 {
 public:
@@ -23,6 +24,7 @@ public:
       : invalid_argument(err_msg) {}
 };
 
+//3)
 Validator::Validator (const string& filename)
 {
    ifstream in {filename};

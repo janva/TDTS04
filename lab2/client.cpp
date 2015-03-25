@@ -80,9 +80,10 @@ void Client::connect_socket ()
     freeaddrinfo(servinfo); // all done with this structure
 }
 
+//3)
 bool Client::is_valid(ResponseMessage respMsg)
 {
-    //text/plain or text/html
+    //8) filter only treats content of  text/plain or text/html
     std::string type {respMsg.get_header("Content-Type")};
     if (type == "text/plain" ||type == "text/html")
     {
@@ -91,7 +92,7 @@ bool Client::is_valid(ResponseMessage respMsg)
     }
     return true; 
 }
-
+//3)
 bool Client::is_valid(RequestMessage reqMsg)
 {
     Validator validate("forbidden.txt");
@@ -107,14 +108,15 @@ ResponseMessage Client::forward (RequestMessage&  reqMsg)
     send_message (reqMsgCStr);
     ResponseMessage respMsg=receive_message();
     delete[]reqMsgCStr;
-    
+
+    //3)
     if (is_valid(respMsg) && is_valid(reqMsg))
     {
 	return respMsg;
     }
-   
+    //3) return redirection-respose  instead. brower will preform annother get to
+    //   to but the redirected page instead.
     ResponseMessage redirected_resp{};
-   
     std::string ReDirStatusLine{"HTTP/1.1 302 Found\r"};
     std::string LocHeader{"http://www.ida.liu.se/~TDTS04/labs/2011/ass2/error2.html\r"};
     redirected_resp.set_status_line(ReDirStatusLine);

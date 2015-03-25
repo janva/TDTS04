@@ -26,6 +26,7 @@ using std::endl;
 int main(int argc, char *argv[])
 {
    std::unique_ptr<Server> server;
+   //7) if port number is given as argument then use that port instead
    if (argc==2)
    {
       server =std::unique_ptr<Server>{new Server{argv[1]}};
