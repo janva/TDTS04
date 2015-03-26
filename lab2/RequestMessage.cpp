@@ -61,33 +61,36 @@ void RequestMessage::init_(string request)
    istringstream req_stream {request};
    vector <string>lines{};
    string line{};
-   
    while (req_stream)
    {
       getline (req_stream,line, '\n');
-      lines.push_back (line) ;	 
+      lines.push_back (line);	 
    }
-   request_line_ = lines.at (0);
-   
-  
+   request_line_ = lines.at (0);   
    for (auto it=lines.begin () +1; it != lines.end (); ++it)
    {
-      auto  idx =  (*it).find (':');
+       auto  idx =  (*it).find (':');
+       /*if(idx == string::npos)
+       {
+         break;
+	 }*/
        if(idx == string::npos)
        {
-	  break;
-       }
-       if(idx == string::npos)
-       {
-	  entity_body_.clear();
-	  for(auto it2=it+1; it2!=lines.end(); ++it2)
-	     entity_body_+= *it2 ;//+"\n";
-	  break;
+	   entity_body_.clear();
+	   for(auto it2=it+1; it2!=lines.end(); ++it2)
+	       entity_body_+= *it2 ;//+"\n";
+	   break;
        }
       
        string field{(*it).begin(),   (*it).begin()+idx};
        string value {it->begin()+idx+2, it->end ()-1};
+       for(int i : value){
+	   std::cout << i << " ";
+       }
+       std::cout << std::endl;
+       PRINT_DEBUG(value);
        header_fields_[field] =value;
+
    }
 }
 
@@ -97,7 +100,7 @@ std::string RequestMessage::to_str ()
    message << (get_request_line())<<"\n";
    for (auto header : header_fields_)
    {
-      message <<header.first<<": " <<header.second<<"\n";
+      message <<header.first<<": " <<header.second<<"\r\n";
    }
    message<<"\r\n";
    if(!(entity_body_.empty()) )

@@ -131,9 +131,8 @@ void Server::send_receive ()
 	    perror("recv");
 	    exit(1);
 	 }
-
-	 RequestMessage reqMsg{buf};
-
+	
+	 RequestMessage reqMsg{buf};	 
 	 Client lucky_client{};
 	 lucky_client.setup(reqMsg.get_header("Host"));
 	 ResponseMessage respMessage = lucky_client.forward (reqMsg);

@@ -29,7 +29,10 @@ int main(int argc, char *argv[])
    //7) if port number is given as argument then use that port instead
    
    //int port = argv[1] - '0';
-   int port = atoi (argv[1]);
+   int port = 0;
+   if(argc == 2)
+       port = atoi (argv[1]);  
+   
    //only allow port s 1024 in range 65535
    if (argc==2 &&  port > 1024 && port <= 65535)
    {
