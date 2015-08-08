@@ -51,11 +51,16 @@ public class CorbaClientConnection {
 		public void update(String message) {
 			messages.addMessageToBack(message);
 			System.out.println(message + " -this call method will update gui");
+		}
 
+		@Override
+		public void announceWin(short x) {
+			// TODO Auto-generated method stub
+			
 		}
 	}
 
-	// TODO for our purposes we only need two this.
+	//for our purposes we only need two of these
 	private Chat chatImpl;
 	private ORB orb;
 	private ChatCallbackImpl chatCallbackImpl;

@@ -27,7 +27,7 @@ public class ChatClient
 	    	builder.setNestedNcRef("NameService");
 	    	builder.setNestedName("Chat");
 	    	builder.setNestedCref();
-		    
+
 //		    chatImpl.join(cref, "kalle");
 //		    chatImpl.join(cref, "Orvar");
 //		    chatImpl.list(cref);

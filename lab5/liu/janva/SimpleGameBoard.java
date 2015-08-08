@@ -1,5 +1,7 @@
 package liu.janva;
 
+import java.util.Arrays;
+
 public class SimpleGameBoard implements Board{
 	private Checker checker;
 	//TODO howto mock?
@@ -10,6 +12,7 @@ public class SimpleGameBoard implements Board{
 		{0,0,0,1,1},
 		{2,2,2,2,2}};
 	
+	//TODO consider making this class singelton but be aware of threadsafty
 	public SimpleGameBoard(Checker checker, int boardSize)
 	{
 		this.checker = checker;
@@ -62,5 +65,27 @@ public class SimpleGameBoard implements Board{
 	public boolean checkWin(Position lastMove)
 	{
 		return checker.checkWin (this,lastMove);
+	}
+	
+	
+	public String tosString()
+	{
+		StringBuilder builder = new StringBuilder();
+		for(int i =0; i < getHeight(); ++i)
+		{
+			builder.append(Arrays.toString(board[i]));
+			builder.append("\n");
+		}
+		String stringBoard =builder.toString();
+		System.out.println(stringBoard);
+		return stringBoard;
+		
+	}
+	public static class test
+	{
+		public static void main(String[] args) {
+			SimpleGameBoard board = new SimpleGameBoard(new SimpleCheck(), 5);
+			board.tosString();
+		}
 	}
 }

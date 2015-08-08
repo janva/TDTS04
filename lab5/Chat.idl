@@ -2,6 +2,7 @@ module ChatApp {
    interface ChatCallback {
       void callback(in string message);
       void update(in string message);
+      void announceWin(in short x);
    };
 
 
@@ -11,9 +12,9 @@ module ChatApp {
       boolean join(in ChatCallback objref, in string user);
       void leave(in ChatCallback objref, in string user);
       string send(in ChatCallback objref, in string msg);
-   };
-
-interface ChatGame {
-      void mark(in ChatCallback objref, in int x,in int y);
+      //game interface we use same interface beacause we are lazy 
+      void mark(in ChatCallback objref,in short  x,in short y);
+      void playGame(in ChatCallback objref,in string userName);
+      void leaveGame(in ChatCallback objref,in string userName);	
    };
 };

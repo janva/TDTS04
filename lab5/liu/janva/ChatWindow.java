@@ -92,6 +92,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         ListButton = new javax.swing.JButton();
         messagePanel = new javax.swing.JPanel();
         postButton = new javax.swing.JButton();
+        playButton =  new javax.swing.JButton();
+        leaveGameButton = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         sendTextarea = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
@@ -203,6 +205,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 
         messagePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        
         postButton.setText("Post");
         postButton.setEnabled(false);
         postButton.addActionListener(new java.awt.event.ActionListener() {
@@ -210,8 +213,22 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                 postButtonActionPerformed(evt);
             }
         });
+        playButton.setText("PLay");
+        playButton.setEnabled(false);
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonActionPerformed(evt);
+            }
+        });
+        leaveGameButton.setText("Leave Game");
+        leaveGameButton.setEnabled(false);
+        leaveGameButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leaveGameButtonActionPerformed(evt);
+            }
+        });
 
-        sendTextarea.setColumns(20);
+        sendTextarea.setColumns(26);
         sendTextarea.setRows(5);
         jScrollPane2.setViewportView(sendTextarea);
 
@@ -222,7 +239,9 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
             .addGroup(messagePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(messagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(postButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                		.addComponent(postButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(playButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(leaveGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(messagePanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -234,7 +253,9 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(postButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(postButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(playButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(leaveGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -292,15 +313,15 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     }
 
     private void postButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postButtonActionPerformed
-        //TODO note best solution but works for now
+        //TODO not best solution but works for now
     	String sentMsg = userName + "["+team+"]: " +  sendTextarea.getText() +"\n";
         sendTextarea.setText("");
         chatImpl.send(cref, sentMsg);
     }
     
-    private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
-       userName = userNameField.getText();
-       //TODO refactor this part sucks
+    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        chatImpl.playGame(cref, userName);
+      //TODO refactor this part sucks
         Enumeration<AbstractButton> allRadioButton=teamGroup.getElements(); 
        while (allRadioButton.hasMoreElements())
        {
@@ -311,9 +332,20 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                break;
            }
            else 
+        	   
                team = "O";
            break;
        }
+        System.out.println("pushed play button ");
+    }
+    private void leaveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        chatImpl.leaveGame(cref, userName);
+        System.out.println("pushed leave button ");
+    }
+   
+    private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
+       userName = userNameField.getText();
+       
        //TODO fixme need to wait for callback to do the bellow
        if(userName =="")
        {
@@ -324,11 +356,15 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
        boolean joined = chatImpl.join(cref, userName);
        if (!joined)
        {
-    	   JOptionPane.showMessageDialog(this, "User cannot be empty string");
+    	   JOptionPane.showMessageDialog(this, "A user with that alias allready exists");
     	   return;
        }
-       postButton.setEnabled(true);
+       
+       postButton.setEnabled(true);       
        leaveButton.setEnabled(true);
+       playButton.setEnabled(true);
+       leaveGameButton.setEnabled(true);
+
        joinButton.setEnabled(false);
     }
     
@@ -337,6 +373,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     	userName = "";
     	postButton.setEnabled(false);
        joinButton.setEnabled(true);
+       playButton.setEnabled(false);
+       leaveGameButton.setEnabled(false);
     }
 
    private void ListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListButtonActionPerformed
@@ -360,6 +398,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField portFIeld;
     private javax.swing.JLabel portLabel;
     private javax.swing.JButton postButton;
+    private javax.swing.JButton playButton;
+    private javax.swing.JButton leaveGameButton;
     private javax.swing.JTextArea receivedTextarea;
     private javax.swing.JTextArea sendTextarea;
     private javax.swing.ButtonGroup teamGroup;
