@@ -13,7 +13,7 @@ module ChatApp {
       void leave(in ChatCallback objref, in string user);
       string send(in ChatCallback objref, in string msg);
       //game interface we use same interface beacause we are lazy 
-      void mark(in ChatCallback objref,in short  x,in short y);
+      void mark(in ChatCallback objref,in short  x,in short y, in short mark);
       void playGame(in ChatCallback objref,in string userName);
       void leaveGame(in ChatCallback objref,in string userName);	
    };

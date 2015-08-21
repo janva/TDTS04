@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import liu.janva.Board;
+import liu.janva.Position;
 import liu.janva.SimpleCheck;
 import liu.janva.SimpleGameBoard;
 import ChatApp.*;          // The package containing our stubs.
@@ -24,9 +25,8 @@ class ChatImpl extends ChatPOA
 	//even if it's a bad idea we let client handle team selection	
 	private Map<String, ChatCallback> players; 
 
-	private String list="list of users";
 	private Board board;
-	
+
 	//instansiate game and init    
 	public ChatImpl() {
 		super();
@@ -61,7 +61,7 @@ class ChatImpl extends ChatPOA
 		objref.callback(sb.toString());  
 		return sb.toString();
 	}
-	
+
 	public boolean join (ChatCallback cref, String user){
 		if(activeUsers.containsKey(user))
 		{
@@ -81,11 +81,7 @@ class ChatImpl extends ChatPOA
 		ChatCallback userCallBack=activeUsers.remove(user);	
 		if (userCallBack != null)
 		{
-			if(players.containsKey(user))
-			{
-				//TODO think though is this the same refernce
-				leaveGame(cref,user);
-			}
+			leaveGame(cref,user);
 			userCallBack.callback(user + ": is leaving conversation");
 		}else
 		{
@@ -93,7 +89,7 @@ class ChatImpl extends ChatPOA
 			cref.callback("no such user");
 		}
 	}
-	
+
 	public  String send (ChatApp.ChatCallback senderRef, String msg){
 		//TODO for know message will do roundtrip and sent back 
 		// to sender as well
@@ -109,12 +105,39 @@ class ChatImpl extends ChatPOA
 	}
 
 	//game interface 
+	//TODO here for now move up later
+	boolean activeGame= false;
+
 	@Override
-	public void mark(ChatCallback objref, short x, short y) {
-		// TODO Auto-generated method stub
+	public void mark(ChatCallback objref, short x, short y, short mark) {
+		// TODO probably need to buffer commands command pattern?
+		// simplest possible boolean active game if not do nothing?
+		// sync problems?
 		// call mark on board and check if caused win if so 
 		//restart game (note might need to drop mark commands
 		// which came to late)
+		//for now we just drop incomming commands if not active
+		if (activeGame) {			
+			//TODO mark position side effect maybe not a good idea
+			//(return true if win occurred)
+			if(board.markPosition(new Position(x, y), mark))
+			{
+				activeGame=false;
+				System.out.println("Winning board announced from chat server");
+				board.clearBoard();
+				for (ChatCallback playerCallbacks : players.values()) {
+					playerCallbacks.announceWin(x);
+					//TODO send back new empty board empty board to active players
+					//hmm maybe not here could be problem
+					playerCallbacks.update(board.tosString());
+				}
+			}else
+			{
+			for (ChatCallback playerCallbacks : players.values()) {
+				playerCallbacks.update(board.tosString());
+			}
+			}
+		}
 	}
 
 	// This might also be vournability issue
@@ -124,7 +147,7 @@ class ChatImpl extends ChatPOA
 		//Only those active on chat can play
 		if (activeUsers.containsKey(userName))
 		{
-           //For now we send whole board as string
+			//For now we send whole board as string
 			String stringBoard = board.tosString();
 			if(players.containsValue(callbackRef))
 			{
@@ -137,37 +160,56 @@ class ChatImpl extends ChatPOA
 			{
 				//clear the board just in case
 				board.clearBoard();
+				//TODO not a nice solution but ok for now
+				activeGame = true;
 				for(ChatCallback callback : activeUsers.values())
 				{
-                    //tell everyone we started new game
+					//tell everyone we started new game
 					callback.update(userName +" Started new game join \n"+stringBoard);
 				}
 				players.put(userName, callbackRef);
 			}else
 			{
 				//add player to active players
-			players.put(userName, callbackRef);
-			callbackRef.update(stringBoard);
+				players.put(userName, callbackRef);
+				callbackRef.update(stringBoard);
 			}
 		}
 		//callbackRef.callback("where did you come from? We've got an eye on you");
-		
 		///if we are already active players do nothing
 		// else add as player 
 		// if gameboard is null create new board and 
 		//propagate board to those playing 
-		
 	}
 
 
 	@Override
 	public void leaveGame(ChatCallback objref,String user) {
 		//players.remove(objref);
-		players.remove(user);
+		if(players.containsKey(user))
+		{
+			//TODO think though is this the same refernce
+			players.remove(user);
+		}
+
+		if (players.isEmpty())
+		{
+			activeGame = false;
+			board.clearBoard();
+		}else{
+			for (ChatCallback pl : players.values()) {
+				pl.update(user + " is leaving game \n");
+			}
+		}
+		board.clearBoard();
 		// TODO check if we are the last to leave if so 
+		// now startgame will work correctly anyway but maybe 
+		// good idea to to reset board here as well
 		// set board to null
-		
+
 	}
+
+
 }
 
 public class ChatServer

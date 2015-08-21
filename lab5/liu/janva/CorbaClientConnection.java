@@ -55,8 +55,8 @@ public class CorbaClientConnection {
 
 		@Override
 		public void announceWin(short x) {
-			// TODO Auto-generated method stub
-			
+			//TODO for now we just announce in chat window
+			messages.addMessageToBack("The winner is " + x);
 		}
 	}
 

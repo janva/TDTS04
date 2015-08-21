@@ -1,8 +1,6 @@
 package liu.janva;
 
 
-
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Enumeration;
@@ -80,6 +78,9 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         joinButton = new javax.swing.JButton();
         leaveButton = new javax.swing.JButton();
         leaveButton.setEnabled(false);
+        markButton = new javax.swing.JButton();
+        //markButton.setEnabled(false);
+        
         javax.swing.JRadioButton xRadioButton = new javax.swing.JRadioButton();
         javax.swing.JRadioButton oRadioButton = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
@@ -220,16 +221,25 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                 playButtonActionPerformed(evt);
             }
         });
+        
         leaveGameButton.setText("Leave Game");
         leaveGameButton.setEnabled(false);
         leaveGameButton.addActionListener(new java.awt.event.ActionListener() {
+        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        		leaveGameButtonActionPerformed(evt);
+        	}
+        });
+
+        markButton.setText("make move");
+        markButton.setEnabled(false);
+        markButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leaveGameButtonActionPerformed(evt);
+                markButtonActionPerformed(evt);
             }
         });
 
         sendTextarea.setColumns(26);
-        sendTextarea.setRows(5);
+        sendTextarea.setRows(3);
         jScrollPane2.setViewportView(sendTextarea);
 
         javax.swing.GroupLayout messagePanelLayout = new javax.swing.GroupLayout(messagePanel);
@@ -242,6 +252,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                 		.addComponent(postButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(playButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(leaveGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(markButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(messagePanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -256,6 +267,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                 .addComponent(postButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(playButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(leaveGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(markButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -332,15 +344,26 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                break;
            }
            else 
-        	   
+           {
                team = "O";
+           }
            break;
        }
+       markButton.setEnabled(true);
+
         System.out.println("pushed play button ");
     }
     private void leaveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {
         chatImpl.leaveGame(cref, userName);
+        markButton.setEnabled(false);
+
         System.out.println("pushed leave button ");
+    }
+    private void markButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        //TODO weird seems like there is no literal for this in java?
+    	//TODO make mark some abstract type which can be converted to wanted type
+    	chatImpl.mark(cref, (short)0, (short)0, (short)(team=="X" ? 1 : 2));
+        System.out.println("pushed make move button ");
     }
    
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
@@ -371,6 +394,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     private void leaveButtonActionPerformed(java.awt.event.ActionEvent evt) {
     	chatImpl.leave(cref, userName);
     	userName = "";
+    	userNameField.setText("");
     	postButton.setEnabled(false);
        joinButton.setEnabled(true);
        playButton.setEnabled(false);
@@ -378,7 +402,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     }
 
    private void ListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ListButtonActionPerformed
-      receivedTextarea.setText(chatImpl.list(cref) +"\n");  
+      receivedTextarea.append(chatImpl.list(cref) +"\n");  
     }
 
     /**
@@ -400,6 +424,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton postButton;
     private javax.swing.JButton playButton;
     private javax.swing.JButton leaveGameButton;
+    private javax.swing.JButton markButton;
     private javax.swing.JTextArea receivedTextarea;
     private javax.swing.JTextArea sendTextarea;
     private javax.swing.ButtonGroup teamGroup;
