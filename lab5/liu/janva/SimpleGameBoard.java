@@ -7,8 +7,8 @@ public class SimpleGameBoard implements Board{
 	//TODO howto mock?
 	int[][] board  ={
 			{1,2,2,2,1},
-			{0,1,2,2,1},
-			{0,2,1,1,1},
+			{1,1,2,2,1},
+			{1,0,1,0,1},
 			{0,0,0,1,1},
 			{2,2,2,2,2}};
 
@@ -79,7 +79,7 @@ public class SimpleGameBoard implements Board{
 	}
 
 
-	public String tosString()
+	public String toString()
 	{
 		StringBuilder builder = new StringBuilder();
 		//TODO me not like
@@ -114,7 +114,9 @@ public class SimpleGameBoard implements Board{
 	{
 		public static void main(String[] args) {
 			SimpleGameBoard board = new SimpleGameBoard(new SimpleCheck(), 5);
-			board.tosString();
+			board.toString();
+			System.out.println(
+			board.getMarkAtPosition(new Position(3, 2)));
 		}
 	}
 }

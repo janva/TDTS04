@@ -12,7 +12,9 @@ public class SimpleCheck implements Checker {
 	public boolean checkWin(Board boardTemp, Position lastMove) {
 		
 		//TODO might become a problem the we need to pas checker to gameboard
-		SimpleGameBoard board = new SimpleGameBoard(this, 5);
+		//SimpleGameBoard board = new SimpleGameBoard(this, 5);
+		//TODO no need to assign  above was used for testing 
+		Board board = boardTemp;
 		final int WIN_LIMIT = 3;
 		//if (checkHorizontal (int[][] board,int xPos, int yPos));
 		//Chekhorizontal win
@@ -25,7 +27,12 @@ public class SimpleCheck implements Checker {
 		int diagonalUpperLeftToLowerRightCount= 1;
 		int diagonalUpperRightToLowerLeftCount= 1;
 
+		//TODO make mark abstract type instead of int less dependencies
 		int mark= board.getMarkAtPosition(lastMove);
+		if(mark == 0 )
+		{
+			return false;
+		}
 		//[lastMove.getRow()][lastMove.getCol()];
 
 		boolean moreLeft= true;
@@ -51,9 +58,9 @@ public class SimpleCheck implements Checker {
 			++nextIncrementer;
 			if(moreRight)
 			{
-				if(( (nextIncrementer + lastMove.getCol()) < board.getWidth() )&&
-						(board.getMarkAtPosition( new Position((lastMove.getCol() + nextIncrementer), 
-								(lastMove.getRow()))) == mark))
+				if(( (nextIncrementer + lastMove.getCol()) < board.getWidth())&&
+						(board.getMarkAtPosition(new Position((lastMove.getRow()),
+								(lastMove.getCol() + nextIncrementer) )) == mark))
 						//(board[lastMove.getRow()][lastMove.getCol() + nextIncrementer] == mark ))
 				{
 					if (++horizontalCount >= WIN_LIMIT)
@@ -67,7 +74,7 @@ public class SimpleCheck implements Checker {
 			}
 			if(moreLeft){
 				if(((lastMove.getCol() -nextIncrementer ) >= 0) &&
-						board.getMarkAtPosition(new Position(lastMove.getCol() - nextIncrementer, lastMove.getRow()))== mark)
+						board.getMarkAtPosition(new Position(lastMove.getRow(),lastMove.getCol() - nextIncrementer))== mark)
 						//board[lastMove.getRow()][lastMove.getCol() - nextIncrementer] == mark )
 				{
 					if (++horizontalCount >= WIN_LIMIT)
@@ -85,8 +92,8 @@ public class SimpleCheck implements Checker {
 			{//TODO THIS LINE SEEMS TO BE PROBLEM
 				if(	( nextIncrementer + lastMove.getRow() < board.getWidth()) 
 						&&
-						(board.getMarkAtPosition(new Position(lastMove.getCol() ,
-								lastMove.getRow()+ nextIncrementer ))== mark))
+						(board.getMarkAtPosition(new Position(lastMove.getRow()+ nextIncrementer,
+								lastMove.getCol()))== mark))
 //				if(( nextIncrementer + lastMove.getRow() < board.length ) &&
 //						(board[lastMove.getRow() + nextIncrementer ][lastMove.getCol()] == mark))
 				{
@@ -104,8 +111,7 @@ public class SimpleCheck implements Checker {
 			{
 				if(lastMove.getRow() -nextIncrementer >= 0 &&
 						board.getMarkAtPosition(new Position (
-								(lastMove.getCol()),
-								(lastMove.getRow() - nextIncrementer))) == mark)
+								(lastMove.getRow() - nextIncrementer),(lastMove.getCol()))) == mark)
 				{
 							//board[lastMove.getRow() - nextIncrementer ][lastMove.getCol()] == mark )
 					if (++verticalCount >= WIN_LIMIT)
@@ -124,8 +130,8 @@ public class SimpleCheck implements Checker {
 			{
 				if(lastMove.getRow() -nextIncrementer >= 0 && lastMove.getCol() - nextIncrementer>=0 &&
 						board.getMarkAtPosition(
-								new Position((lastMove.getCol()-nextIncrementer),
-										(lastMove.getRow() - nextIncrementer))) == mark)
+								new Position((lastMove.getRow() - nextIncrementer),
+										(lastMove.getCol()-nextIncrementer))) == mark)
 								
 						//board[lastMove.getRow() - nextIncrementer ][lastMove.getCol()-nextIncrementer] == mark)
 				{
@@ -144,8 +150,8 @@ public class SimpleCheck implements Checker {
 				//TODO board is square so this works but fix it anyway in case future changes
 				if(lastMove.getRow() +nextIncrementer < board.getHeight()  && lastMove.getCol()+nextIncrementer < board.getWidth()  &&
 						board.getMarkAtPosition(
-								new Position(lastMove.getCol()+ nextIncrementer, 
-										    lastMove.getRow() + nextIncrementer))
+								new Position(lastMove.getRow() + nextIncrementer,
+										    lastMove.getCol()+ nextIncrementer))
 								 == mark)
 								{
 					if (++diagonalUpperLeftToLowerRightCount  >= WIN_LIMIT)
@@ -162,8 +168,8 @@ public class SimpleCheck implements Checker {
 			if(moreDiagonallyToUpperRight)
 			{
 				if(lastMove.getRow() -nextIncrementer >= 0 && lastMove.getCol() + nextIncrementer < board.getWidth() &&
-						board.getMarkAtPosition(new Position(lastMove.getCol()+ nextIncrementer,
-								lastMove.getRow() - nextIncrementer ))
+						board.getMarkAtPosition(new Position(lastMove.getRow() - nextIncrementer,
+								lastMove.getCol()+ nextIncrementer))
 						== mark)
 						{
 					if (++diagonalUpperRightToLowerLeftCount>= WIN_LIMIT)
@@ -180,7 +186,8 @@ public class SimpleCheck implements Checker {
 			{
 				//TODO board is square so this works but fix it anyway in case future changes
 				if(lastMove.getRow() +nextIncrementer < board.getHeight()  && lastMove.getCol()-nextIncrementer >=0   &&
-						board.getMarkAtPosition(new Position(lastMove.getCol()-nextIncrementer, lastMove.getRow() + nextIncrementer)) == mark )
+						board.getMarkAtPosition(new Position(lastMove.getRow() + nextIncrementer,
+								lastMove.getCol()-nextIncrementer)) == mark )
 						{
 					if (++diagonalUpperRightToLowerLeftCount  >= WIN_LIMIT)
 					{
@@ -206,32 +213,28 @@ public class SimpleCheck implements Checker {
 					{1,1,1,1,1},
 					{1,1,1,1,1}};
 			Checker check = new SimpleCheck();
+			//SimpleGameBoard board = new SimpleGameBoard(check,5);
 			//System.out.println( check.checkWin(arr,1, 1)? "win":"lose");
 
-			for (int i = 0; arr[0].length < i ; ++i )
-			{
-				System.out.println(arr[0][i]);
-				arr[0][i]=2;
-			}
-
-			int[][] arr2 = 
-				  { {2,2,2,2,0},
-					{1,2,1,2,1},
-					{2,2,1,1,1},
-					{2,1,0,2,1},
-					{1,1,2,1,1}};
-			int[][] arr3 = 
-				{{2,2,2,2,0},
-					{1,1,1,1,1},
-					{2,1,2,1,2},
-					{1,2,1,1,1},
-					{1,1,1,1,1}};
-			int[][] arr4 = 
-				{{2,2,2,2,0},
-					{1,1,1,1,1},
-					{1,1,1,1,1},
-					{1,1,1,1,1},
-					{1,1,1,1,1}};
+			
+//			int[][] arr2 = 
+//				  { {2,2,2,2,0},
+//					{1,2,1,2,1},
+//					{2,2,1,1,1},
+//					{2,1,0,2,1},
+//					{1,1,2,1,1}};
+//			int[][] arr3 = 
+//				{{2,2,2,2,0},
+//					{1,1,1,1,1},
+//					{2,1,2,1,2},
+//					{1,2,1,1,1},
+//					{1,1,1,1,1}};
+//			int[][] arr4 = 
+//				{{2,2,2,2,0},
+//					{1,1,1,1,1},
+//					{1,1,1,1,1},
+//					{1,1,1,1,1},
+//					{1,1,1,1,1}};
 //			int[][] board = {
 //					{1,2,2,2,1},
 //					{0,1,2,2,1},
@@ -241,17 +244,24 @@ public class SimpleCheck implements Checker {
 
 			SimpleGameBoard board = 
 					new SimpleGameBoard(new SimpleCheck(), 5);
+			System.out.println(board.toString());
+			
 			System.out.println( "------------------------------------");
-//			System.out.println( check.checkWin(arr2,1,1)? "win":"lose");
-//			
-//			System.out.println( check.checkWin(arr2,1,2)? "win":"lose");
-//			System.out.println( check.checkWin(arr2,4,1)? "win":"lose");
-//			System.out.println( check.checkWin(arr2,2,4)? "win":"lose");
-//			System.out.println( check.checkWin(arr2,4,4)? "win":"lose");
-//			System.out.println( check.checkWin(arr3,3,2)? "win":"lose");
-//			System.out.println( check.checkWin(arr4,1,1)? "win":"lose");
+			System.out.println( check.checkWin(board, new Position(1, 1))? "win":"lose");
+			System.out.println( check.checkWin(board,new Position(1,2))? "win":"lose");
 			System.out.println( check.checkWin(board,new Position(4,1))? "win":"lose");
-
+			System.out.println( check.checkWin(board,new Position(2,4))? "win":"lose");
+			System.out.println( check.checkWin(board,new Position(3,4))? "win":"lose");
+			System.out.println( check.checkWin(board,new Position(3,2))? "win":"lose");
+			System.out.println(board.getMarkAtPosition(new Position(0, 4)));
+			System.out.println(board.getMarkAtPosition(new Position(1, 4)));
+			System.out.println(board.getMarkAtPosition(new Position(2, 4)));
+			System.out.println(board.getMarkAtPosition(new Position(3, 4)));
+			System.out.println(board.getMarkAtPosition(new Position(2, 3)));
+			System.out.println(board.getMarkAtPosition(new Position(2, 3)));
+			System.out.println(board.getMarkAtPosition(new Position(2, 2)));
+			//System.out.println( check.checkWin(arr4,1,1)? "win":"lose");
+			System.out.println( check.checkWin(board,new Position(4,1))? "win":"lose");
 		}
 
 	}

@@ -362,7 +362,23 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     private void markButtonActionPerformed(java.awt.event.ActionEvent evt) {
         //TODO weird seems like there is no literal for this in java?
     	//TODO make mark some abstract type which can be converted to wanted type
-    	chatImpl.mark(cref, (short)0, (short)0, (short)(team=="X" ? 1 : 2));
+        InputDialog xyDialog= new InputDialog(); 
+    	int result = JOptionPane.showConfirmDialog(this, xyDialog, 
+    			"Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
+    
+          
+          if (result == JOptionPane.OK_OPTION) {
+        	  int x = Integer.parseInt(xyDialog.xField.getText());
+        	  int y = Integer.parseInt(xyDialog.yField.getText());
+             System.out.println("x value: " + xyDialog.xField.getText());
+             System.out.println("y value: " + xyDialog.yField.getText());
+//             int x=0; //xyDialog.getX();
+//             int y =1; //xyDialog.getY();
+             chatImpl.mark(cref, (short)x, (short)y, (short)(team=="X" ? 1 : 2));
+
+          }
+       
+//    	chatImpl.mark(cref, (short)0, (short)0, (short)(team=="X" ? 1 : 2));
         System.out.println("pushed make move button ");
     }
    

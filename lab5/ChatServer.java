@@ -126,15 +126,16 @@ class ChatImpl extends ChatPOA
 				System.out.println("Winning board announced from chat server");
 				board.clearBoard();
 				for (ChatCallback playerCallbacks : players.values()) {
+					playerCallbacks.update(board.toString());
 					playerCallbacks.announceWin(x);
 					//TODO send back new empty board empty board to active players
 					//hmm maybe not here could be problem
-					playerCallbacks.update(board.tosString());
+					playerCallbacks.update(board.toString());
 				}
 			}else
 			{
 			for (ChatCallback playerCallbacks : players.values()) {
-				playerCallbacks.update(board.tosString());
+				playerCallbacks.update(board.toString());
 			}
 			}
 		}
@@ -148,7 +149,7 @@ class ChatImpl extends ChatPOA
 		if (activeUsers.containsKey(userName))
 		{
 			//For now we send whole board as string
-			String stringBoard = board.tosString();
+			String stringBoard = board.toString();
 			if(players.containsValue(callbackRef))
 			{
 				//TODO could return value value here instead 
