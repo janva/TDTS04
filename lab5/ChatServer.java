@@ -132,12 +132,15 @@ class ChatImpl extends ChatPOA
 					//hmm maybe not here could be problem
 					playerCallbacks.update(board.toString());
 				}
+				//Think of a better solution reduces the problem minimally
+				activeGame=true;
 			}else
 			{
-			for (ChatCallback playerCallbacks : players.values()) {
-				playerCallbacks.update(board.toString());
+				for (ChatCallback playerCallbacks : players.values()) {
+					playerCallbacks.update(board.toString());
+				}
 			}
-			}
+		
 		}
 	}
 

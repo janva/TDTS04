@@ -56,7 +56,7 @@ public class CorbaClientConnection {
 		@Override
 		public void announceWin(short x) {
 			//TODO for now we just announce in chat window
-			messages.addMessageToBack("The winner is " + x);
+			messages.addMessageToBack("The winner is " + x +"\n");
 		}
 	}
 
