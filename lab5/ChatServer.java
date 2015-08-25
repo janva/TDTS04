@@ -34,10 +34,9 @@ class ChatImpl extends ChatPOA
 
 	public void setORB(ORB orb_val) {
 	}
-
+	@Deprecated
 	public String say(ChatCallback callobj, String msg)
 	{
-		//so use callobj to call on update in client
 		callobj.callback(msg);
 		return ("         ....server says Goodbye!\n");
 	}
@@ -81,10 +80,6 @@ class ChatImpl extends ChatPOA
 	}
 	//TODO maybe no need to return string
 	public  String send (ChatApp.ChatCallback senderRef, String msg){
-        //TODO fixme here for past reasons
-		//Collection< ChatCallback>userRefs =activeUsers.keySet();
-		
-		//if(userRefs.contains(senderRef))
 		//TODO strip of whitespace at end
 		String user = activeUsers.get(senderRef);
 		if(user!= null)
@@ -93,54 +88,48 @@ class ChatImpl extends ChatPOA
 			return msg;
 		}else
 			return "We could not find your alias";
-		
-	}
-private void sendAll(String msg)
-{
-	Collection< ChatCallback>userRefs =activeUsers.keySet();
-	for(ChatCallback cref : userRefs)
-	{
-		cref.update(msg+"\n");
-	}
-}
 
-private void sendAllPlayers(String msg)
-{
-	
-}
-//game interface 
+	}
+	//game interface 
 	//TODO here for now move up later
 	boolean activeGame= false;
 
-	@Override
+	@Override //need more work
 	public void mark(ChatCallback objref, short x, short y, short mark) {
-		// TODO probably need to buffer commands command pattern?
-		// simplest possible boolean active game if not do nothing?
-		// sync problems?
-		// call mark on board and check if caused win if so 
-		//restart game (note might need to drop mark commands
-		// which came to late)
-		//for now we just drop incomming commands if not active
-		if (activeGame) {			
-			//TODO mark position side effect maybe not a good idea
-			//(return true if win occurred)
-			if(board.markPosition(new Position(x, y), mark))
+		if (activeGame) 
+		{	
+			//TODO case was thought of at late stage
+			if(board.full())
 			{
-				activeGame=false;
-				System.out.println("Winning board announced from chat server");
+				sendAllPlayers("No winner new game");
 				board.clearBoard();
-				for (ChatCallback playerCallbacks : players.values()) {
-					playerCallbacks.update(board.toString());
-					playerCallbacks.announceWin(x);
-					playerCallbacks.update(board.toString());
-				}
-				//Think of a better solution reduces the problem minimally
-				activeGame=true;
-			}else
+				sendAllPlayers(board.toString());
+				return;
+			}
+			Position lastMove =new Position(x, y);
+			//was square allready taken?
+			if(board.markPosition(lastMove, mark))
 			{
-				for (ChatCallback playerCallbacks : players.values()) {
-					playerCallbacks.update(board.toString());
+				//did placing mark cause win
+				if(board.checkWin(lastMove))
+				{
+					activeGame=false;
+					sendAllPlayers(board.toString());
+					board.clearBoard();
+					for (ChatCallback playerCallbacks : players.values()) {
+						//Initially announce was intended to do more stuff on client side 
+						playerCallbacks.announceWin(x);
+						playerCallbacks.update(board.toString());
+					}
+					//Think of a better solution reduces the problem minimally
+					activeGame=true;
+				}else
+				{   
+					sendAllPlayers(board.toString());
 				}
+			}else //square was occupied
+			{
+				objref.update("(" + x +","+ y +") is used \n");
 			}
 		}
 	}
@@ -150,7 +139,7 @@ private void sendAllPlayers(String msg)
 	public void playGame(ChatCallback callbackRef, String userName) {
 		//TODO minimal check that we have joined through chat that is we a
 		//Only those active on chat can play
-		if (activeUsers.containsKey(userName))
+		if (activeUsers.containsKey(callbackRef))
 		{
 			String stringBoard = board.toString();
 			if(players.containsValue(callbackRef))
@@ -162,13 +151,8 @@ private void sendAllPlayers(String msg)
 			{
 				//clear the board just in case
 				board.clearBoard();
-				//TODO not a nice solution but ok for now
 				activeGame = true;
-				for(ChatCallback callback : activeUsers.keySet())
-				{
-					//tell everyone we started new game
-					callback.update(userName +" Started new game join \n"+stringBoard);
-				}
+				sendAll(userName +" Started new game join \n"+stringBoard);
 				players.put(userName, callbackRef);
 			}else
 			{
@@ -177,11 +161,7 @@ private void sendAllPlayers(String msg)
 				callbackRef.update(stringBoard);
 			}
 		}
-
-		///if we are already active players do nothing
-		// else add as player 
 	}
-
 
 	@Override
 	public void leaveGame(ChatCallback objref,String user) {
@@ -195,13 +175,26 @@ private void sendAllPlayers(String msg)
 			activeGame = false;
 			board.clearBoard();
 		}else{
-			for (ChatCallback pl : players.values()) {
-				pl.update(user + " is leaving game \n");
-			}
+			sendAllPlayers(user + " is leaving game \n");
 		}
 		board.clearBoard();
-		// TODO check if we are the last to leave if so 
+	}
 
+	private void sendAll(String msg)
+	{
+		sendToSet(msg,activeUsers.keySet());
+	}
+
+	private void sendAllPlayers(String msg)
+	{
+		sendToSet(msg,players.values());
+	}
+
+	private void sendToSet(String msg, Collection< ChatCallback> callbackRefs)
+	{
+		for (ChatCallback callback : callbackRefs) {
+			callback.update(msg +"\n");
+		}
 	}
 }
 

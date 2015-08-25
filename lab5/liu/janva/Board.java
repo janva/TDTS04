@@ -9,4 +9,5 @@ public interface Board {
 	public void clearBoard();
 
 	public String toString();
+	public boolean full();
 }

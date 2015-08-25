@@ -346,6 +346,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 			break;
 		}
 		markButton.setEnabled(true);
+		
 	}
 	private void leaveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chatImpl.leaveGame(cref, userName);
@@ -396,6 +397,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 		joinButton.setEnabled(true);
 		playButton.setEnabled(false);
 		leaveGameButton.setEnabled(false);
+		
 	}
 
 	private void ListButtonActionPerformed(java.awt.event.ActionEvent evt) {

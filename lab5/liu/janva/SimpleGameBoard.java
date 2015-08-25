@@ -26,18 +26,15 @@ public class SimpleGameBoard implements Board{
 		if(current == 0)
 		{
 			board[pos.getRow()][pos.getCol()] = mark;
-		}else
-		{
-			//for now but maybe announce back that square was
-			// already taken
-			return false;
-		}
-		if(checkWin(pos))
-		{
-			System.out.println("announce winner");
 			return true;
 		}
 		return false;
+		//better not call checkwin here
+		//		if(checkWin(pos))
+		//		{
+		//			System.out.println("announce winner");
+		//			return true;
+		//		}
 	}
 
 	public int getHeight ()
@@ -90,12 +87,12 @@ public class SimpleGameBoard implements Board{
 			for(int j= 0; j < getWidth(); ++j)
 			{
 				builder.append("[");
-				
+
 				int mark = board[i][j];
 				if (mark == 0)
 				{
 					builder.append('-');
-					
+
 				}else
 				{
 					//TODO Again mark abstract type now we have dependencies scattered all over the place
@@ -116,7 +113,21 @@ public class SimpleGameBoard implements Board{
 			SimpleGameBoard board = new SimpleGameBoard(new SimpleCheck(), 5);
 			board.toString();
 			System.out.println(
-			board.getMarkAtPosition(new Position(3, 2)));
+					board.getMarkAtPosition(new Position(3, 2)));
 		}
+	}
+	
+	// TODO bläää thought of this at late stage know it sucks
+	@Override
+	public boolean full() {
+		for(int i =0; board.length > i; ++i)
+		{
+			for(int j=0; board.length > j; ++j)
+			{
+				if (board[i][j]== 0)
+					return false;
+			}
+		}
+		return false;
 	}
 }
