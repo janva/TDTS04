@@ -5,18 +5,18 @@ import java.util.Arrays;
 public class SimpleGameBoard implements Board{
 	private Checker checker;
 	//TODO here for testing not relevant any more
-	int[][] board  ={
-			{1,2,2,2,1},
-			{1,1,2,2,1},
-			{1,0,1,0,1},
-			{0,0,0,1,1},
-			{2,2,2,2,2}};
+	int[][] board;//  ={
+//			{1,2,2,2,1},
+//			{1,1,2,2,1},
+//			{1,0,1,0,1},
+//			{0,0,0,1,1},
+//			{2,2,2,2,2}};
 
 	//TODO consider making this class singelton but be aware of threadsafty
 	public SimpleGameBoard(Checker checker, int boardSize)
 	{
 		this.checker = checker;
-		//this.board = new int[boardSize][boardSize];
+		this.board = new int[boardSize][boardSize];
 	}
 
 	//TODO mark  needs to be abstract type not int
