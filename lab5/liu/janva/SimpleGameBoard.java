@@ -21,6 +21,10 @@ public class SimpleGameBoard implements Board{
 
 	//TODO mark  needs to be abstract type not int
 	public boolean markPosition(Position pos, int mark) {
+		if(!((pos.getRow() <= board.length ) && (pos.getCol() <= board[0].length)))
+		{
+			return false;
+		}
 		int current = board[pos.getRow()][pos.getCol()] ;
 		if(current == 0)
 		{

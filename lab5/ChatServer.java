@@ -131,7 +131,7 @@ class ChatImpl extends ChatPOA
 				}
 			}else //square was occupied
 			{
-				objref.update("(" + x +","+ y +") is used \n");
+				objref.update("(" + x +","+ y +") is not possible \n");
 			}
 		}
 	}
