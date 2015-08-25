@@ -1,9 +1,5 @@
 package liu.janva;
 
-
-//TODO does java have something more appopriate like 
-// countable discrete numbers )
-//make generic maybe even need create IndexTyp
 public class Position 
 {
 		private int row;

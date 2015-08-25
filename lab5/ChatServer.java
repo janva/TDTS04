@@ -11,18 +11,13 @@ import liu.janva.SimpleGameBoard;
 import ChatApp.*;          // The package containing our stubs.
 
 import org.omg.CosNaming.*; // HelloServer will use the naming service.
-import org.omg.CosNaming.NamingContextPackage.*; // ..for exceptions.
 import org.omg.CORBA.*;     // All CORBA applications need these classes.
 import org.omg.PortableServer.*;
 
 class ChatImpl extends ChatPOA
 { 
-	private ORB orb;
-	private Map<String, ChatCallback> activeUsers; 
-	//TODO Migrate to this if time is given user would contain team as well as 
-	//userName 
-	//private Map<User, ChatCallback> activeUsers;
-	//even if it's a bad idea we let client handle team selection	
+	//hopefully unique  callbacks
+	private Map<ChatCallback, String> activeUsers; 
 	private Map<String, ChatCallback> players; 
 
 	private Board board;
@@ -30,7 +25,7 @@ class ChatImpl extends ChatPOA
 	//instansiate game and init    
 	public ChatImpl() {
 		super();
-		this.activeUsers = new HashMap<String, ChatCallback>();
+		this.activeUsers = new HashMap<ChatCallback, String>();
 		this.players= new HashMap<String, ChatCallback>();
 		board = new SimpleGameBoard(new SimpleCheck(), 9);
 		//TODO for testing purposes board is not empty 
@@ -38,7 +33,6 @@ class ChatImpl extends ChatPOA
 	}
 
 	public void setORB(ORB orb_val) {
-		orb = orb_val;
 	}
 
 	public String say(ChatCallback callobj, String msg)
@@ -49,62 +43,72 @@ class ChatImpl extends ChatPOA
 	}
 
 	public String list (ChatCallback objref){
-		System.out.println("List under construction");
 		//generate list of user from active
 		StringBuilder sb = new StringBuilder();
-		for(String userName : activeUsers.keySet() )
+		for(String userName : activeUsers.values() )
 		{
 			sb.append(userName);
 			sb.append(",");
 		}
-		System.out.println(sb.toString());
 		objref.callback(sb.toString());  
+		//TODO no need to return
 		return sb.toString();
 	}
 
 	public boolean join (ChatCallback cref, String user){
-		if(activeUsers.containsKey(user))
+		if(activeUsers.containsValue(user))
 		{
-			cref.callback("Alias " + user + " is already taken");
 			return false;
 		}
 		else
 		{
-			activeUsers.put(user, cref);
-			cref.callback("Your alias is " + user +" is now active" );
+			sendAll(user + " joined conversation");
+			activeUsers.put(cref,user);
+			cref.update("Your alias is " + user +" happy chatting \n" );
 		}
 		return true;
 	}
-	//TODO think through should use name as key or cref latter probable better
-	//behöver jag stänga specifica orben oxå
 	public   void  leave (ChatApp.ChatCallback cref, String user){
-		ChatCallback userCallBack=activeUsers.remove(user);	
-		if (userCallBack != null)
+		String userName=activeUsers.remove(cref);	
+		if (userName != null)
 		{
 			leaveGame(cref,user);
-			userCallBack.callback(user + ": is leaving conversation");
+			sendAll(user + ": is leaving conversation");
 		}else
 		{
-			//TODO should maybe return this value or bool instead to mark success
-			cref.callback("no such user");
+			cref.update("no such user");
 		}
 	}
-
+	//TODO maybe no need to return string
 	public  String send (ChatApp.ChatCallback senderRef, String msg){
-		//TODO for know message will do roundtrip and sent back 
-		// to sender as well
-		Collection< ChatCallback>userRefs =activeUsers.values();
-		if(userRefs.contains(senderRef))
+        //TODO fixme here for past reasons
+		//Collection< ChatCallback>userRefs =activeUsers.keySet();
+		
+		//if(userRefs.contains(senderRef))
+		//TODO strip of whitespace at end
+		String user = activeUsers.get(senderRef);
+		if(user!= null)
 		{
-			for(ChatCallback cref : userRefs)
-			{
-				cref.update(msg);
-			}
-		}
-		return msg;
+			sendAll("["+user +"] "+ msg);
+			return msg;
+		}else
+			return "We could not find your alias";
+		
 	}
+private void sendAll(String msg)
+{
+	Collection< ChatCallback>userRefs =activeUsers.keySet();
+	for(ChatCallback cref : userRefs)
+	{
+		cref.update(msg+"\n");
+	}
+}
 
-	//game interface 
+private void sendAllPlayers(String msg)
+{
+	
+}
+//game interface 
 	//TODO here for now move up later
 	boolean activeGame= false;
 
@@ -128,8 +132,6 @@ class ChatImpl extends ChatPOA
 				for (ChatCallback playerCallbacks : players.values()) {
 					playerCallbacks.update(board.toString());
 					playerCallbacks.announceWin(x);
-					//TODO send back new empty board empty board to active players
-					//hmm maybe not here could be problem
 					playerCallbacks.update(board.toString());
 				}
 				//Think of a better solution reduces the problem minimally
@@ -140,7 +142,6 @@ class ChatImpl extends ChatPOA
 					playerCallbacks.update(board.toString());
 				}
 			}
-		
 		}
 	}
 
@@ -151,12 +152,9 @@ class ChatImpl extends ChatPOA
 		//Only those active on chat can play
 		if (activeUsers.containsKey(userName))
 		{
-			//For now we send whole board as string
 			String stringBoard = board.toString();
 			if(players.containsValue(callbackRef))
 			{
-				//TODO could return value value here instead 
-				// and handle on client side
 				callbackRef.update("you allready joined as player");
 				return;
 			}
@@ -166,7 +164,7 @@ class ChatImpl extends ChatPOA
 				board.clearBoard();
 				//TODO not a nice solution but ok for now
 				activeGame = true;
-				for(ChatCallback callback : activeUsers.values())
+				for(ChatCallback callback : activeUsers.keySet())
 				{
 					//tell everyone we started new game
 					callback.update(userName +" Started new game join \n"+stringBoard);
@@ -179,20 +177,16 @@ class ChatImpl extends ChatPOA
 				callbackRef.update(stringBoard);
 			}
 		}
-		//callbackRef.callback("where did you come from? We've got an eye on you");
+
 		///if we are already active players do nothing
 		// else add as player 
-		// if gameboard is null create new board and 
-		//propagate board to those playing 
 	}
 
 
 	@Override
 	public void leaveGame(ChatCallback objref,String user) {
-		//players.remove(objref);
 		if(players.containsKey(user))
 		{
-			//TODO think though is this the same refernce
 			players.remove(user);
 		}
 
@@ -207,13 +201,8 @@ class ChatImpl extends ChatPOA
 		}
 		board.clearBoard();
 		// TODO check if we are the last to leave if so 
-		// now startgame will work correctly anyway but maybe 
-		// good idea to to reset board here as well
-		// set board to null
 
 	}
-
-
 }
 
 public class ChatServer

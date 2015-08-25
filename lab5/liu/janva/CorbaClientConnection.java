@@ -99,7 +99,6 @@ public class CorbaClientConnection {
 
 		public CorbClientConnectionBuilder setNestedChatCallbackImpl() {
 			this.nestedChatCallbackImpl = new ChatCallbackImpl();
-			//nestedChatCallbackImpl.setORB(nestedOrb);
 			return this;
 		}
 

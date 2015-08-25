@@ -24,6 +24,25 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 	private String userName ="";
 	private String team="X";
 
+	private javax.swing.JButton ListButton;
+	private javax.swing.JLabel teamLabel;
+	private javax.swing.JPanel jPanel2;
+	private javax.swing.JScrollPane jScrollPane1;
+	private javax.swing.JScrollPane sendTextAreaScrollPane;
+	private javax.swing.JButton joinButton;
+	private javax.swing.JButton leaveButton;
+	private javax.swing.JPanel loginPanel;
+	private javax.swing.JPanel messagePanel;
+	private javax.swing.JButton postButton;
+	private javax.swing.JButton playButton;
+	private javax.swing.JButton leaveGameButton;
+	private javax.swing.JButton markButton;
+	private javax.swing.JTextArea receivedTextarea;
+	private javax.swing.JTextArea sendTextarea;
+	private javax.swing.ButtonGroup teamGroup;
+	private java.awt.Label userLabel;
+	private javax.swing.JTextField userNameField;
+
 	public ChatWindow(CorbaClientConnection  cc) {
 		//for convienience
 		this.chatImpl = cc.getChatImpl();
@@ -136,14 +155,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 										.addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
 												.addComponent(sendTextAreaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
 												.addGap(10, 10, Short.MAX_VALUE)
-//												.addGroup(loginPanelLayout.createSequentialGroup()
 												.addComponent(postButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 												.addGap(0, 0, Short.MAX_VALUE))
-										
-										
-										
-										
-										
 										.addGroup(loginPanelLayout.createSequentialGroup()
 												.addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 														.addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -152,11 +165,6 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 																.addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 																		.addComponent(userNameField)
-//																		.addGroup(loginPanelLayout.createSequentialGroup()
-//																				.addComponent(xRadioButton)
-//																				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-//																				.addComponent(oRadioButton)
-//																				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 																																					)))
 																		.addContainerGap())
 				);
@@ -172,10 +180,6 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE))
 								.addGap(18, 18, 18)
-//								.addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-//										.addComponent(xRadioButton)
-//										.addComponent(oRadioButton)
-//										.addComponent(teamLabel))
 										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
 												.addComponent(joinButton)
@@ -192,7 +196,6 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 						));
 
 		messagePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
 
 		postButton.setText("Post");
 		postButton.setEnabled(false);
@@ -240,24 +243,12 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(oRadioButton)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-																						
-				
-				
-				
-
-				
-				
-				
 				.addGroup(messagePanelLayout.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(messagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								//                		.addComponent(postButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(playButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(leaveGameButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addComponent(markButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								//                    .addGroup(messagePanelLayout.createSequentialGroup()
-								//                        .addComponent(sendTextAreaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								//                        .addGap(0, 0, Short.MAX_VALUE))
 								)
 								.addContainerGap())
 				);
@@ -270,9 +261,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 						.addComponent(teamLabel))
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addContainerGap()
-						//                .addComponent(sendTextAreaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-						//                .addComponent(postButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addComponent(playButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addComponent(leaveGameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addComponent(markButton, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -333,8 +322,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 	}
 
 	private void postButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		//TODO not best solution but works for now
-		String sentMsg = userName + "["+team+"]: " +  sendTextarea.getText() +"\n";
+		String sentMsg =  sendTextarea.getText();
 		sendTextarea.setText("");
 		chatImpl.send(cref, sentMsg);
 	}
@@ -364,28 +352,24 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 		markButton.setEnabled(false);
 	}
 	private void markButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		//TODO weird seems like there is no literal for this in java?
 		//TODO make mark some abstract type which can be converted to wanted type
 		InputDialog xyDialog= new InputDialog(); 
 		int result = JOptionPane.showConfirmDialog(this, xyDialog, 
 				"Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
-
-
 		if (result == JOptionPane.OK_OPTION) {
 			int x = Integer.parseInt(xyDialog.xField.getText());
 			int y = Integer.parseInt(xyDialog.yField.getText());
 			chatImpl.mark(cref, (short)x, (short)y, (short)(team=="X" ? 1 : 2));
-
 		}
 	}
 
 	private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {
+		//return null or "" on empty field?
 		userName = userNameField.getText();
 
-		//TODO fixme need to wait for callback to do the bellow
-		if(userName =="")
+		//TODO fixme need to wait for callback to do the bellow not working at the moment
+		if(userName=="")
 		{
-			//TODO fixme dialog
 			JOptionPane.showMessageDialog(this, "User cannot be empty string");
 			return;
 		}
@@ -418,31 +402,12 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 		receivedTextarea.append(chatImpl.list(cref) +"\n");  
 	}
 
-	private javax.swing.JButton ListButton;
-	private javax.swing.JLabel teamLabel;
-	private javax.swing.JPanel jPanel2;
-	private javax.swing.JScrollPane jScrollPane1;
-	private javax.swing.JScrollPane sendTextAreaScrollPane;
-	private javax.swing.JButton joinButton;
-	private javax.swing.JButton leaveButton;
-	private javax.swing.JPanel loginPanel;
-	private javax.swing.JPanel messagePanel;
-	private javax.swing.JButton postButton;
-	private javax.swing.JButton playButton;
-	private javax.swing.JButton leaveGameButton;
-	private javax.swing.JButton markButton;
-	private javax.swing.JTextArea receivedTextarea;
-	private javax.swing.JTextArea sendTextarea;
-	private javax.swing.ButtonGroup teamGroup;
-	private java.awt.Label userLabel;
-	private javax.swing.JTextField userNameField;
-
 
 	@Override
 	//TODO instead of having whoel JFrame being observer
 	//make specific textwindow the observer
 	public void update(Observable arg0, Object arg1) {
-		//TODO should do check for correct arg 
+		//TODO should do check for correct arg could couse syncproblems messages?
 		receivedTextarea.append(messages.poll());
 	}
 }
