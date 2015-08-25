@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Queue;
 
-//queue adapter
 public class MessageQueue extends Observable {
 	
 	//synchronizetion?

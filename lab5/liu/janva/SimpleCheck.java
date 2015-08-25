@@ -1,25 +1,19 @@
 package liu.janva;
 
-//TODO abstract factory pattern
+//TODO break down into smaller parts
 public class SimpleCheck implements Checker {
 
 	public SimpleCheck() {}
 
 	//TODO create board interface. (Program to interface not to implementation)
 	@Override
-	//public boolean checkWin(int[][] board,int col, int row) {
-	//public boolean checkWin(int[][] board, Position lastMove) {
-	public boolean checkWin(Board boardTemp, Position lastMove) {
+	public boolean checkWin(Board board, Position lastMove) {
 		
 		//TODO might become a problem the we need to pas checker to gameboard
 		//SimpleGameBoard board = new SimpleGameBoard(this, 5);
 		//TODO no need to assign  above was used for testing 
-		Board board = boardTemp;
+		//Board board = boardTemp;
 		final int WIN_LIMIT = 3;
-		//if (checkHorizontal (int[][] board,int xPos, int yPos));
-		//Chekhorizontal win
-		//TODO assuming correct x and y for now
-		//vertical
 		int nextIncrementer= 0;
 		int horizontalCount = 1;
 		int verticalCount = 1;
@@ -33,8 +27,6 @@ public class SimpleCheck implements Checker {
 		{
 			return false;
 		}
-		//[lastMove.getRow()][lastMove.getCol()];
-
 		boolean moreLeft= true;
 		boolean moreRight= true;
 		boolean moreDown= true;
@@ -61,7 +53,6 @@ public class SimpleCheck implements Checker {
 				if(( (nextIncrementer + lastMove.getCol()) < board.getWidth())&&
 						(board.getMarkAtPosition(new Position((lastMove.getRow()),
 								(lastMove.getCol() + nextIncrementer) )) == mark))
-						//(board[lastMove.getRow()][lastMove.getCol() + nextIncrementer] == mark ))
 				{
 					if (++horizontalCount >= WIN_LIMIT)
 					{
@@ -89,13 +80,11 @@ public class SimpleCheck implements Checker {
 
 			//vertical
 			if(moreDown)
-			{//TODO THIS LINE SEEMS TO BE PROBLEM
+			{
 				if(	( nextIncrementer + lastMove.getRow() < board.getWidth()) 
 						&&
 						(board.getMarkAtPosition(new Position(lastMove.getRow()+ nextIncrementer,
 								lastMove.getCol()))== mark))
-//				if(( nextIncrementer + lastMove.getRow() < board.length ) &&
-//						(board[lastMove.getRow() + nextIncrementer ][lastMove.getCol()] == mark))
 				{
  					if (++verticalCount >= WIN_LIMIT)
 					{
@@ -113,7 +102,6 @@ public class SimpleCheck implements Checker {
 						board.getMarkAtPosition(new Position (
 								(lastMove.getRow() - nextIncrementer),(lastMove.getCol()))) == mark)
 				{
-							//board[lastMove.getRow() - nextIncrementer ][lastMove.getCol()] == mark )
 					if (++verticalCount >= WIN_LIMIT)
 					{
 						return true;
@@ -132,8 +120,6 @@ public class SimpleCheck implements Checker {
 						board.getMarkAtPosition(
 								new Position((lastMove.getRow() - nextIncrementer),
 										(lastMove.getCol()-nextIncrementer))) == mark)
-								
-						//board[lastMove.getRow() - nextIncrementer ][lastMove.getCol()-nextIncrementer] == mark)
 				{
 					if (++diagonalUpperLeftToLowerRightCount >= WIN_LIMIT)
 					{
@@ -184,7 +170,6 @@ public class SimpleCheck implements Checker {
 			}
 			if(moreDiagonallyToLowerLeft)
 			{
-				//TODO board is square so this works but fix it anyway in case future changes
 				if(lastMove.getRow() +nextIncrementer < board.getHeight()  && lastMove.getCol()-nextIncrementer >=0   &&
 						board.getMarkAtPosition(new Position(lastMove.getRow() + nextIncrementer,
 								lastMove.getCol()-nextIncrementer)) == mark )

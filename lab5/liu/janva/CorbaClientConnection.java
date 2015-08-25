@@ -21,7 +21,7 @@ import ChatApp.ChatCallbackPOA;
 import ChatApp.ChatHelper;
 //we use a variation of builder pattern
 public class CorbaClientConnection {
-    
+
 	//This class implement callback interface
 	public static class ChatCallbackImpl extends ChatCallbackPOA {
 		private MessageQueue messages;

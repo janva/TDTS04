@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class SimpleGameBoard implements Board{
 	private Checker checker;
-	//TODO howto mock?
+	//TODO here for testing not relevant any more
 	int[][] board  ={
 			{1,2,2,2,1},
 			{1,1,2,2,1},
@@ -20,7 +20,6 @@ public class SimpleGameBoard implements Board{
 	}
 
 	//TODO mark  needs to be abstract type not int
-	//TODO this will be part of interface
 	public boolean markPosition(Position pos, int mark) {
 		int current = board[pos.getRow()][pos.getCol()] ;
 		if(current == 0)
@@ -29,12 +28,6 @@ public class SimpleGameBoard implements Board{
 			return true;
 		}
 		return false;
-		//better not call checkwin here
-		//		if(checkWin(pos))
-		//		{
-		//			System.out.println("announce winner");
-		//			return true;
-		//		}
 	}
 
 	public int getHeight ()
@@ -42,12 +35,12 @@ public class SimpleGameBoard implements Board{
 		return board.length; 
 
 	}
-	//TODO this restricts board to rectangular boards
+	
 	public int getWidth()
 	{
 		return board[0].length;
 	}
-	//TODO this will be part of interface
+	
 	public void clearBoard()
 	{
 		for (int i = 0; i < board.length; ++i)
@@ -60,8 +53,8 @@ public class SimpleGameBoard implements Board{
 			}
 		}
 	}
-	//TODO this will be part of interface
-	//Todo change interface to return a generic value type
+	
+	//Todo change interface to return a moe generic value type
 	public int getMarkAtPosition(Position pos)
 	{
 		//Maybe could have an special exception but not
@@ -69,7 +62,6 @@ public class SimpleGameBoard implements Board{
 		return board[pos.getRow()][pos.getCol()];
 	}
 
-	//TODO this will be part of interface
 	public boolean checkWin(Position lastMove)
 	{
 		return checker.checkWin (this,lastMove);
@@ -82,8 +74,6 @@ public class SimpleGameBoard implements Board{
 		//TODO me not like
 		for(int i =0; i < getHeight(); ++i)
 		{
-			//builder.append(Arrays.toString(board[i]));
-
 			for(int j= 0; j < getWidth(); ++j)
 			{
 				builder.append("[");

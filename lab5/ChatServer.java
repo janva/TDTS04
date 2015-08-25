@@ -79,7 +79,6 @@ class ChatImpl extends ChatPOA
 		}
 	}
 	//TODO maybe no need to return string
-	//TODO tried to change to void in idl but when running it refuses
 	public  void send (ChatApp.ChatCallback senderRef, String msg){
 		//TODO strip of whitespace at end
 		String user = activeUsers.get(senderRef);
