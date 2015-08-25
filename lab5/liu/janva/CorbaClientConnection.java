@@ -19,14 +19,12 @@ import ChatApp.ChatCallback;
 import ChatApp.ChatCallbackHelper;
 import ChatApp.ChatCallbackPOA;
 import ChatApp.ChatHelper;
-
+//we use a variation of builder pattern
 public class CorbaClientConnection {
-
-	// TODO To many responsibileties
+    
+	//This class implement callback interface
 	public static class ChatCallbackImpl extends ChatCallbackPOA {
-		// TODO factor out to class? synchronization?
 		private MessageQueue messages;
-		private ORB orb;
 
 		public ChatCallbackImpl() {
 			messages = new MessageQueue();
@@ -34,55 +32,40 @@ public class CorbaClientConnection {
 
 		public MessageQueue getMessageQueue() {
 			return messages;
-
 		}
 
-		// add observable message queque for instance
-		public void setORB(ORB orb_val) {
-			orb = orb_val;
-		}
-
-		// TODO server can use this as update hmm observer pattern maybe
 		public void callback(String notification) {
 			System.out.println(notification + "--by callback ");
 		}
 
 		@Override
+		/**
+		 * callback intended for messages to GUI
+		 */
 		public void update(String message) {
 			messages.addMessageToBack(message);
-			System.out.println(message + " -this call method will update gui");
 		}
 
 		@Override
+		/**
+		 * Used to announce the winner
+		 */
 		public void announceWin(short x) {
-			//TODO for now we just announce in chat window
-			messages.addMessageToBack("The winner is " + x +"\n");
+			//fixme 
+			messages.addMessageToBack("The winner is " + (x==1?"X":"O") +"\n");
 		}
 	}
 
-	//for our purposes we only need two of these
 	private Chat chatImpl;
-	private ORB orb;
 	private ChatCallbackImpl chatCallbackImpl;
-	private POA rootPOA;
-	private NamingContextExt ncRef;
-	private String name;
-	private org.omg.CORBA.Object ref;
-	// and this
 	private ChatCallback cref;
 
-	// TODO maybe template method patttern on top
 	private CorbaClientConnection(Chat chatImpl, ORB orb,
 			ChatCallbackImpl chatCallbackImpl, POA rootPOA,
 			NamingContextExt ncRef, String name, Object ref, ChatCallback cref) {
 		super();
 		this.chatImpl = chatImpl;
-		this.orb = orb;
 		this.chatCallbackImpl = chatCallbackImpl;
-		this.rootPOA = rootPOA;
-		this.ncRef = ncRef;
-		this.name = name;
-		this.ref = ref;
 		this.cref = cref;
 	}
 
@@ -116,7 +99,7 @@ public class CorbaClientConnection {
 
 		public CorbClientConnectionBuilder setNestedChatCallbackImpl() {
 			this.nestedChatCallbackImpl = new ChatCallbackImpl();
-			nestedChatCallbackImpl.setORB(nestedOrb);
+			//nestedChatCallbackImpl.setORB(nestedOrb);
 			return this;
 		}
 
@@ -149,9 +132,6 @@ public class CorbaClientConnection {
 			return this;
 		}
 
-		// public void setNestedRef(org.omg.CORBA.Object nestedRef) {
-		// this.nestedRef = nestedRef;
-		// }
 
 		public CorbClientConnectionBuilder setNestedCref()
 				throws ServantNotActive, WrongPolicy {

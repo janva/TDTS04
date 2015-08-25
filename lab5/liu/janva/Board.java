@@ -6,7 +6,6 @@ public interface Board {
 	public int getMarkAtPosition(Position pos);
 	public int getWidth();
 	public int getHeight();
-	
 	public void clearBoard();
 
 	public String toString();

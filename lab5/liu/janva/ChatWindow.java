@@ -8,36 +8,32 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.AbstractButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
-import javax.swing.JWindow;
-
 import ChatApp.Chat;
 import ChatApp.ChatCallback;
-/**
- *
- * @author janva
- */
-//TODO again to many responsibilities clean up
+
+//TODO again to many responsibilities clean up also should be broken down 
+// into smaller pieces
 public class ChatWindow extends javax.swing.JFrame implements Observer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Chat chatImpl;
 	private ChatCallback cref;
-	private CorbaClientConnection  cc;
 	private MessageQueue messages;	
 	private String userName ="";
 	//true represenets x for now
    private String team="X";
 	   
 	public ChatWindow(CorbaClientConnection  cc) {
-		this.cc =cc;
 		//for convienience
 		this.chatImpl = cc.getChatImpl();
 		this.cref = cc.getCref();
 		//TODO fixme me refactor a LOOOOOOT just get things to work for
-		//know
+		//now
 		messages = cc.getCallbackImpl().getMessageQueue();
 		messages.addObserver(this);
 		
@@ -55,20 +51,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         initComponents();
      
     }
-	/**
-     * Creates new form ChatWindondow
-     * @param chatImpl 
-     * @param cref 
-     */
-//    public ChatWindow(Chat chatImpl, ChatCallback cref_temp) {
-//        initComponents();
-//        this.chatImpl = chatImpl;
-//        this.cref_temp = cref_temp;
-//    }
 
     
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         teamGroup = new javax.swing.ButtonGroup();
@@ -79,17 +63,10 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         leaveButton = new javax.swing.JButton();
         leaveButton.setEnabled(false);
         markButton = new javax.swing.JButton();
-        //markButton.setEnabled(false);
         
         javax.swing.JRadioButton xRadioButton = new javax.swing.JRadioButton();
         javax.swing.JRadioButton oRadioButton = new javax.swing.JRadioButton();
-        jLabel1 = new javax.swing.JLabel();
-        portLabel = new javax.swing.JLabel();
-        portFIeld = new javax.swing.JTextField();
-        portFIeld.setEnabled(false);
-        jLabel2 = new javax.swing.JLabel();
-        IPFIeld = new javax.swing.JTextField();
-        IPFIeld.setEnabled(false);
+        teamLabel = new javax.swing.JLabel();
         ListButton = new javax.swing.JButton();
         messagePanel = new javax.swing.JPanel();
         postButton = new javax.swing.JButton();
@@ -99,7 +76,6 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         sendTextarea = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        //TODO create class (implementing observer)
         receivedTextarea = new javax.swing.JTextArea();
         receivedTextarea.setEditable(false);
 
@@ -111,14 +87,16 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 
         joinButton.setText("Join");
         joinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 joinButtonActionPerformed(evt);
             }
         });
 
         leaveButton.setText("Leave");
         leaveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leaveButtonActionPerformed(evt);
             }
         });
@@ -130,15 +108,12 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         teamGroup.add(oRadioButton);
         oRadioButton.setText("O");
 
-        jLabel1.setText("Team:");
-
-        portLabel.setText("port:");
-
-        jLabel2.setText("IP:");
+        teamLabel.setText("Team:");
 
         ListButton.setText("List");
         ListButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ListButtonActionPerformed(evt);
             }
         });
@@ -159,21 +134,19 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(loginPanelLayout.createSequentialGroup()
                         .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(teamLabel, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(portLabel)
                                 .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel2)))
+                                ))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(userNameField)
-                            .addComponent(portFIeld, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(loginPanelLayout.createSequentialGroup()
                                 .addComponent(xRadioButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(oRadioButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(IPFIeld))))
+                            )))
                 .addContainerGap())
         );
         loginPanelLayout.setVerticalGroup(
@@ -184,18 +157,14 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
                     .addComponent(userLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(userNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(IPFIeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(portFIeld, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(portLabel))
+                .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE))
                 .addGap(18, 18, 18)
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(xRadioButton)
                     .addComponent(oRadioButton)
-                    .addComponent(jLabel1))
+                    .addComponent(teamLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(loginPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(joinButton)
@@ -210,14 +179,16 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         postButton.setText("Post");
         postButton.setEnabled(false);
         postButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 postButtonActionPerformed(evt);
             }
         });
         playButton.setText("PLay");
         playButton.setEnabled(false);
         playButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 playButtonActionPerformed(evt);
             }
         });
@@ -225,7 +196,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         leaveGameButton.setText("Leave Game");
         leaveGameButton.setEnabled(false);
         leaveGameButton.addActionListener(new java.awt.event.ActionListener() {
-        	public void actionPerformed(java.awt.event.ActionEvent evt) {
+        	@Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
         		leaveGameButtonActionPerformed(evt);
         	}
         });
@@ -233,7 +205,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
         markButton.setText("make move");
         markButton.setEnabled(false);
         markButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            @Override
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
                 markButtonActionPerformed(evt);
             }
         });
@@ -424,10 +397,11 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     /**
      * @param args the command line arguments
      */
-    private javax.swing.JTextField IPFIeld;
+    //private javax.swing.JTextField IPFIeld;
+   //private javax.swing.JTextField portFIeld;
     private javax.swing.JButton ListButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel teamLabel;
+    //private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -435,8 +409,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton leaveButton;
     private javax.swing.JPanel loginPanel;
     private javax.swing.JPanel messagePanel;
-    private javax.swing.JTextField portFIeld;
-    private javax.swing.JLabel portLabel;
+    //private javax.swing.JLabel portLabel;
     private javax.swing.JButton postButton;
     private javax.swing.JButton playButton;
     private javax.swing.JButton leaveGameButton;
