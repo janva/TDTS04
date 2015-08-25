@@ -15,6 +15,4 @@ public class InputDialog extends JPanel{
 	      this.add(new JLabel("y:"));
 	      this.add(yField);
 	}
-
-	
 }

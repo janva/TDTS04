@@ -34,12 +34,12 @@ class ChatImpl extends ChatPOA
 
 	public void setORB(ORB orb_val) {
 	}
-	@Deprecated
-	public String say(ChatCallback callobj, String msg)
-	{
-		callobj.callback(msg);
-		return ("         ....server says Goodbye!\n");
-	}
+//	@Deprecated
+//	public String say(ChatCallback callobj, String msg)
+//	{
+//		callobj.callback(msg);
+//		return ("         ....server says Goodbye!\n");
+//	}
 
 	public String list (ChatCallback objref){
 		//generate list of user from active
@@ -49,8 +49,8 @@ class ChatImpl extends ChatPOA
 			sb.append(userName);
 			sb.append(",");
 		}
-		objref.callback(sb.toString());  
-		//TODO no need to return
+		//objref.callback(sb.toString());  
+		//TODO no need to return choose one or the other
 		return sb.toString();
 	}
 
@@ -79,16 +79,19 @@ class ChatImpl extends ChatPOA
 		}
 	}
 	//TODO maybe no need to return string
-	public  String send (ChatApp.ChatCallback senderRef, String msg){
+	//TODO tried to change to void in idl but when running it refuses
+	public  void send (ChatApp.ChatCallback senderRef, String msg){
 		//TODO strip of whitespace at end
 		String user = activeUsers.get(senderRef);
 		if(user!= null)
 		{
 			sendAll("["+user +"] "+ msg);
-			return msg;
+			//return msg;
 		}else
-			return "We could not find your alias";
-
+		{
+			//senderRef.update("We could not find your alias");
+  		// return "We could not find your alias";
+		}
 	}
 	//game interface 
 	//TODO here for now move up later

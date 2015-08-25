@@ -1,18 +1,16 @@
 module ChatApp {
    interface ChatCallback {
-      void callback(in string message);
       void update(in string message);
       void announceWin(in short x);
    };
 
 
    interface Chat {
-      string say(in ChatCallback objref, in string message);
       string list(in ChatCallback objref);
       boolean join(in ChatCallback objref, in string user);
       void leave(in ChatCallback objref, in string user);
-      string send(in ChatCallback objref, in string msg);
-      //game interface we use same interface beacause we are lazy 
+      void send(in ChatCallback objref, in string msg);
+     
       void mark(in ChatCallback objref,in short  x,in short y, in short mark);
       void playGame(in ChatCallback objref,in string userName);
       void leaveGame(in ChatCallback objref,in string userName);	
