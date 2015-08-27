@@ -16,11 +16,11 @@ import org.omg.PortableServer.*;
 
 class ChatImpl extends ChatPOA
 { 
-	//hopefully unique  callbacks
 	private Map<ChatCallback, String> activeUsers; 
 	private Map<String, ChatCallback> players; 
-
+	
 	private Board board;
+	private boolean activeGame= false;
 
 	//instansiate game and init    
 	public ChatImpl() {
@@ -28,17 +28,11 @@ class ChatImpl extends ChatPOA
 		this.activeUsers = new HashMap<ChatCallback, String>();
 		this.players= new HashMap<String, ChatCallback>();
 		board = new SimpleGameBoard(new SimpleCheck(), 9);
-		//TODO for testing purposes board is not empty 
+		//For testing purposes board is not empty 
 		board.clearBoard();
 	}
 
-	public void setORB(ORB orb_val) {
-	}
-//	@Deprecated
-//	public String say(ChatCallback callobj, String msg)
-//	{
-//		callobj.callback(msg);
-//		return ("         ....server says Goodbye!\n");
+//	public void setORB(ORB orb_val) {
 //	}
 
 	public String list (ChatCallback objref){
@@ -49,8 +43,7 @@ class ChatImpl extends ChatPOA
 			sb.append(userName);
 			sb.append(",");
 		}
-		//objref.callback(sb.toString());  
-		//TODO no need to return choose one or the other
+		//works by returning as well
 		return sb.toString();
 	}
 
@@ -79,23 +72,19 @@ class ChatImpl extends ChatPOA
 			cref.update("no such user");
 		}
 	}
-	//TODO maybe no need to return string
 	public  void send (ChatApp.ChatCallback senderRef, String msg){
-		//TODO strip of whitespace at end
 		String user = activeUsers.get(senderRef);
 		if(user!= null)
 		{
 			sendAll("["+user +"] "+ msg);
-			//return msg;
-		}else
+		}
+		else
 		{
 			//senderRef.update("We could not find your alias");
-  		// return "We could not find your alias";
+  		   // return "We could not find your alias";
 		}
 	}
 	//game interface 
-	//TODO here for now move up later
-	boolean activeGame= false;
 
 	@Override //need more work
 	public void mark(ChatCallback objref, short x, short y, short mark) {
@@ -137,10 +126,8 @@ class ChatImpl extends ChatPOA
 		}
 	}
 
-	// This might also be vournability issue
 	@Override
 	public void playGame(ChatCallback callbackRef, String userName) {
-		//TODO minimal check that we have joined through chat that is we a
 		//Only those active on chat can play
 		if (activeUsers.containsKey(callbackRef))
 		{
@@ -155,7 +142,7 @@ class ChatImpl extends ChatPOA
 				//clear the board just in case
 				board.clearBoard();
 				activeGame = true;
-				sendAll(userName +" Started new game join \n"+stringBoard);
+				sendAll(userName  + "Invites everyone to play \n"+stringBoard);
 				players.put(userName, callbackRef);
 			}else
 			{
@@ -210,7 +197,7 @@ public class ChatServer
 
 			// create servant (impl) and register it with the ORB
 			ChatImpl chatImpl = new ChatImpl();
-			chatImpl.setORB(orb);
+			//chatImpl.setORB(orb);
 
 			// get reference to rootpoa & activate the POAManager
 			POA rootpoa =
@@ -246,5 +233,4 @@ public class ChatServer
 
 		System.out.println("ChatServer Exiting ...");
 	}
-
 }

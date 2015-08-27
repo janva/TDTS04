@@ -5,7 +5,6 @@ public class CoordinatesDialog extends JPanel{
 	private static final long serialVersionUID = 1L;
 	JTextField xField = new JTextField(5);
     JTextField yField = new JTextField(5);
-    //JPanel myPanel = new JPanel();
     
 	public CoordinatesDialog() {
 		super();

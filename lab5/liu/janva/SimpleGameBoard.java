@@ -1,7 +1,5 @@
 package liu.janva;
 
-import java.util.Arrays;
-
 public class SimpleGameBoard implements Board{
 	private Checker checker;
 	//TODO here for testing not relevant any more
@@ -50,19 +48,15 @@ public class SimpleGameBoard implements Board{
 		for (int i = 0; i < board.length; ++i)
 		{
 			for (int j= 0; j < board[i].length; ++j)
-			{
-				//for now we use integer marks but should 
-				//really be abstract mark type(or generic)
+			{ 
+				//0 =-, 1=X, 2=O  
 				board[i][j]= 0;
 			}
 		}
 	}
 	
-	//Todo change interface to return a moe generic value type
 	public int getMarkAtPosition(Position pos)
 	{
-		//Maybe could have an special exception but not
-		//necesarially good idea better never to throw?
 		return board[pos.getRow()][pos.getCol()];
 	}
 
@@ -96,7 +90,6 @@ public class SimpleGameBoard implements Board{
 			}
 			builder.append("\n");
 		}
-		//String stringBoard =builder.toString();
 		return builder.toString();
 
 	}
@@ -110,7 +103,7 @@ public class SimpleGameBoard implements Board{
 		}
 	}
 	
-	// TODO bläää thought of this at late stage know it sucks
+	// TODO bläää thought of this at late stage know  sucks
 	@Override
 	public boolean full() {
 		for(int i =0; board.length > i; ++i)

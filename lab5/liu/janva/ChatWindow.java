@@ -13,8 +13,6 @@ import javax.swing.JRadioButton;
 import ChatApp.Chat;
 import ChatApp.ChatCallback;
 
-//TODO again to many responsibilities clean up also should be broken down 
-// into smaller pieces
 public class ChatWindow extends javax.swing.JFrame implements Observer {
 
 	private static final long serialVersionUID = 1L;
@@ -44,11 +42,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 	private javax.swing.JTextField userNameField;
 
 	public ChatWindow(CorbaClientConnection  cc) {
-		//for convienience
 		this.chatImpl = cc.getChatImpl();
 		this.cref = cc.getCref();
-		//TODO fixme me refactor a LOOOOOOT just get things to work for
-		//now
 		messages = cc.getCallbackImpl().getMessageQueue();
 		messages.addObserver(this);
 
@@ -205,7 +200,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 				postButtonActionPerformed(evt);
 			}
 		});
-		playButton.setText("PLay");
+		playButton.setText("PLay game");
 		playButton.setEnabled(false);
 		playButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
@@ -366,10 +361,8 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 	}
 
 	private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		//return null or "" on empty field?
 		userName = new String (userNameField.getText().trim());
 		userName =userName.toUpperCase();
-		//TODO fixme need to wait for callback to do the bellow not working at the moment
 		if(userName.equals("") || userName== null )
 		{
 			JOptionPane.showMessageDialog(this, "User cannot be empty string");
@@ -385,8 +378,6 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 		postButton.setEnabled(true);       
 		leaveButton.setEnabled(true);
 		playButton.setEnabled(true);
-		//GameButton.setEnabled(true);
-
 		joinButton.setEnabled(false);
 	}
 
@@ -398,7 +389,6 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 		joinButton.setEnabled(true);
 		playButton.setEnabled(false);
 		leaveGameButton.setEnabled(false);
-	
 	}
 
 	private void ListButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,10 +397,9 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 
 
 	@Override
-	//TODO instead of having whoel JFrame being observer
+	//TODO instead of having whole JFrame being observer
 	//make specific textwindow the observer
 	public void update(Observable arg0, Object arg1) {
-		//TODO should do check for correct arg could couse syncproblems messages?
 		receivedTextarea.append(messages.poll());
 	}
 }

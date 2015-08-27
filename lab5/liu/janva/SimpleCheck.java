@@ -1,18 +1,11 @@
 package liu.janva;
 
-//TODO break down into smaller parts
 public class SimpleCheck implements Checker {
 
 	public SimpleCheck() {}
 
-	//TODO create board interface. (Program to interface not to implementation)
 	@Override
 	public boolean checkWin(Board board, Position lastMove) {
-		
-		//TODO might become a problem the we need to pas checker to gameboard
-		//SimpleGameBoard board = new SimpleGameBoard(this, 5);
-		//TODO no need to assign  above was used for testing 
-		//Board board = boardTemp;
 		//hmm should this be here
 		final int WIN_LIMIT = 5;
 		int nextIncrementer= 0;
@@ -38,13 +31,8 @@ public class SimpleCheck implements Checker {
 
 		boolean moreDiagonallyToUpperRight = true;
 		boolean moreDiagonallyToLowerLeft= true;
-
 		
-		//TODO better solution had a crazy idea with involving command
-		//pattern anyway refactor this part and junit test 
-		//iterator pattern maybe refactor anyway
-		// this part would have been good for testdriven probably statepattern
-		//depth first search tree or graph?
+		//TODO depth first search tree and graph?
 		//horizontal
 		while (moreLeft || moreRight|| moreDown||moreUp)
 		{
@@ -67,7 +55,6 @@ public class SimpleCheck implements Checker {
 			if(moreLeft){
 				if(((lastMove.getCol() -nextIncrementer ) >= 0) &&
 						board.getMarkAtPosition(new Position(lastMove.getRow(),lastMove.getCol() - nextIncrementer))== mark)
-						//board[lastMove.getRow()][lastMove.getCol() - nextIncrementer] == mark )
 				{
 					if (++horizontalCount >= WIN_LIMIT)
 					{
@@ -134,7 +121,6 @@ public class SimpleCheck implements Checker {
 			}
 			if(moreDiagonallyToLowerRight)
 			{
-				//TODO board is square so this works but fix it anyway in case future changes
 				if(lastMove.getRow() +nextIncrementer < board.getHeight()  && lastMove.getCol()+nextIncrementer < board.getWidth()  &&
 						board.getMarkAtPosition(
 								new Position(lastMove.getRow() + nextIncrementer,
@@ -193,41 +179,13 @@ public class SimpleCheck implements Checker {
 	public static class test {
 		public static void main(String[] args) 
 		{
-			int[][] arr = {{1,1,1,1,1,1},
-					{1,1,1,1,1},
-					{1,1,1,1,1},
-					{1,1,1,1,1},
-					{1,1,1,1,1}};
+//			int[][] arr = {{1,1,1,1,1,1},
+//					{1,1,1,1,1},
+//					{1,1,1,1,1},
+//					{1,1,1,1,1},
+//					{1,1,1,1,1}};
 			Checker check = new SimpleCheck();
-			//SimpleGameBoard board = new SimpleGameBoard(check,5);
-			//System.out.println( check.checkWin(arr,1, 1)? "win":"lose");
-
 			
-//			int[][] arr2 = 
-//				  { {2,2,2,2,0},
-//					{1,2,1,2,1},
-//					{2,2,1,1,1},
-//					{2,1,0,2,1},
-//					{1,1,2,1,1}};
-//			int[][] arr3 = 
-//				{{2,2,2,2,0},
-//					{1,1,1,1,1},
-//					{2,1,2,1,2},
-//					{1,2,1,1,1},
-//					{1,1,1,1,1}};
-//			int[][] arr4 = 
-//				{{2,2,2,2,0},
-//					{1,1,1,1,1},
-//					{1,1,1,1,1},
-//					{1,1,1,1,1},
-//					{1,1,1,1,1}};
-//			int[][] board = {
-//					{1,2,2,2,1},
-//					{0,1,2,2,1},
-//					{0,2,1,1,1},
-//					{0,0,0,0,1},
-//					{2,2,2,2,2}};
-
 			SimpleGameBoard board = 
 					new SimpleGameBoard(new SimpleCheck(), 5);
 			System.out.println(board.toString());
