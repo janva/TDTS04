@@ -13,7 +13,8 @@ public class SimpleCheck implements Checker {
 		//SimpleGameBoard board = new SimpleGameBoard(this, 5);
 		//TODO no need to assign  above was used for testing 
 		//Board board = boardTemp;
-		final int WIN_LIMIT = 3;
+		//hmm should this be here
+		final int WIN_LIMIT = 5;
 		int nextIncrementer= 0;
 		int horizontalCount = 1;
 		int verticalCount = 1;

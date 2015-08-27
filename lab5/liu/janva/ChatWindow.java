@@ -355,7 +355,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 	}
 	private void markButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		//TODO make mark some abstract type which can be converted to wanted type
-		InputDialog xyDialog= new InputDialog(); 
+		CoordinatesDialog xyDialog= new CoordinatesDialog(); 
 		int result = JOptionPane.showConfirmDialog(this, xyDialog, 
 				"Please Enter X and Y Values", JOptionPane.OK_CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION) {
@@ -367,10 +367,10 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 
 	private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		//return null or "" on empty field?
-		userName = userNameField.getText();
-
+		userName = new String (userNameField.getText().trim());
+		userName =userName.toUpperCase();
 		//TODO fixme need to wait for callback to do the bellow not working at the moment
-		if(userName=="")
+		if(userName.equals("") || userName== null )
 		{
 			JOptionPane.showMessageDialog(this, "User cannot be empty string");
 			return;

@@ -128,7 +128,7 @@ class ChatImpl extends ChatPOA
 					activeGame=true;
 				}else
 				{   
-					sendAllPlayers(board.toString());
+					sendAllPlayers("\n"+board.toString());
 				}
 			}else //square was occupied
 			{

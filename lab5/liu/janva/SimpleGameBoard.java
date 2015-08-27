@@ -96,9 +96,8 @@ public class SimpleGameBoard implements Board{
 			}
 			builder.append("\n");
 		}
-		String stringBoard =builder.toString();
-		System.out.println(stringBoard);
-		return stringBoard;
+		//String stringBoard =builder.toString();
+		return builder.toString();
 
 	}
 	public static class test

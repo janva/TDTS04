@@ -25,10 +25,6 @@ all:
 	-@ echo "  make clobber            - wipe everything that is generated"
 	-@ echo "  "
 
-compile: target clobber idl c s
-	-@ echo "compilation step finnished"
-
-
 clean:
 	-@touch ./abc~ core
 	-@rm -f *~ core
