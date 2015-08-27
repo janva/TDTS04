@@ -346,11 +346,12 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 			break;
 		}
 		markButton.setEnabled(true);
-		
+		leaveGameButton.setEnabled(true);
 	}
 	private void leaveGameButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		chatImpl.leaveGame(cref, userName);
 		markButton.setEnabled(false);
+		leaveGameButton.setEnabled(false);
 	}
 	private void markButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		//TODO make mark some abstract type which can be converted to wanted type
@@ -384,7 +385,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 		postButton.setEnabled(true);       
 		leaveButton.setEnabled(true);
 		playButton.setEnabled(true);
-		leaveGameButton.setEnabled(true);
+		//GameButton.setEnabled(true);
 
 		joinButton.setEnabled(false);
 	}
@@ -397,7 +398,7 @@ public class ChatWindow extends javax.swing.JFrame implements Observer {
 		joinButton.setEnabled(true);
 		playButton.setEnabled(false);
 		leaveGameButton.setEnabled(false);
-		
+	
 	}
 
 	private void ListButtonActionPerformed(java.awt.event.ActionEvent evt) {

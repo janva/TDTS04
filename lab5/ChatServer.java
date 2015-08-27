@@ -68,10 +68,11 @@ class ChatImpl extends ChatPOA
 		return true;
 	}
 	public   void  leave (ChatApp.ChatCallback cref, String user){
+		
 		String userName=activeUsers.remove(cref);	
 		if (userName != null)
 		{
-			leaveGame(cref,user);
+			leaveGame(cref, user);	
 			sendAll(user + ": is leaving conversation");
 		}else
 		{
@@ -170,16 +171,15 @@ class ChatImpl extends ChatPOA
 		if(players.containsKey(user))
 		{
 			players.remove(user);
+			if (players.isEmpty())
+			{
+				activeGame = false;
+				board.clearBoard();
+			}else 
+			{
+				sendAllPlayers(user + "is leaving game");
+			}
 		}
-
-		if (players.isEmpty())
-		{
-			activeGame = false;
-			board.clearBoard();
-		}else{
-			sendAllPlayers(user + " is leaving game \n");
-		}
-		board.clearBoard();
 	}
 
 	private void sendAll(String msg)
