@@ -15,6 +15,7 @@ JAVAC = /usr/bin/javac
 IDLJ  = /usr/bin/idlj
 
 GENERATED = $(NAME)App
+OURIMPL = ./liu/janva
 
 all:
 	-@ echo "  "
@@ -34,7 +35,7 @@ clean:
 
 clobber: clean
 	-@touch ./abc.class
-	-@rm -rf *.class $(GENERATED) orb.db
+	-@rm -rf *.class  $(OURIMPL)/*.class $(GENERATED) orb.db
 
 idl::
 	-$(IDLJ) -fall $(NAME).idl
@@ -60,6 +61,5 @@ server::
 	$(JAVA) $(NAME)Server -ORBInitialPort $(NAMESERVERPORT) -ORBInitialHost localhost
 
 client::
-	$(JAVA) $(NAME)Client -ORBInitialPort $(NAMESERVERPORT) -ORBInitialHost localhost \
-    $(JAVA) $(NAME)Client -ORBInitialPort $(NAMESERVERPORT) -ORBInitialHost localhost
+	$(JAVA) $(NAME)Client -ORBInitialPort $(NAMESERVERPORT) -ORBInitialHost localhost 
     
