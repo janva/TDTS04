@@ -46,10 +46,5 @@ public class SimpleCheckTest {
 		assertTrue(checker.checkWin(board, new Position (1, 1)));
 		//fail("not yet implemented");
 	}
-//	@Test
-//	public void testCheckWinThreeInRowHorisontaly() {
-//		SimpleCheck checker = new SimpleCheck();
-//		assertTrue(checker.checkWin(board, 1, 4));
-//	}
 
 }
