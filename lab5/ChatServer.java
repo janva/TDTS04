@@ -32,8 +32,6 @@ class ChatImpl extends ChatPOA
 		board.clearBoard();
 	}
 
-//	public void setORB(ORB orb_val) {
-//	}
 
 	public String list (ChatCallback objref){
 		//generate list of user from active
