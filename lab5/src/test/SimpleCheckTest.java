@@ -43,7 +43,7 @@ public class SimpleCheckTest {
     
     @Test 
     public void testCheckWinFiveInRowHorisontaly() {
-	assertTrue(checker.checkWin(board, new Position (8, 4)));
+	assertTrue(checker.checkWin(board, new Position (8, 0)));
     }
     @Test
     public void testCheckWinFiveInRowVertically() {
