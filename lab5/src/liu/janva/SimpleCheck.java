@@ -3,7 +3,7 @@ package liu.janva;
 public class SimpleCheck implements Checker
 {
     private final int WIN_LIMIT = 5;
-    //TODO move to more local location
+    //TODO This should probably be local variable
     private int nextIncrementer;
     //private boolean moreRight;
 
@@ -59,14 +59,13 @@ public class SimpleCheck implements Checker
 	{
 	    ++nextIncrementer;
 
-
 	    // upperRightToLowerLeft
 	    if (moreDiagonallyToUpperRight)
 	    {
-		//FIXME Might be bug dependence on wheter order of execution is well defined?
-		if (isPosAboveInsideBoard(lastMove) && 
-			isPosToRightInsideBoard(board, lastMove)
-			&& isMarkAboveRightSame(board, lastMove, mark))
+		//FIXME Might be bug dependence on wehter order of execution is well defined?
+		if (isPosAboveInsideBoard() && 
+			isPosToRightInsideBoard()
+			&& isMarkAboveRightSame())
 		{
 		    if (isFiveInARow( ++diagonalUpperRightToLowerLeftCount) )
 		    {
@@ -79,9 +78,9 @@ public class SimpleCheck implements Checker
 	    }
 	    if (moreDiagonallyToLowerLeft)
 	    {
-		if (isPosBelowInsideBoard(board, lastMove)
-			&& isPosToLeftInsideBoard(lastMove)
-			&& isMarkBelowLeftSame(board, lastMove, mark))
+		if (isPosBelowInsideBoard()
+			&& isPosToLeftInsideBoard()
+			&& isMarkBelowLeftSame())
 		{
 		    if (isFiveInARow(++diagonalUpperRightToLowerLeftCount))
 		    {
@@ -109,9 +108,9 @@ public class SimpleCheck implements Checker
 	    ++nextIncrementer;
 	    if (moreDiagonallyToUpperLeft)
 	    {
-		if (isPosAboveInsideBoard(lastMove) && 
-			isPosToLeftInsideBoard(lastMove) && 
-			isMarkAboveLeftSame(board, lastMove, mark))
+		if (isPosAboveInsideBoard() && 
+			isPosToLeftInsideBoard() && 
+			isMarkAboveLeftSame())
 		{
 		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount))
 		    {
@@ -125,9 +124,9 @@ public class SimpleCheck implements Checker
 
 	    if (moreDiagonallyToLowerRight)
 	    {
-		if (isPosBelowInsideBoard(board, lastMove)
-			&& isPosToRightInsideBoard(board, lastMove)
-			&& isMarkBelowRightSame(board, lastMove, mark))
+		if (isPosBelowInsideBoard()
+			&& isPosToRightInsideBoard()
+			&& isMarkBelowRightSame())
 		{
 		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount ))
 		    {
@@ -153,8 +152,8 @@ public class SimpleCheck implements Checker
 	{
 	    if (moreDown)
 	    {
-		if (isPosBelowInsideBoard(board, lastMove) && 
-			isMarkBelowSame(board, lastMove, mark))
+		if (isPosBelowInsideBoard() && 
+			isMarkBelowSame())
 		{
 		    if (isFiveInARow(++verticalCount))
 		    {
@@ -167,7 +166,7 @@ public class SimpleCheck implements Checker
 	    }
 	    if (moreUp)
 	    {
-		if (isPosAboveInsideBoard(lastMove) && isMarkAboveSame(board, lastMove, mark))
+		if (isPosAboveInsideBoard() && isMarkAboveSame())
 		{
 		    if (isFiveInARow(++verticalCount))
 		    {
@@ -194,8 +193,8 @@ public class SimpleCheck implements Checker
 	    ++nextIncrementer;
 	    if (moreRight)
 	    {
-		if (isPosToRightInsideBoard(board, lastMove) && 
-			isMarkToRightSame(board, lastMove, mark))
+		if (isPosToRightInsideBoard() && 
+			isMarkToRightSame())
 		{
 		    if (isFiveInARow (++horizontalCount ))
 		    {
@@ -208,8 +207,8 @@ public class SimpleCheck implements Checker
 	    }
 	    if (moreLeft)
 	    {
-		if (isPosToLeftInsideBoard(lastMove) && 
-			isMarkToLeftSame(board, lastMove, mark))
+		if (isPosToLeftInsideBoard() && 
+			isMarkToLeftSame())
 		{
 		    if (isFiveInARow(++horizontalCount))
 		    {
@@ -224,39 +223,39 @@ public class SimpleCheck implements Checker
 	return false;
     }
 
-    private boolean isMarkBelowRightSame(Board board, Position lastMove, int mark)
+    private boolean isMarkBelowRightSame()
     {
 	return board.getMarkAtPosition(new Position
 		(lastMove.getRow() + nextIncrementer,
 			lastMove.getCol() + nextIncrementer)) == mark;
     }
 
-    private boolean isMarkBelowLeftSame(Board board, Position lastMove, int mark)
+    private boolean isMarkBelowLeftSame()
     {
 	return board.getMarkAtPosition(new Position(lastMove.getRow() + nextIncrementer,
 		lastMove.getCol() - nextIncrementer)) == mark;
     }
 
-    private boolean isMarkBelowSame(Board board, Position lastMove, int mark)
+    private boolean isMarkBelowSame()
     {
 	return markEqAtpos(board,new Position(lastMove.getRow() + nextIncrementer, lastMove.getCol()),mark);
     }
 
-    private boolean isMarkAboveLeftSame(Board board, Position lastMove, int mark)
+    private boolean isMarkAboveLeftSame()
     {
 	return markEqAtpos(board, new Position((lastMove.getRow() - nextIncrementer),
 		(lastMove.getCol() - nextIncrementer)), mark);
 
     }
 
-    private boolean isMarkAboveRightSame(Board board, Position lastMove, int mark)
+    private boolean isMarkAboveRightSame()
     {
 	return markEqAtpos(board, (new Position(lastMove.getRow() - nextIncrementer,
 		lastMove.getCol() + nextIncrementer)), mark);
     }
 
 
-    private boolean isMarkAboveSame(Board board, Position lastMove, int mark)
+    private boolean isMarkAboveSame()
     {
 	return markEqAtpos(board, new Position((lastMove.getRow() - nextIncrementer),lastMove.getCol()), mark);
     }
@@ -267,23 +266,23 @@ public class SimpleCheck implements Checker
 	return board.getMarkAtPosition(pos) == mark;
     }
 
-    private boolean isPosAboveInsideBoard(Position lastMove)
+    private boolean isPosAboveInsideBoard()
     {
 	return lastMove.getRow() - nextIncrementer >= 0;
     }
 
 
-    private boolean isPosBelowInsideBoard(Board board, Position lastMove)
+    private boolean isPosBelowInsideBoard()
     {
 	return nextIncrementer + lastMove.getRow() < board.getHeight();
     }
 
-    private boolean isMarkToLeftSame(Board board, Position lastMove, int mark) {
+    private boolean isMarkToLeftSame() {
 	return board.getMarkAtPosition(
 		new Position(lastMove.getRow(), lastMove.getCol() - nextIncrementer)) == mark;
     }
 
-    private boolean isPosToLeftInsideBoard(Position lastMove) {
+    private boolean isPosToLeftInsideBoard() {
 	return (lastMove.getCol() - nextIncrementer) >= 0;
     }
 
@@ -291,12 +290,12 @@ public class SimpleCheck implements Checker
     {
 	return (count >= WIN_LIMIT);
     }
-    private boolean isMarkToRightSame(Board board, Position lastMove, int mark) {
+    private boolean isMarkToRightSame() {
 	return board.getMarkAtPosition(new Position((lastMove.getRow()),
 		(lastMove.getCol() + nextIncrementer))) == mark;
     }
 
-    private boolean isPosToRightInsideBoard(Board board, Position lastMove) {
+    private boolean isPosToRightInsideBoard() {
 	return (nextIncrementer + lastMove.getCol()) < board.getWidth();
     }
 
