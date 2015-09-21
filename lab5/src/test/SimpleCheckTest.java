@@ -20,14 +20,14 @@ public class SimpleCheckTest {
 	    super(checker, boardSize);
 	    this.board = new int[][]{
 		{1,2,2,2,1,2,2,2,0},
-		{0,1,2,2,1,1,2,2,1},
-		{0,2,1,1,1,2,1,1,1},
-		{0,0,0,1,1,0,0,1,2},
+		{1,1,2,2,1,1,2,2,1},
+		{1,2,1,1,1,2,1,1,1},
+		{1,0,0,1,1,0,0,1,2},
 		{0,0,2,2,1,2,2,2,2},
 		{0,1,2,2,2,2,2,2,1},
 		{0,2,1,1,1,2,1,1,1},
 		{0,0,0,1,2,0,0,1,1},
-		{2,2,2,2,2,2,2,2,2}
+		{2,2,2,2,2,0,2,2,2}
 	    };
 	}
     }
@@ -69,4 +69,16 @@ public class SimpleCheckTest {
     {
 	assertFalse(checker.checkWin(board, new Position (4, 6)));
     }
+    
+    @Test
+    public void testNoWin4InArowHorisontal() throws Exception
+    {
+	assertFalse(checker.checkWin(board, new Position (8, 8)));
+    }
+    @Test
+    public void testNoWin4InArowVertical() throws Exception
+    {
+	assertFalse(checker.checkWin(board, new Position (1, 0)));
+    }
+
 }

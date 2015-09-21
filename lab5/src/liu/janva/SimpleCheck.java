@@ -3,7 +3,8 @@ package liu.janva;
 public class SimpleCheck implements Checker
 {
     private final int WIN_LIMIT = 5;
-    // TODO This should probably be local variable problematic scatterd
+    // TODO This should probably be local or passed as parameter
+    //variable problematic scatterd
     // everywhere
     private int nextIncrementer;
     // private boolean moreRight;
@@ -33,19 +34,15 @@ public class SimpleCheck implements Checker
 	{
 	    return false;
 	}
-	return (exploreHorizontalWin()|| exploreVerticalWin() 
-		|| exploreDiagonalUpperLeftToLowerRightWin()
-		|| exploreDiagonalUpperRightToLowerLeftWin()
+	return (isHorizontalWin()|| 
+		isVerticalWin() ||
+		isDiagonalToUpperLeftWin()||
+		isDiagonalToUpperRightWin()
 		);
     }
 
-    private boolean exploreDiagonalUpperRightToLowerLeftWin()
+    private boolean isDiagonalToUpperRightWin()
     {
-	// nextIncrementer=0;
-	// int diagonalUpperRightToLowerLeftCount = 1;
-	// boolean moreDiagonallyToUpperRight = true;
-	// boolean moreDiagonallyToLowerLeft = true;
-
 	//counting the one we are on when starting
 	//TODO a bit of waste here 
 	int nrInRow = 1;
@@ -54,10 +51,39 @@ public class SimpleCheck implements Checker
 	return isFiveInARow(nrInRow) ? true : false;
     }
 
+
+    private boolean isDiagonalToUpperLeftWin()
+    {
+	// upperLeftToLowerRight
+	int total =1;
+	total+= countSameToLowerRight();
+	total +=countSameToUpperLeft();
+	return isFiveInARow(total)? true:false;
+    }
+
+
+    // TODO still smells
+    private boolean isHorizontalWin()
+    {
+	int total =1;
+	total+= countSameToLeft();
+	total+=countSameToRight();
+	return isFiveInARow(total)? true:false;
+
+    }
+
+    private boolean isVerticalWin()
+    {
+	int total =1;
+	total+= countSameAbove();
+	total +=countSameBelow();
+	return isFiveInARow(total)? true:false;
+    }
+
     private int countSameToUpperRight()
     {
 	//TODO try to break this dependency
-	nextIncrementer =0;
+	nextIncrementer =1;
 	int total = 0;
 	while (isPosAboveInsideBoard() && isPosToRightInsideBoard() && isMarkAboveRightSame())
 	{
@@ -67,191 +93,117 @@ public class SimpleCheck implements Checker
 	}
 	return total;
     }
-    // while ( moreDiagonallyToUpperRight )
-    // {
-    // ++nextIncrementer;
-    //
-    // // upperRightToLowerLeft
-    // if (moreDiagonallyToUpperRight)
-    // {
-    // //FIXME Might be bug dependence on wehter order of execution is well
-    // defined?
-    // if (isPosAboveInsideBoard() &&
-    // isPosToRightInsideBoard()
-    // && isMarkAboveRightSame())
-    // {
-    // if (isFiveInARow( ++diagonalUpperRightToLowerLeftCount) )
-    // {
-    // return true;
-    // }
-    // } else
-    // {
-    // moreDiagonallyToUpperRight = false;
-    // }
-    // }
-    // return false;
-    // }
-    // }}
+
 
     private int countSameToLowerLeft()
     {
-	 nextIncrementer=0;
+	nextIncrementer=1;
 	int total = 0;
 	while (isPosBelowInsideBoard()
 		&& isPosToLeftInsideBoard() 
 		&& isMarkBelowLeftSame())
 	{
 	    ++nextIncrementer;
-		if (isFiveInARow(++total))
-		    break;
+	    if (isFiveInARow(++total))
+		break;
 	}
 	return total;
     }
 
-    // while (moreDiagonallyToLowerLeft)
-    // {
-    // ++nextIncrementer;
-    // if (moreDiagonallyToLowerLeft)
-    // {
-    // if (isPosBelowInsideBoard()
-    // && isPosToLeftInsideBoard()
-    // && isMarkBelowLeftSame())
-    // {
-    // if (isFiveInARow(++diagonalUpperRightToLowerLeftCount))
-    // {
-    // return true;
-    // }
-    // } else
-    // {
-    // moreDiagonallyToLowerLeft = false;
-    // }
-    // }
-    // return false;
-    // }
-//}
 
-    private boolean exploreDiagonalUpperLeftToLowerRightWin()
+    private int countSameAbove()
     {
-	nextIncrementer = 0;
-	int diagonalUpperLeftToLowerRightCount = 1;
-	boolean moreDiagonallyToUpperLeft = true;
-	boolean moreDiagonallyToLowerRight = true;
-
-	// upperLeftToLowerRight
-	while (moreDiagonallyToLowerRight || moreDiagonallyToUpperLeft)
+	nextIncrementer=1;
+	int totalInRow =0;
+	while (isPosAboveInsideBoard() && isMarkAboveSame())
 	{
 	    ++nextIncrementer;
-	    if (moreDiagonallyToUpperLeft)
+	    if (isFiveInARow((++totalInRow) +1))
 	    {
-		if (isPosAboveInsideBoard() && isPosToLeftInsideBoard() && isMarkAboveLeftSame())
-		{
-		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount))
-		    {
-			return true;
-		    }
-		} else
-		{
-		    moreDiagonallyToUpperLeft = false;
-		}
-	    }
-
-	    if (moreDiagonallyToLowerRight)
-	    {
-		if (isPosBelowInsideBoard() && isPosToRightInsideBoard() && isMarkBelowRightSame())
-		{
-		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount))
-		    {
-			return true;
-		    }
-		} else
-		{
-		    moreDiagonallyToLowerRight = false;
-		}
+		break;
 	    }
 	}
-	return false;
+	return totalInRow;
     }
 
-    private boolean exploreVerticalWin()
+    private int countSameBelow()
     {
-	nextIncrementer = 0;
-	int verticalCount = 1;
-	boolean moreDown = true;
-	boolean moreUp = true;
-
-	while (moreDown || moreUp)
+	nextIncrementer=1;
+	int totalInRow =0;
+	while (isPosBelowInsideBoard() && isMarkBelowSame())
 	{
 	    ++nextIncrementer;
-	    if (moreDown)
+	    if (isFiveInARow((++totalInRow) +1))
 	    {
-		if (isPosBelowInsideBoard() && isMarkBelowSame())
-		{
-		    if (isFiveInARow(++verticalCount))
-		    {
-			return true;
-		    }
-		} else
-		{
-		    // continue and break instead maybe
-		    moreDown = false;
-		}
-	    }
-	    if (moreUp)
-	    {
-		if (isPosAboveInsideBoard() && isMarkAboveSame())
-		{
-		    if (isFiveInARow(++verticalCount))
-		    {
-			return true;
-		    }
-		} else
-		{
-		    moreUp = false;
-		}
+		break;
 	    }
 	}
-	return false;
+	return totalInRow;
     }
 
-    // TODO still smells
-    private boolean exploreHorizontalWin()
+
+    private int countSameToLeft()
     {
-	nextIncrementer = 0;
-	int horizontalCount = 1;
-	boolean moreLeft = true;
-	boolean moreRight = true;
-	while (moreLeft || moreRight)
+	nextIncrementer=1;
+	int totalInRow =0;
+	while (isPosToLeftInsideBoard() && isMarkToLeftSame())
 	{
 	    ++nextIncrementer;
-	    if (moreRight)
+	    if (isFiveInARow((++totalInRow) +1))
 	    {
-		if (isPosToRightInsideBoard() && isMarkToRightSame())
-		{
-		    if (isFiveInARow(++horizontalCount))
-		    {
-			return true;
-		    }
-		} else
-		{
-		    moreRight = false;
-		}
-	    }
-	    if (moreLeft)
-	    {
-		if (isPosToLeftInsideBoard() && isMarkToLeftSame())
-		{
-		    if (isFiveInARow(++horizontalCount))
-		    {
-			return true;
-		    }
-		} else
-		{
-		    moreLeft = false;
-		}
+		break;
 	    }
 	}
-	return false;
+	return totalInRow;
     }
+
+    private int countSameToRight()
+    {
+	nextIncrementer=1;
+	int totalInRow =0;
+	while (isPosToRightInsideBoard() && isMarkToRightSame())
+	{
+	    ++nextIncrementer;
+	    if (isFiveInARow((++totalInRow) +1))
+	    {
+		break;
+	    }
+	}
+	return totalInRow;
+    }
+
+    private int countSameToLowerRight()
+    {
+	nextIncrementer=1;
+	int totalNrInRow=0;
+	while(isPosBelowInsideBoard() && isPosToRightInsideBoard() && isMarkBelowRightSame())
+	{
+	    nextIncrementer++;
+	    if (isFiveInARow(++totalNrInRow))
+	    {
+		break;
+	    }
+	}
+	return totalNrInRow;
+    }
+
+    //TODO the only thing differing is the while condition
+    private int countSameToUpperLeft()
+    {
+	nextIncrementer=1;
+	int totalInRow =0;
+	while (isPosAboveInsideBoard() && isPosToLeftInsideBoard() 
+		&& isMarkAboveLeftSame())
+	{
+	    ++nextIncrementer;
+	    if (isFiveInARow((++totalInRow) +1))
+	    {
+		break;
+	    }
+	}
+	return totalInRow;
+    }
+
 
     private boolean isMarkBelowRightSame()
     {
