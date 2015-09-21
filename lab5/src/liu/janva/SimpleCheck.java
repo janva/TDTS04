@@ -28,24 +28,10 @@ public class SimpleCheck implements Checker
 	{
 	    return false;
 	}
-	//TODO hmmm tell don't ask possible or something similar?
-	if (exploreHorizontalWin())
-	{
-	    return true;
-	}
-	if(exploreVerticalWin())
-	{
-	    return true;
-	}
-	if (exploreDiagonalUpperLeftToLowerRightWin())
-	{
-	    return true;
-	}
-	if(exploreDiagonalUpperRightToLowerLeftWin())
-	{
-	    return true;
-	}
-	return false;
+
+	return (exploreHorizontalWin()||exploreVerticalWin()||
+		exploreDiagonalUpperLeftToLowerRightWin()||
+		exploreDiagonalUpperRightToLowerLeftWin());	
     }
     
     private boolean exploreDiagonalUpperRightToLowerLeftWin()
