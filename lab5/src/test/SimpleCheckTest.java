@@ -1,4 +1,5 @@
 package test;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -51,10 +52,21 @@ public class SimpleCheckTest {
 
     @Test
     public void testCheckWinFiveInRowRowDiagonalTopRightToLowerLeft() {
-	assertTrue(checker.checkWin(board, new Position (4, 7)));
+	assertTrue(checker.checkWin(board, new Position (6, 5)));
     }
     @Test
     public void testCheckWinFiveInRowDiagonalTopLeftToLowRight() {
 	assertTrue(checker.checkWin(board, new Position (0, 0)));
+    }
+    @Test
+    public void testNoWinO() throws Exception
+    {
+	assertFalse(checker.checkWin(board, new Position (6, 7)));
+	
+    }
+    @Test
+    public void testNoWinX() throws Exception
+    {
+	assertFalse(checker.checkWin(board, new Position (4, 6)));
     }
 }

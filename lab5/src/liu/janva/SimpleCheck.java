@@ -3,9 +3,10 @@ package liu.janva;
 public class SimpleCheck implements Checker
 {
     private final int WIN_LIMIT = 5;
-    //TODO This should probably be local variable
+    // TODO This should probably be local variable problematic scatterd
+    // everywhere
     private int nextIncrementer;
-    //private boolean moreRight;
+    // private boolean moreRight;
 
     private Board board;
     private Position lastMove;
@@ -14,89 +15,135 @@ public class SimpleCheck implements Checker
     public SimpleCheck()
     {
     }
+
     // TODO maybe depth first search instead graph implementation instead?
     @Override
     public boolean checkWin(Board board, Position lastMove)
     {
-	this.lastMove= lastMove;
+	// TODO maybe should be done by setter instead shouldn't should be
+	// someone elses responsibility)
+	this.lastMove = lastMove;
 	this.mark = board.getMarkAtPosition(lastMove);
-	this.board =board;
+	this.board = board;
 
 	// TODO make mark abstract type instead of int less dependencies
-	//just check so that we're not standing on empty square
+	// just check so that we're not standing on empty square
+	// TODO blää get rid of me
 	if (mark == 0)
 	{
 	    return false;
 	}
-
-	return (exploreHorizontalWin()||exploreVerticalWin()||
-		exploreDiagonalUpperLeftToLowerRightWin()||
-		exploreDiagonalUpperRightToLowerLeftWin());	
+	return (exploreHorizontalWin()|| exploreVerticalWin() 
+		|| exploreDiagonalUpperLeftToLowerRightWin()
+		|| exploreDiagonalUpperRightToLowerLeftWin()
+		);
     }
-    
+
     private boolean exploreDiagonalUpperRightToLowerLeftWin()
     {
-	nextIncrementer=0;
-	int diagonalUpperRightToLowerLeftCount = 1;
-	boolean moreDiagonallyToUpperRight = true;
-	boolean moreDiagonallyToLowerLeft = true;
+	// nextIncrementer=0;
+	// int diagonalUpperRightToLowerLeftCount = 1;
+	// boolean moreDiagonallyToUpperRight = true;
+	// boolean moreDiagonallyToLowerLeft = true;
 
-	while (	moreDiagonallyToUpperRight ||moreDiagonallyToLowerLeft)
+	//counting the one we are on when starting
+	//TODO a bit of waste here 
+	int nrInRow = 1;
+	nrInRow += countSameToUpperRight();
+	nrInRow += countSameToLowerLeft();
+	return isFiveInARow(nrInRow) ? true : false;
+    }
+
+    private int countSameToUpperRight()
+    {
+	//TODO try to break this dependency
+	nextIncrementer =0;
+	int total = 0;
+	while (isPosAboveInsideBoard() && isPosToRightInsideBoard() && isMarkAboveRightSame())
 	{
 	    ++nextIncrementer;
-
-	    // upperRightToLowerLeft
-	    if (moreDiagonallyToUpperRight)
-	    {
-		//FIXME Might be bug dependence on wehter order of execution is well defined?
-		if (isPosAboveInsideBoard() && 
-			isPosToRightInsideBoard()
-			&& isMarkAboveRightSame())
-		{
-		    if (isFiveInARow( ++diagonalUpperRightToLowerLeftCount) )
-		    {
-			return true;
-		    }
-		} else
-		{
-		    moreDiagonallyToUpperRight = false;
-		}
-	    }
-	    if (moreDiagonallyToLowerLeft)
-	    {
-		if (isPosBelowInsideBoard()
-			&& isPosToLeftInsideBoard()
-			&& isMarkBelowLeftSame())
-		{
-		    if (isFiveInARow(++diagonalUpperRightToLowerLeftCount))
-		    {
-			return true;
-		    }
-		} else
-		{
-		    moreDiagonallyToLowerLeft = false;
-		}
-	    }
+	    if (isFiveInARow(++total))
+		break;
 	}
-	return false;
+	return total;
     }
+    // while ( moreDiagonallyToUpperRight )
+    // {
+    // ++nextIncrementer;
+    //
+    // // upperRightToLowerLeft
+    // if (moreDiagonallyToUpperRight)
+    // {
+    // //FIXME Might be bug dependence on wehter order of execution is well
+    // defined?
+    // if (isPosAboveInsideBoard() &&
+    // isPosToRightInsideBoard()
+    // && isMarkAboveRightSame())
+    // {
+    // if (isFiveInARow( ++diagonalUpperRightToLowerLeftCount) )
+    // {
+    // return true;
+    // }
+    // } else
+    // {
+    // moreDiagonallyToUpperRight = false;
+    // }
+    // }
+    // return false;
+    // }
+    // }}
+
+    private int countSameToLowerLeft()
+    {
+	 nextIncrementer=0;
+	int total = 0;
+	while (isPosBelowInsideBoard()
+		&& isPosToLeftInsideBoard() 
+		&& isMarkBelowLeftSame())
+	{
+	    ++nextIncrementer;
+		if (isFiveInARow(++total))
+		    break;
+	}
+	return total;
+    }
+
+    // while (moreDiagonallyToLowerLeft)
+    // {
+    // ++nextIncrementer;
+    // if (moreDiagonallyToLowerLeft)
+    // {
+    // if (isPosBelowInsideBoard()
+    // && isPosToLeftInsideBoard()
+    // && isMarkBelowLeftSame())
+    // {
+    // if (isFiveInARow(++diagonalUpperRightToLowerLeftCount))
+    // {
+    // return true;
+    // }
+    // } else
+    // {
+    // moreDiagonallyToLowerLeft = false;
+    // }
+    // }
+    // return false;
+    // }
+//}
 
     private boolean exploreDiagonalUpperLeftToLowerRightWin()
     {
-	nextIncrementer=0;
+	nextIncrementer = 0;
 	int diagonalUpperLeftToLowerRightCount = 1;
 	boolean moreDiagonallyToUpperLeft = true;
 	boolean moreDiagonallyToLowerRight = true;
 
 	// upperLeftToLowerRight
-	while (	moreDiagonallyToLowerRight || moreDiagonallyToUpperLeft)
+	while (moreDiagonallyToLowerRight || moreDiagonallyToUpperLeft)
 	{
 	    ++nextIncrementer;
 	    if (moreDiagonallyToUpperLeft)
 	    {
-		if (isPosAboveInsideBoard() && 
-			isPosToLeftInsideBoard() && 
-			isMarkAboveLeftSame())
+		if (isPosAboveInsideBoard() && isPosToLeftInsideBoard() && isMarkAboveLeftSame())
 		{
 		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount))
 		    {
@@ -110,11 +157,9 @@ public class SimpleCheck implements Checker
 
 	    if (moreDiagonallyToLowerRight)
 	    {
-		if (isPosBelowInsideBoard()
-			&& isPosToRightInsideBoard()
-			&& isMarkBelowRightSame())
+		if (isPosBelowInsideBoard() && isPosToRightInsideBoard() && isMarkBelowRightSame())
 		{
-		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount ))
+		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount))
 		    {
 			return true;
 		    }
@@ -136,10 +181,10 @@ public class SimpleCheck implements Checker
 
 	while (moreDown || moreUp)
 	{
+	    ++nextIncrementer;
 	    if (moreDown)
 	    {
-		if (isPosBelowInsideBoard() && 
-			isMarkBelowSame())
+		if (isPosBelowInsideBoard() && isMarkBelowSame())
 		{
 		    if (isFiveInARow(++verticalCount))
 		    {
@@ -147,6 +192,7 @@ public class SimpleCheck implements Checker
 		    }
 		} else
 		{
+		    // continue and break instead maybe
 		    moreDown = false;
 		}
 	    }
@@ -167,10 +213,10 @@ public class SimpleCheck implements Checker
 	return false;
     }
 
-    //TODO still smells
+    // TODO still smells
     private boolean exploreHorizontalWin()
     {
-	nextIncrementer =0;
+	nextIncrementer = 0;
 	int horizontalCount = 1;
 	boolean moreLeft = true;
 	boolean moreRight = true;
@@ -179,10 +225,9 @@ public class SimpleCheck implements Checker
 	    ++nextIncrementer;
 	    if (moreRight)
 	    {
-		if (isPosToRightInsideBoard() && 
-			isMarkToRightSame())
+		if (isPosToRightInsideBoard() && isMarkToRightSame())
 		{
-		    if (isFiveInARow (++horizontalCount ))
+		    if (isFiveInARow(++horizontalCount))
 		    {
 			return true;
 		    }
@@ -193,8 +238,7 @@ public class SimpleCheck implements Checker
 	    }
 	    if (moreLeft)
 	    {
-		if (isPosToLeftInsideBoard() && 
-			isMarkToLeftSame())
+		if (isPosToLeftInsideBoard() && isMarkToLeftSame())
 		{
 		    if (isFiveInARow(++horizontalCount))
 		    {
@@ -211,43 +255,41 @@ public class SimpleCheck implements Checker
 
     private boolean isMarkBelowRightSame()
     {
-	return board.getMarkAtPosition(new Position
-		(lastMove.getRow() + nextIncrementer,
-			lastMove.getCol() + nextIncrementer)) == mark;
+	return board.getMarkAtPosition(
+		new Position(lastMove.getRow() + nextIncrementer, lastMove.getCol() + nextIncrementer)) == mark;
     }
 
     private boolean isMarkBelowLeftSame()
     {
-	return board.getMarkAtPosition(new Position(lastMove.getRow() + nextIncrementer,
-		lastMove.getCol() - nextIncrementer)) == mark;
+	return board.getMarkAtPosition(
+		new Position(lastMove.getRow() + nextIncrementer, lastMove.getCol() - nextIncrementer)) == mark;
     }
 
     private boolean isMarkBelowSame()
     {
-	return markEqAtpos(board,new Position(lastMove.getRow() + nextIncrementer, lastMove.getCol()),mark);
+	return markEqAtpos(board, new Position(lastMove.getRow() + nextIncrementer, lastMove.getCol()), mark);
     }
 
     private boolean isMarkAboveLeftSame()
     {
-	return markEqAtpos(board, new Position((lastMove.getRow() - nextIncrementer),
-		(lastMove.getCol() - nextIncrementer)), mark);
+	return markEqAtpos(board,
+		new Position((lastMove.getRow() - nextIncrementer), (lastMove.getCol() - nextIncrementer)), mark);
 
     }
 
     private boolean isMarkAboveRightSame()
     {
-	return markEqAtpos(board, (new Position(lastMove.getRow() - nextIncrementer,
-		lastMove.getCol() + nextIncrementer)), mark);
+	return markEqAtpos(board,
+		(new Position(lastMove.getRow() - nextIncrementer, lastMove.getCol() + nextIncrementer)), mark);
     }
-
 
     private boolean isMarkAboveSame()
     {
-	return markEqAtpos(board, new Position((lastMove.getRow() - nextIncrementer),lastMove.getCol()), mark);
+	return markEqAtpos(board, new Position((lastMove.getRow() - nextIncrementer), lastMove.getCol()), mark);
     }
 
-    //conveys intention better
-    private boolean markEqAtpos(Board board,Position pos, int mark)
+    // conveys intention better
+    private boolean markEqAtpos(Board board, Position pos, int mark)
     {
 	return board.getMarkAtPosition(pos) == mark;
     }
@@ -257,18 +299,18 @@ public class SimpleCheck implements Checker
 	return lastMove.getRow() - nextIncrementer >= 0;
     }
 
-
     private boolean isPosBelowInsideBoard()
     {
 	return nextIncrementer + lastMove.getRow() < board.getHeight();
     }
 
-    private boolean isMarkToLeftSame() {
-	return board.getMarkAtPosition(
-		new Position(lastMove.getRow(), lastMove.getCol() - nextIncrementer)) == mark;
+    private boolean isMarkToLeftSame()
+    {
+	return board.getMarkAtPosition(new Position(lastMove.getRow(), lastMove.getCol() - nextIncrementer)) == mark;
     }
 
-    private boolean isPosToLeftInsideBoard() {
+    private boolean isPosToLeftInsideBoard()
+    {
 	return (lastMove.getCol() - nextIncrementer) >= 0;
     }
 
@@ -276,12 +318,15 @@ public class SimpleCheck implements Checker
     {
 	return (count >= WIN_LIMIT);
     }
-    private boolean isMarkToRightSame() {
-	return board.getMarkAtPosition(new Position((lastMove.getRow()),
-		(lastMove.getCol() + nextIncrementer))) == mark;
+
+    private boolean isMarkToRightSame()
+    {
+	return board
+		.getMarkAtPosition(new Position((lastMove.getRow()), (lastMove.getCol() + nextIncrementer))) == mark;
     }
 
-    private boolean isPosToRightInsideBoard() {
+    private boolean isPosToRightInsideBoard()
+    {
 	return (nextIncrementer + lastMove.getCol()) < board.getWidth();
     }
 
