@@ -12,8 +12,7 @@ import liu.janva.SimpleGameBoard;
 
 public class SimpleCheckTest {
 
-    
-    class TestDoubleBoard extends SimpleGameBoard
+        class TestDoubleBoard extends SimpleGameBoard
     {
 	public TestDoubleBoard(Checker checker, int boardSize)
 	{
@@ -43,7 +42,7 @@ public class SimpleCheckTest {
     
     @Test 
     public void testCheckWinFiveInRowHorisontaly() {
-	assertTrue(checker.checkWin(board, new Position (8, 0)));
+	assertTrue(checker.checkWin(board, new Position (8, 1)));
     }
     @Test
     public void testCheckWinFiveInRowVertically() {
