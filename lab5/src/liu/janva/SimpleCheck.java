@@ -109,7 +109,7 @@ public class SimpleCheck implements Checker
 	    {
 		if (isPosAboveInsideBoard(lastMove) && 
 			isPosToLeftInsideBoard(lastMove) && 
-			isMarkUpAndLeftSame(board, lastMove, mark))
+			isMarkAboveLeftSame(board, lastMove, mark))
 		{
 		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount))
 		    {
@@ -125,9 +125,7 @@ public class SimpleCheck implements Checker
 	    {
 		if (isPosBelowInsideBoard(board, lastMove)
 			&& isPosToRightInsideBoard(board, lastMove)
-			&& board.getMarkAtPosition(new Position
-				(lastMove.getRow() + nextIncrementer,
-					lastMove.getCol() + nextIncrementer)) == mark)
+			&& isMarkBelowRightSame(board, lastMove, mark))
 		{
 		    if (isFiveInARow(++diagonalUpperLeftToLowerRightCount ))
 		    {
@@ -144,7 +142,7 @@ public class SimpleCheck implements Checker
 		//FIXME Might be bug dependence on wheter order of execution is well defined?
 		if (isPosAboveInsideBoard(lastMove) && 
 			isPosToRightInsideBoard(board, lastMove)
-			&& isMarkUpRightSame(board, lastMove, mark))
+			&& isMarkAboveRightSame(board, lastMove, mark))
 		{
 		    if (isFiveInARow( ++diagonalUpperRightToLowerLeftCount) )
 		    {
@@ -159,7 +157,7 @@ public class SimpleCheck implements Checker
 	    {
 		if (isPosBelowInsideBoard(board, lastMove)
 			&& isPosToLeftInsideBoard(lastMove)
-			&& isMarkDownLeftSame(board, lastMove, mark))
+			&& isMarkBelowLeftSame(board, lastMove, mark))
 		{
 		    if (isFiveInARow(++diagonalUpperRightToLowerLeftCount))
 		    {
@@ -174,19 +172,26 @@ public class SimpleCheck implements Checker
 	return false;
     }
 
-    private boolean isMarkDownLeftSame(Board board, Position lastMove, int mark)
+    private boolean isMarkBelowRightSame(Board board, Position lastMove, int mark)
+    {
+	return board.getMarkAtPosition(new Position
+		(lastMove.getRow() + nextIncrementer,
+			lastMove.getCol() + nextIncrementer)) == mark;
+    }
+
+    private boolean isMarkBelowLeftSame(Board board, Position lastMove, int mark)
     {
 	return board.getMarkAtPosition(new Position(lastMove.getRow() + nextIncrementer,
 		lastMove.getCol() - nextIncrementer)) == mark;
     }
 
-    private boolean isMarkUpRightSame(Board board, Position lastMove, int mark)
+    private boolean isMarkAboveRightSame(Board board, Position lastMove, int mark)
     {
 	return board.getMarkAtPosition(new Position(lastMove.getRow() - nextIncrementer,
 		lastMove.getCol() + nextIncrementer)) == mark;
     }
 
-    private boolean isMarkUpAndLeftSame(Board board, Position lastMove, int mark)
+    private boolean isMarkAboveLeftSame(Board board, Position lastMove, int mark)
     {
 	return board.getMarkAtPosition(new Position((lastMove.getRow() - nextIncrementer),
 		(lastMove.getCol() - nextIncrementer))) == mark;
