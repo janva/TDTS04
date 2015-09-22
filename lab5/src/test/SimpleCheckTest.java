@@ -80,5 +80,6 @@ public class SimpleCheckTest {
     {
 	assertFalse(checker.checkWin(board, new Position (1, 0)));
     }
+    
 
 }

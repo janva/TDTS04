@@ -4,15 +4,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+// All CORBA applications need these classes.
+import org.omg.CORBA.ORB;
+// HelloServer will use the naming service.
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContextExt;
+import org.omg.CosNaming.NamingContextExtHelper;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAHelper;
+
+// The package containing our stubs.
+import ChatApp.Chat;
+import ChatApp.ChatCallback;
+import ChatApp.ChatHelper;
+import ChatApp.ChatPOA;
 import liu.janva.Board;
 import liu.janva.Position;
 import liu.janva.SimpleCheck;
 import liu.janva.SimpleGameBoard;
-import ChatApp.*;          // The package containing our stubs.
-
-import org.omg.CosNaming.*; // HelloServer will use the naming service.
-import org.omg.CORBA.*;     // All CORBA applications need these classes.
-import org.omg.PortableServer.*;
 
 class ChatImpl extends ChatPOA
 { 
@@ -88,7 +97,6 @@ class ChatImpl extends ChatPOA
 	public void mark(ChatCallback objref, short x, short y, short mark) {
 		if (activeGame) 
 		{	
-			//TODO case was thought of at late stage
 			if(board.full())
 			{
 				sendAllPlayers("No winner new game");

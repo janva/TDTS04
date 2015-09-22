@@ -4,7 +4,6 @@ public class SimpleGameBoard implements Board{
     private Checker checker;
     //TODO protected to simplify testing think of better solution 
     protected int[][] board;
-    //TODO consider making this class singelton but be aware of threadsafty
     public SimpleGameBoard(Checker checker, int boardSize)
     {
 	this.checker = checker;
