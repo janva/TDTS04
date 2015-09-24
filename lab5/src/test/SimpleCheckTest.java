@@ -13,7 +13,7 @@ import liu.janva.SimpleGameBoard;
 
 public class SimpleCheckTest {
 
-        class TestDoubleBoard extends SimpleGameBoard
+    class TestDoubleBoard extends SimpleGameBoard
     {
 	public TestDoubleBoard(Checker checker, int boardSize)
 	{

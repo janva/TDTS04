@@ -98,7 +98,7 @@ public class CounterTest
     private void assertDiagonalUpperLeftCountEquals(int excpectedCount,Position pos)
     {
 	counter = new Counter(board,pos);
-	assertEquals(excpectedCount,counter.countEqualsDiagonallyToUpperLeft());
+	assertEquals(excpectedCount, counter.countEqualsDiagonallyToUpperLeft());
     }
 
 

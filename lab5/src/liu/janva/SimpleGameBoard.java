@@ -84,18 +84,9 @@ public class SimpleGameBoard implements Board{
 	    builder.append("\n");
 	}
 	return builder.toString();
-
     }
-    public static class test
-    {
-	public static void main(String[] args) {
-	    SimpleGameBoard board = new SimpleGameBoard(new SimpleCheck(), 5);
-	    board.toString();
-	    System.out.println(
-		    board.getMarkAtPosition(new Position(3, 2)));
-	}
-    }
-
+    
+    
     // TODO bläää thought of this at late stage know  sucks
     @Override
     public boolean full() {
@@ -109,4 +100,60 @@ public class SimpleGameBoard implements Board{
 	}
 	return false;
     }
+
+    @Override
+    public RightIterator rightIterator(Position startFrom)
+    {
+	return new RightIterator(board,startFrom);
+    }
+    @Override
+    public LeftIterator leftIterator(Position startFrom)
+    {
+	return new LeftIterator(board,startFrom);
+    }
+    @Override
+    public UpIterator upIterator(Position startFrom)
+    {
+	return new UpIterator(board,startFrom);
+    }
+    @Override
+    public DownIterator downIterator(Position startFrom)
+    {
+	return new DownIterator(board,startFrom);
+    }
+
+    @Override
+    public RightUpIterator rightUpIterator(Position startFrom)
+    {
+	return new RightUpIterator(board, startFrom);
+    }
+
+    @Override
+    public LeftUpIterator leftUpIterator(Position startFrom)
+    {
+	return new LeftUpIterator(board, startFrom);
+    }
+
+    @Override
+    public RightDownIterator rightDownIterator(Position startFrom)
+    {
+	return new RightDownIterator(board, startFrom);
+    }
+
+    @Override
+    public LeftDownIterator leftDownIterator(Position startFrom)
+    {
+	return new LeftDownIterator(board, startFrom);
+    }
+    
+    public static class test
+    {
+	public static void main(String[] args) {
+	    SimpleGameBoard board = new SimpleGameBoard(new SimpleCheck(), 5);
+	    board.toString();
+	    System.out.println(
+		    board.getMarkAtPosition(new Position(3, 2)));
+	}
+    }
+
 }

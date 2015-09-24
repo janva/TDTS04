@@ -26,5 +26,6 @@ public class Position
     public void setCol(int col) {
 	this.col = col;
     }
+    
 }
 
