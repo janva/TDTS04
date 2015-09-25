@@ -1,6 +1,8 @@
-package liu.janva;
+package liu.janva.boardIterators;
 
 import java.util.NoSuchElementException;
+
+import liu.janva.gameboard.Position;
 
 public class RightDownIterator extends AbstractBoardIterator
 {

@@ -1,4 +1,6 @@
-package liu.janva;
+package liu.janva.gameboard;
+
+import liu.janva.boardIterators.AbstractBoardIterator;
 
 public class Counter
 {

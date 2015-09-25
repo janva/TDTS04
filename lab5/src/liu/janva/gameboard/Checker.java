@@ -1,5 +1,4 @@
-package liu.janva;
-
+package liu.janva.gameboard;
 
 public interface Checker 
 {

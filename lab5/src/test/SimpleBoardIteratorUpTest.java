@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import liu.janva.Position;
-import liu.janva.UpIterator;
+import liu.janva.boardIterators.UpIterator;
+import liu.janva.gameboard.Position;
 
 public class SimpleBoardIteratorUpTest
 {

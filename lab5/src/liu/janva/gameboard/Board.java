@@ -1,4 +1,13 @@
-package liu.janva;
+package liu.janva.gameboard;
+
+import liu.janva.boardIterators.DownIterator;
+import liu.janva.boardIterators.LeftDownIterator;
+import liu.janva.boardIterators.LeftIterator;
+import liu.janva.boardIterators.LeftUpIterator;
+import liu.janva.boardIterators.RightDownIterator;
+import liu.janva.boardIterators.RightIterator;
+import liu.janva.boardIterators.RightUpIterator;
+import liu.janva.boardIterators.UpIterator;
 
 public interface Board {
     //TODO maybe a bit to much in interface

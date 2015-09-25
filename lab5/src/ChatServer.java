@@ -18,10 +18,10 @@ import ChatApp.Chat;
 import ChatApp.ChatCallback;
 import ChatApp.ChatHelper;
 import ChatApp.ChatPOA;
-import liu.janva.Board;
-import liu.janva.Position;
-import liu.janva.SimpleCheck;
-import liu.janva.SimpleGameBoard;
+import liu.janva.gameboard.Board;
+import liu.janva.gameboard.Position;
+import liu.janva.gameboard.SimpleCheck;
+import liu.janva.gameboard.SimpleGameBoard;
 
 class ChatImpl extends ChatPOA
 { 

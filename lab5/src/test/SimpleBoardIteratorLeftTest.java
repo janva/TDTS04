@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import liu.janva.LeftIterator;
-import liu.janva.Position;
+import liu.janva.boardIterators.LeftIterator;
+import liu.janva.gameboard.Position;
 
 public class SimpleBoardIteratorLeftTest
 {

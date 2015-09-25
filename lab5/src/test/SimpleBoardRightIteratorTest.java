@@ -10,8 +10,8 @@ import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
 
-import liu.janva.Position;
-import liu.janva.RightIterator;
+import liu.janva.boardIterators.RightIterator;
+import liu.janva.gameboard.Position;
 
 public class SimpleBoardRightIteratorTest
 {

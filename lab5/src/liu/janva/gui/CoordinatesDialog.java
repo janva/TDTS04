@@ -1,4 +1,4 @@
-package liu.janva;
+package liu.janva.gui;
 import javax.swing.*;
 
 public class CoordinatesDialog extends JPanel{

@@ -1,7 +1,7 @@
 
 
-import liu.janva.ChatWindow;
 import liu.janva.CorbaClientConnection;
+import liu.janva.gui.ChatWindow;
 
 public class ChatClient
 {

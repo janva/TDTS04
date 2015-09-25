@@ -1,6 +1,8 @@
-package liu.janva;
+package liu.janva.boardIterators;
 
 import java.util.Iterator;
+
+import liu.janva.gameboard.Position;
 
 public abstract class AbstractBoardIterator implements Iterator
 {

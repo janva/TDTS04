@@ -1,4 +1,4 @@
-package liu.janva;
+package liu.janva.gameboard;
 
 // TODO maybe depth first search instead graph implementation instead?
 public class SimpleCheck implements Checker

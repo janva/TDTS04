@@ -1,4 +1,4 @@
-package liu.janva;
+package liu.janva.gui;
 
 
 import java.awt.event.WindowAdapter;
@@ -13,6 +13,8 @@ import javax.swing.JRadioButton;
 
 import ChatApp.Chat;
 import ChatApp.ChatCallback;
+import liu.janva.CorbaClientConnection;
+import liu.janva.MessageQueue;
 
 public class ChatWindow extends javax.swing.JFrame implements Observer {
 

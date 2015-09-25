@@ -1,4 +1,4 @@
-package liu.janva;
+package liu.janva.gameboard;
 
 public class Position 
 {

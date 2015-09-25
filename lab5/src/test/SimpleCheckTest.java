@@ -5,11 +5,11 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import liu.janva.Board;
-import liu.janva.Checker;
-import liu.janva.Position;
-import liu.janva.SimpleCheck;
-import liu.janva.SimpleGameBoard;
+import liu.janva.gameboard.Board;
+import liu.janva.gameboard.Checker;
+import liu.janva.gameboard.Position;
+import liu.janva.gameboard.SimpleCheck;
+import liu.janva.gameboard.SimpleGameBoard;
 
 public class SimpleCheckTest {
 
