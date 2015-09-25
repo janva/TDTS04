@@ -26,9 +26,9 @@ public class CounterTest
 		{1,0,0,1,1,0,0,1,2},
 		{0,0,2,2,1,2,2,2,2},
 		{0,1,2,2,2,2,2,2,1},
-		{0,2,1,1,1,2,1,1,1},
+		{0,2,0,1,1,2,1,1,1},
 		{0,0,0,1,2,0,0,1,1},
-		{2,2,2,2,2,0,2,2,2}
+		{2,2,2,2,2,2,2,2,2}
 	    };
 	}
    }
@@ -43,16 +43,16 @@ public class CounterTest
 	
     }
     //TODO at some point remove duplicate tests
-    @Test
-    public void testCounterCountThreeInARowHorisontally()
-    {
-	assertHorizontalCountEquals(3,new Position(0,1));
-    }
+//    @Test
+//    public void testCounterCountThreeInARowHorisontally()
+//    {
+//	assertHorizontalCountEquals(3,new Position(0,1));
+//    }
     
     @Test
     public void testCount5InARowHorisantallyTriangulated() throws Exception
     {
-	assertHorizontalCountEquals(5,new Position(8,2));
+	assertHorizontalCountEquals(9,new Position(8,1));
     
     }
     @Test
@@ -75,6 +75,16 @@ public class CounterTest
     public void testCount3DiagonallyToUpperLeft() throws Exception
     {
 	assertDiagonalUpperLeftCountEquals(3, new Position(6, 5));
+    }
+    
+    @Test
+    public void testCountOneInRowShouldReturn1 () throws Exception
+    {
+	
+	assertVerticalCountEquals(1, new Position(5, 1));
+	assertHorizontalCountEquals(1, new Position(5, 1));
+	assertDiagonalUpperRightCountEquals(1, new Position(5, 1));
+	assertDiagonalUpperLeftCountEquals(1, new Position(5, 1));
     }
     //TODO have a lot in common
     private void assertVerticalCountEquals(int excpectedCount,Position pos)

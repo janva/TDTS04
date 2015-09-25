@@ -1,5 +1,5 @@
 package liu.janva;
-
+//TODO some cleaning needed here as wellS
 public class SimpleGameBoard implements Board{
     private Checker checker;
     //TODO protected to simplify testing think of better solution 
@@ -12,7 +12,7 @@ public class SimpleGameBoard implements Board{
 
     //TODO mark  needs to be abstract type not int
     public boolean markPosition(Position pos, int mark) {
-	if(!((pos.getRow() <= board.length ) && (pos.getCol() <= board[0].length)))
+	if(outsideBoard(pos))
 	{
 	    return false;
 	}
@@ -146,6 +146,15 @@ public class SimpleGameBoard implements Board{
 	return new LeftDownIterator(board, startFrom);
     }
     
+  //TODO code duplication iterators
+    private boolean outsideBoard(Position pos)
+    {
+	int row = pos.getRow(); 
+	int col =pos.getCol();
+	return !((row <= board.length) && (col <= board[0].length)
+		&& row >= 0 && col>=0);
+    }
+    
     public static class test
     {
 	public static void main(String[] args) {
@@ -155,5 +164,8 @@ public class SimpleGameBoard implements Board{
 		    board.getMarkAtPosition(new Position(3, 2)));
 	}
     }
+    
+    
+
 
 }
