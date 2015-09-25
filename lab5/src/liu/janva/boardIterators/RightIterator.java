@@ -15,5 +15,4 @@ public class RightIterator extends AbstractBoardIterator
     {
 	return  board[row][col++];
     }
-
 }
