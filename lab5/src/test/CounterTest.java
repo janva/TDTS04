@@ -50,7 +50,7 @@ public class CounterTest
 //    }
     
     @Test
-    public void testCount5InARowHorisantallyTriangulated() throws Exception
+    public void testCount9InARowHorisantallyTriangulated() throws Exception
     {
 	assertHorizontalCountEquals(9,new Position(8,1));
     

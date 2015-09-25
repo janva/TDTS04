@@ -22,8 +22,6 @@ public class Counter
     {
 	int total =0;
 	total+= countEqualsToLeft();
-	if (isFiveInARow(total))
-	    return total;
 	//-1 to because we count the square we are standing in twice
 	total+=countEqualsToRight()-1;
 	return total;

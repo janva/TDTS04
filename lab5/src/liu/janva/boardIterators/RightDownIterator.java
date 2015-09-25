@@ -1,7 +1,5 @@
 package liu.janva.boardIterators;
 
-import java.util.NoSuchElementException;
-
 import liu.janva.gameboard.Position;
 
 public class RightDownIterator extends AbstractBoardIterator
@@ -13,13 +11,8 @@ public class RightDownIterator extends AbstractBoardIterator
     }
 
     @Override
-    public Object next()
+    Object markAtNextSquare()
     {
-	if (!insideBoard(row,col))
-	{
-	    throw new NoSuchElementException();
-	}
 	return  board[row++][col++];
     }
-
 }

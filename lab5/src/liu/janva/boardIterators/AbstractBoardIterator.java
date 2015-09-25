@@ -1,6 +1,7 @@
 package liu.janva.boardIterators;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import liu.janva.gameboard.Position;
 
@@ -17,7 +18,9 @@ public abstract class AbstractBoardIterator implements Iterator
 	col = startPosition.getCol();
 	this.board = boardImpl;
     }
-    
+
+    abstract Object markAtNextSquare();
+
     @Override
     public boolean hasNext()
     {
@@ -35,7 +38,18 @@ public abstract class AbstractBoardIterator implements Iterator
 
     }
     
-    protected boolean insideBoard(int row, int column )
+    @Override
+    final public Object next()
+    {
+	if (!insideBoard(row,col))
+	{
+	    throw new NoSuchElementException();
+	}
+	return markAtNextSquare();
+    }
+
+    
+    private boolean insideBoard(int row, int column )
     {
 	//better to be paranoid
 	return (column >=0 &&
@@ -43,6 +57,7 @@ public abstract class AbstractBoardIterator implements Iterator
 		column < getWidth()&&
 		row < getWidth());
     }
+
     
     @Override
     public void remove() throws UnsupportedOperationException
