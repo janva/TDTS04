@@ -116,7 +116,7 @@ class ChatImpl extends ChatPOA
 					board.clearBoard();
 					for (ChatCallback playerCallbacks : players.values()) {
 						//Initially announce was intended to do more stuff on client side 
-						playerCallbacks.announceWin(x);
+						playerCallbacks.announceWin(mark);
 						playerCallbacks.update(board.toString());
 					}
 					//This is just stupid :-)
