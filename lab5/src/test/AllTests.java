@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ CounterTest.class, SimpleBoardIteratorLeftTest.class, 
-                SimpleBoardIteratorUpTest.class,
+                BoardIteratorTestNext.class,
                 SimpleBoardRightIteratorTest.class, 
                 SimpleCheckTest.class,
                 SimpleGameBoardTest.class})

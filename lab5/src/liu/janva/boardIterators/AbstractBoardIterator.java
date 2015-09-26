@@ -36,6 +36,7 @@ public abstract class AbstractBoardIterator implements Iterator
 		row >=0 &&
 		column < getWidth()&&
 		row < getHeight());
+	
     }
     
     private int getWidth()

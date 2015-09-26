@@ -2,7 +2,6 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.NoSuchElementException;
@@ -32,14 +31,6 @@ public class SimpleBoardRightIteratorTest
 		{0,0,0,1,2,0,0,1,1},
 		{2,2,2,2,2,0,2,2,2}
 	};
-	
-    }
-
-    @Test
-    public void testRightIteratorHasNextAt22ReturnsTrue()
-    {
-	RightIterator iterator= new RightIterator(board, new Position(2, 2));
-	assertTrue(iterator.hasNext());
     }
     
     @Test
