@@ -9,53 +9,58 @@ import liu.janva.boardIterators.RightIterator;
 import liu.janva.boardIterators.RightUpIterator;
 import liu.janva.boardIterators.UpIterator;
 
-//TODO some cleaning needed here as wellS
-public class SimpleGameBoard implements Board{
+public class SimpleGameBoard implements Board
+{
     private Checker checker;
-    //TODO protected to simplify testing think of better solution 
+    // protected to simplify testing think of better solution
     protected int[][] board;
+
     public SimpleGameBoard(Checker checker, int boardSize)
     {
 	this.checker = checker;
 	this.board = new int[boardSize][boardSize];
     }
-
-    //TODO mark  needs to be abstract type not int
-    public boolean markPosition(Position pos, int mark) {
-	if(outsideBoard(pos))
+    //TODO consider making mark abstract type
+    public boolean markPosition(Position pos, int mark)
+    {
+	if (outsideBoard(pos))
 	{
 	    return false;
 	}
-	int current = board[pos.getRow()][pos.getCol()] ;
-	if(current == 0)
+	if (positionIsFree(pos))
 	{
-	    board[pos.getRow()][pos.getCol()] = mark;
+	    setMarkAtPosition(pos, mark);
 	    return true;
 	}
 	return false;
     }
 
-    public int getHeight ()
+    // TODO code duplication iterators
+    private boolean outsideBoard(Position pos)
     {
-	return board.length; 
+	int row = pos.getRow();
+	int col = pos.getCol();
+	return !((row <= getHeight()) && (col <= getWidth()) && row >= 0 && col >= 0);
+    }
 
+    private boolean positionIsFree(Position pos)
+    {
+	return getMarkAtPosition(pos) == 0;
+    }
+
+    private void setMarkAtPosition(Position pos, int mark)
+    {
+	board[pos.getRow()][pos.getCol()] = mark;
+    }
+
+    public int getHeight()
+    {
+	return board.length;
     }
 
     public int getWidth()
     {
 	return board[0].length;
-    }
-
-    public void clearBoard()
-    {
-	for (int i = 0; i < board.length; ++i)
-	{
-	    for (int j= 0; j < board[i].length; ++j)
-	    { 
-		//0 =-, 1=X, 2=O  
-		board[i][j]= 0;
-	    }
-	}
     }
 
     public int getMarkAtPosition(Position pos)
@@ -65,17 +70,31 @@ public class SimpleGameBoard implements Board{
 
     public boolean checkWin(Position lastMove)
     {
-	return checker.checkWin (this,lastMove);
+	return checker.checkWin(this, lastMove);
     }
 
+    // TODO iterators maybe which take action for instance would be cool
+    // like forallSquars assign 0
+    public void clearBoard()
+    {
+	for (int i = 0; i < board.length; ++i)
+	{
+	    for (int j = 0; j < board[i].length; ++j)
+	    {
+		// 0 =-, 1=X, 2=O
+		board[i][j] = 0;
+	    }
+	}
+    }
 
+    //TODO refactor 
     public String toString()
     {
 	StringBuilder builder = new StringBuilder();
-	//TODO me not like
-	for(int i =0; i < getHeight(); ++i)
+	// TODO me not like
+	for (int i = 0; i < getHeight(); ++i)
 	{
-	    for(int j= 0; j < getWidth(); ++j)
+	    for (int j = 0; j < getWidth(); ++j)
 	    {
 		builder.append("[");
 
@@ -84,10 +103,11 @@ public class SimpleGameBoard implements Board{
 		{
 		    builder.append('-');
 
-		}else
+		} else
 		{
-		    //TODO Again mark abstract type now we have dependencies scattered all over the place
-		    builder.append(mark == 1? "X":"O");
+		    // TODO Again mark abstract type now we have dependencies
+		    // scattered all over the place
+		    builder.append(mark == 1 ? "X" : "O");
 		}
 		builder.append("]");
 	    }
@@ -95,41 +115,46 @@ public class SimpleGameBoard implements Board{
 	}
 	return builder.toString();
     }
-    
-    
-    // TODO bläää thought of this at late stage know  sucks
+
+    // TODO bläää needs refactoring towards better balance
     @Override
-    public boolean full() {
-	for(int i =0; board.length > i; ++i)
+    public boolean full()
+    {
+	for (int[] row :board)
 	{
-	    for(int j=0; board.length > j; ++j)
+	    for (int mark :row)
 	    {
-		if (board[i][j]== 0)
+		if (mark == 0)
+		{
 		    return false;
+		}
 	    }
 	}
-	return false;
+	return true;
     }
 
     @Override
     public RightIterator rightIterator(Position startFrom)
     {
-	return new RightIterator(board,startFrom);
+	return new RightIterator(board, startFrom);
     }
+
     @Override
     public LeftIterator leftIterator(Position startFrom)
     {
-	return new LeftIterator(board,startFrom);
+	return new LeftIterator(board, startFrom);
     }
+
     @Override
     public UpIterator upIterator(Position startFrom)
     {
-	return new UpIterator(board,startFrom);
+	return new UpIterator(board, startFrom);
     }
+
     @Override
     public DownIterator downIterator(Position startFrom)
     {
-	return new DownIterator(board,startFrom);
+	return new DownIterator(board, startFrom);
     }
 
     @Override
@@ -155,27 +180,14 @@ public class SimpleGameBoard implements Board{
     {
 	return new LeftDownIterator(board, startFrom);
     }
-    
-  //TODO code duplication iterators
-    private boolean outsideBoard(Position pos)
-    {
-	int row = pos.getRow(); 
-	int col =pos.getCol();
-	return !((row <= board.length) && (col <= board[0].length)
-		&& row >= 0 && col>=0);
-    }
-    
+
     public static class test
     {
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 	    SimpleGameBoard board = new SimpleGameBoard(new SimpleCheck(), 5);
 	    board.toString();
-	    System.out.println(
-		    board.getMarkAtPosition(new Position(3, 2)));
+	    System.out.println(board.getMarkAtPosition(new Position(3, 2)));
 	}
     }
-    
-    
-
-
 }

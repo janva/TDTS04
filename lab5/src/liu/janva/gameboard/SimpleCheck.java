@@ -60,7 +60,7 @@ public class SimpleCheck implements Checker
     {
         return  board.getMarkAtPosition(lastMove)==0 ? true:false;
     }
-    // For simple test because lazy and don't want to use Junit for now
+    // For simple test 
     public static class test
     {
 	public static void main(String[] args)
